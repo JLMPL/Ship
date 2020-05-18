@@ -10,7 +10,7 @@ void Renderer::draw(sf::Text& text)
     m_window->draw(text);
 }
 
-void Renderer::draw(sf::Vertex* verts, int num, sf::PrimitiveType type)
+void Renderer::draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs)
 {
-    m_window->draw(verts, num, type);
+    m_window->draw(verts, num, type, rs);
 }

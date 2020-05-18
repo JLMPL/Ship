@@ -2,6 +2,7 @@
 #include "MenuLayer.hpp"
 #include "SettingsLayer.hpp"
 #include "MenuBackgroundLayer.hpp"
+#include "GameLayer.hpp"
 
 void LayerStack::applyPendingCommands()
 {
@@ -21,6 +22,9 @@ void LayerStack::applyPendingCommands()
                         break;
                     case Layer::Type::Background:
                         m_states.emplace_back(new MenuBackgroundLayer(*this));
+                        break;
+                    case Layer::Type::Game:
+                        m_states.emplace_back(new GameLayer(*this));
                         break;
                     default: break;
                 }

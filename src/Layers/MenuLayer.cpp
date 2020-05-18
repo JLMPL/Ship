@@ -16,9 +16,11 @@ MenuLayer::MenuLayer(LayerStack& layerStack)
     {
         printf("Continue!\n");
     }, false);
-    m_menu.addItem("New Game", []()
+    m_menu.addItem("New Game", [this]()
     {
         printf("New Game!\n");
+        m_layerStack.pop();
+        m_layerStack.push(Layer::Type::Game);
     });
     m_menu.addItem("Load Game", []()
     {

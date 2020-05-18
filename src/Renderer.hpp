@@ -11,7 +11,7 @@ public:
     void init(sf::RenderWindow& window);
 
     void draw(sf::Text& text);
-    void draw(sf::Vertex* verts, int num, sf::PrimitiveType type);
+    void draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs = sf::RenderStates::Default);
 
     static Renderer& Get()
     {

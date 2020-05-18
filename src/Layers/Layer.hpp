@@ -12,7 +12,7 @@ public:
     {
         MainMenu,
         Settings,
-        Gameplay,
+        Game,
         Credits,
         Pause,
         Background,
