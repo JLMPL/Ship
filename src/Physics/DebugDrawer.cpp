@@ -34,12 +34,26 @@ void DebugDrawer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, co
 
 void DebugDrawer::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
-
+    printf("DrawCircle\n");
 }
 
 void DebugDrawer::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
+    std::vector<sf::Vertex> verts(33);
 
+    int i = 0;
+    for (float angle = 0; angle <= M_PI*2 + M_PI/16; angle += M_PI/16)
+    {
+        verts[i].position = {
+            (center.x * 32) + (cos(angle) * radius * 32),
+            (center.y * 32) + (sin(angle) * radius * 32)
+        };
+
+        verts[i].color = {color.r * 255, color.g * 255, color.b * 255, color.a * 255};
+        i++;
+    }
+
+    Renderer::Get().draw(&verts[0], verts.size(), sf::LineStrip);
 }
 
 void DebugDrawer::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
