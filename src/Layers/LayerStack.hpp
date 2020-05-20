@@ -35,5 +35,6 @@ private:
 
 private:
     std::vector<Layer::Ptr> m_states;
-    std::vector<Command> m_commands;
+    std::vector<Command> m_commands[2];
+    bool commandPage = false;
 };

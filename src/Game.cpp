@@ -3,7 +3,9 @@
 
 Game::Game()
 {
-    m_window.create(sf::VideoMode(1280,720), "Starry Stealers", sf::Style::Close);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 0;
+    m_window.create(sf::VideoMode(1920, 1080), "Starry Stealers", sf::Style::Fullscreen, settings);
     Renderer::Get().init(m_window);
 
     m_layerStack.push(Layer::Type::Background);
@@ -25,12 +27,15 @@ void Game::processEvents()
 
 void Game::update()
 {
-    float dt = m_clock.restart().asSeconds();
+    if (m_clock.getElapsedTime().asSeconds() >= 1.f/60.f)
+    {
+        m_layerStack.update(1.f/60.f);
 
-    m_layerStack.update(dt);
+        if (m_layerStack.isEmpty())
+            m_window.close();
 
-    if (m_layerStack.isEmpty())
-        m_window.close();
+        m_clock.restart();
+    }
 }
 
 void Game::draw()

@@ -1,12 +1,16 @@
 #include "LayerStack.hpp"
 #include "MenuLayer.hpp"
 #include "SettingsLayer.hpp"
-#include "MenuBackgroundLayer.hpp"
+#include "BackgroundLayer.hpp"
 #include "GameLayer.hpp"
+#include "HudLayer.hpp"
 
 void LayerStack::applyPendingCommands()
 {
-    for (auto& com : m_commands)
+    auto oldCommandPage = commandPage;
+    commandPage = !commandPage;
+
+    for (auto& com : m_commands[oldCommandPage])
     {
         switch (com.type)
         {
@@ -21,10 +25,13 @@ void LayerStack::applyPendingCommands()
                         m_states.emplace_back(new SettingsLayer(*this));
                         break;
                     case Layer::Type::Background:
-                        m_states.emplace_back(new MenuBackgroundLayer(*this));
+                        m_states.emplace_back(new BackgroundLayer(*this));
                         break;
                     case Layer::Type::Game:
                         m_states.emplace_back(new GameLayer(*this));
+                        break;
+                    case Layer::Type::Hud:
+                        m_states.emplace_back(new HudLayer(*this));
                         break;
                     default: break;
                 }
@@ -39,7 +46,7 @@ void LayerStack::applyPendingCommands()
             default: break;
         }
     }
-    m_commands.clear();
+    m_commands[oldCommandPage].clear();
 }
 
 void LayerStack::update(float dt)
@@ -58,17 +65,17 @@ void LayerStack::draw()
 
 void LayerStack::push(Layer::Type state)
 {
-    m_commands.push_back({Command::Type::Push, state});
+    m_commands[commandPage].push_back({Command::Type::Push, state});
 }
 
 void LayerStack::pop()
 {
-    m_commands.push_back({Command::Type::Pop, Layer::Type::None});
+    m_commands[commandPage].push_back({Command::Type::Pop, Layer::Type::None});
 }
 
 void LayerStack::clear()
 {
-    m_commands.push_back({Command::Type::Clear, Layer::Type::None});
+    m_commands[commandPage].push_back({Command::Type::Clear, Layer::Type::None});
 }
 
 bool LayerStack::isEmpty()

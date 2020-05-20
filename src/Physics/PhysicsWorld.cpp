@@ -1,9 +1,8 @@
 #include "PhysicsWorld.hpp"
 #include "Core/Math.hpp"
 #include <SFML/Graphics.hpp>
-#include "Renderer.hpp"
 
-static constexpr float PhysicsStepDelta = 1.f/60.f;
+#include "Renderer.hpp"
 
 PhysicsWorld::PhysicsWorld()
     : m_pWorld({0.f, 0.f})
@@ -19,7 +18,6 @@ PhysicsWorld::PhysicsWorld()
     groundShape.m_p.Set(0.f, 0.f);
     groundShape.m_radius = 1.f;
     m_groundBody->CreateFixture(&groundShape, 0.1f);
-
 
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -83,14 +81,8 @@ void PhysicsWorld::update(float dt)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         m_body->ApplyLinearImpulseToCenter({2.5f * dt,0}, true);
 
-    m_frameTimer += dt;
-    if (m_frameTimer > PhysicsStepDelta)
-    {
-        m_pWorld.Step(PhysicsStepDelta, 6, 2);
-        Renderer::Get().setView(bodyPos);
-        m_frameTimer = 0.f;
-    }
-
+    m_pWorld.Step(dt, 6, 2);
+    Renderer::Get().setView(bodyPos);
 }
 
 void PhysicsWorld::draw()
@@ -98,14 +90,11 @@ void PhysicsWorld::draw()
     m_pWorld.DebugDraw();
 
     auto bodyPos = m_body->GetPosition();
-    bodyPos.x *= 32.f;
-    bodyPos.y *= 32.f;
-    sf::Vector2f mous = Renderer::Get().getGlobalMousePosition();
-    Renderer::Get().drawLine(sf::Vector2f(bodyPos.x, bodyPos.y), sf::Vector2f(mous.x * 32, mous.y * 32), sf::Color::White);
-
     float bodyAngle = m_body->GetAngle();
-    Renderer::Get().drawLine(
+    Renderer::Get().drawLineScaled(
         sf::Vector2f(bodyPos.x, bodyPos.y),
-        sf::Vector2f(bodyPos.x + cos(bodyAngle) * 100, bodyPos.y + sin(bodyAngle) * 100),
+        sf::Vector2f(bodyPos.x + cos(bodyAngle) * 2, bodyPos.y + sin(bodyAngle) * 2),
         sf::Color::Green);
+
+    Renderer::Get().drawLineScaled({bodyPos.x, bodyPos.y}, Renderer::Get().getGlobalMousePosition(), sf::Color::Red);
 }

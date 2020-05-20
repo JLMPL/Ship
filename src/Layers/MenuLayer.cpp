@@ -8,7 +8,7 @@ MenuLayer::MenuLayer(LayerStack& layerStack)
     m_font.loadFromFile("data/NotoSans-Regular.ttf");
 
     m_title.setFont(m_font);
-    m_title.setCharacterSize(64);
+    m_title.setCharacterSize(128);
     m_title.setString("Starry Stealers");
     m_title.setPosition({32, 64});
 
@@ -18,7 +18,6 @@ MenuLayer::MenuLayer(LayerStack& layerStack)
     }, false);
     m_menu.addItem("New Game", [this]()
     {
-        printf("New Game!\n");
         m_layerStack.pop();
         m_layerStack.push(Layer::Type::Game);
     });

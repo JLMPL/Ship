@@ -16,6 +16,7 @@ public:
         Credits,
         Pause,
         Background,
+        Hud,
 
         None
     };

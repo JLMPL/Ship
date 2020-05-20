@@ -17,6 +17,4 @@ private:
     b2Body* m_body2 = nullptr;
 
     DebugDrawer m_pDrawer;
-
-    float m_frameTimer = 0.f;
 };
