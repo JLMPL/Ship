@@ -1,5 +1,6 @@
 #include "PhysicsWorld.hpp"
 #include <SFML/Graphics.hpp>
+#include "Renderer.hpp"
 
 PhysicsWorld::PhysicsWorld()
     : m_pWorld({0.f, 0.f})
@@ -12,7 +13,7 @@ PhysicsWorld::PhysicsWorld()
     m_groundBody = m_pWorld.CreateBody(&groundBodyDef);
 
     b2CircleShape groundShape;
-    groundShape.m_p.Set(10.f, 10.f);
+    groundShape.m_p.Set(0.f, 0.f);
     groundShape.m_radius = 1.f;
     m_groundBody->CreateFixture(&groundShape, 0.1f);
 
@@ -26,9 +27,14 @@ PhysicsWorld::PhysicsWorld()
     // b2PolygonShape m_dynamicBox;
     // m_dynamicBox.SetAsBox(0.5f, 0.5f);
 
-    b2CircleShape dynashap;
-    dynashap.m_p.Set(0.f, 0.f);
-    dynashap.m_radius = 0.5f;
+    b2Vec2 verts[3];
+
+    verts[0] = {-0.5f, 0.3};
+    verts[1] = {0.5, 0};
+    verts[2] = {-0.5f, -0.3};
+
+    b2PolygonShape dynashap;
+    dynashap.Set(verts, 3);
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &dynashap;
@@ -42,29 +48,59 @@ PhysicsWorld::PhysicsWorld()
     m_body2->CreateFixture(&fixtureDef);
 }
 
+float length(const sf::Vector2f& v)
+{
+    return sqrt(v.x * v.x + v.y * v.y);
+}
+
+sf::Vector2f normalize(const sf::Vector2f& v)
+{
+    float len = length(v);
+    return sf::Vector2f(
+        v.x / len,
+        v.y / len
+    );
+}
+
+float cross(const sf::Vector2f& a, const sf::Vector2f& b)
+{
+    return (a.x*b.y) - (a.y*b.x);
+}
+
 void PhysicsWorld::update(float dt)
 {
+    sf::Vector2f bodyPos = {m_body->GetPosition().x, m_body->GetPosition().y};
+    sf::Vector2f mous = {(sf::Mouse::getPosition().x / 32) - bodyPos.x, (sf::Mouse::getPosition().y / 32) - bodyPos.y};
+    mous = normalize(mous);
+
+    float bodyAngle = m_body->GetAngle();
+    sf::Vector2f bodyVec = {cos(bodyAngle), sin(bodyAngle)};
+
+    float dot = acos(bodyVec.x*mous.x+bodyVec.y*mous.y);
+
+    float acc = dt * 10 * dot;
+
+    if (cross(mous, bodyVec) > 0)
+        acc = -acc;
+    else if (cross(mous, bodyVec) < 0)
+    {
+    }
+    else
+        acc = 0;
+
+    m_body->ApplyTorque(acc, true);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
         m_body->ApplyLinearImpulseToCenter({0,-5.f * dt}, true);
-        m_body->ApplyTorque(0.f, true);
-    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
         m_body->ApplyLinearImpulseToCenter({0,5.f * dt}, true);
-        m_body->ApplyTorque(0.f, true);
-    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
         m_body->ApplyLinearImpulseToCenter({-5.f * dt,0}, true);
-        m_body->ApplyTorque(0.f, true);
-    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
         m_body->ApplyLinearImpulseToCenter({5.f * dt,0}, true);
-        m_body->ApplyTorque(0.f, true);
-    }
 
     m_frameTimer += dt;
     if (m_frameTimer > 1.f/60.f)
@@ -77,4 +113,16 @@ void PhysicsWorld::update(float dt)
 void PhysicsWorld::draw()
 {
     m_pWorld.DebugDraw();
+
+    auto bodyPos = m_body->GetPosition();
+    bodyPos.x *= 32.f;
+    bodyPos.y *= 32.f;
+    auto mous = sf::Mouse::getPosition();
+    Renderer::Get().drawLine(sf::Vector2f(bodyPos.x, bodyPos.y), sf::Vector2f(mous.x, mous.y), sf::Color::White);
+
+    float bodyAngle = m_body->GetAngle();
+    Renderer::Get().drawLine(
+        sf::Vector2f(bodyPos.x, bodyPos.y),
+        sf::Vector2f(bodyPos.x + cos(bodyAngle) * 100, bodyPos.y + sin(bodyAngle) * 100),
+        sf::Color::Green);
 }

@@ -13,6 +13,8 @@ public:
     void draw(sf::Text& text);
     void draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs = sf::RenderStates::Default);
 
+    void drawLine(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& color);
+
     static Renderer& Get()
     {
         static Renderer renderer;
