@@ -15,6 +15,10 @@ public:
 
     void drawLine(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& color);
 
+    void setView(const sf::Vector2f& pos);
+
+    sf::Vector2f getGlobalMousePosition() const;
+
     static Renderer& Get()
     {
         static Renderer renderer;
