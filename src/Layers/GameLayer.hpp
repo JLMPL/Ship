@@ -1,6 +1,7 @@
 #pragma once
 #include "Layer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Scene/Player.hpp"
 #include <SFML/Graphics.hpp>
 
 class GameLayer : public Layer
@@ -13,7 +14,6 @@ public:
     void draw() override final;
 
 private:
-    std::array<sf::Vertex, 5> m_ship;
-
     PhysicsWorld m_physWorld;
+    std::unique_ptr<Player> m_player;
 };
