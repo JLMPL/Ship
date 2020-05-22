@@ -16,7 +16,7 @@ PhysicsWorld::PhysicsWorld()
 
     b2CircleShape groundShape;
     groundShape.m_p.Set(0.f, 0.f);
-    groundShape.m_radius = 1.f;
+    groundShape.m_radius = 2.f;
     m_groundBody->CreateFixture(&groundShape, 0.1f);
 }
 
@@ -35,20 +35,53 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos)
 
     b2Vec2 verts[3];
 
-    verts[0] = {-0.5f, 0.3};
-    verts[1] = {0.5, 0};
-    verts[2] = {-0.5f, -0.3};
+    verts[0] = {-1.f, 0.6};
+    verts[1] = {1., 0};
+    verts[2] = {-1.f, -0.6};
 
     b2PolygonShape shape;
     shape.Set(verts, 3);
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 0.5f;
     fixtureDef.friction = 0.3f;
 
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
+
+    m_bodies.emplace_back(new RigidBody(body, &m_pWorld));
+
+    return m_bodies.back().get();
+}
+
+RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir)
+{
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position.Set(origin.x, origin.y);
+
+    b2Body* body = m_pWorld.CreateBody(&bodyDef);
+
+    b2Vec2 verts[4];
+
+    verts[0] = {0.1f, 0.f};
+    verts[1] = {-0.3f, 0.f};
+    verts[2] = {0.f, 0.1f};
+    verts[3] = {0.f, -0.1f};
+
+    b2PolygonShape shape;
+    shape.Set(verts, 4);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 0.02f;
+    fixtureDef.friction = 0.3f;
+
+    body->CreateFixture(&fixtureDef);
+    body->SetBullet(true);
+    body->ApplyLinearImpulseToCenter({dir.x, dir.y}, true);
+    body->SetTransform(body->GetPosition(), atan2(dir.x, dir.y));
 
     m_bodies.emplace_back(new RigidBody(body, &m_pWorld));
 

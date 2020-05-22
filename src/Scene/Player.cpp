@@ -3,6 +3,8 @@
 #include "Renderer.hpp"
 #include "Layers/HudLayer.hpp"
 
+static constexpr float HeatRegen = 35.f;
+
 Player::Player(PhysicsWorld* pWorld)
     : m_pWorld(pWorld)
 {
@@ -12,6 +14,8 @@ Player::Player(PhysicsWorld* pWorld)
 
 void Player::control(float dt)
 {
+    if (m_overheat) return;
+
     auto rb = m_body->body;
     sf::Vector2f bodyPos = {rb->GetPosition().x, rb->GetPosition().y};
 
@@ -24,7 +28,7 @@ void Player::control(float dt)
 
     float dot = acos(bodyVec.x*mous.x+bodyVec.y*mous.y);
 
-    float acc = dt * 10 * dot;
+    float acc = dt * 50 * dot;
 
     if (math::cross(mous, bodyVec) > 0)
         acc = -acc;
@@ -37,39 +41,59 @@ void Player::control(float dt)
     vec2 dir = {0,0};
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        dir.y += -2.5f;
-    }
+        dir.y += -1.f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        dir.y += 2.5f;
-    }
+        dir.y += 1.f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        dir.x += -2.5f;
-    }
+        dir.x += -1.f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        dir.x += 2.5f;
-    }
+        dir.x += 1.f;
 
-    if (dir.x != 0 or dir.y != 0)
-    {
-        rb->ApplyLinearImpulseToCenter({dir.x * dt, dir.y * dt}, true);
-        m_heat += dt * 15.f;
-    }
+    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 5.f : 2.f;
 
-    Renderer::Get().setView(bodyPos);
+    if (dir.x != 0.f or dir.y != 0.f)
+    {
+        dir = math::normalize(dir);
+        rb->ApplyLinearImpulseToCenter({dir.x * dt * 2.f, dir.y * dt * speed}, true);
+        exertHeat(10.f * dt);
+    }
+}
+
+void Player::shoot()
+{
+    if (m_overheat) return;
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_shootTimer.getElapsedTime().asMilliseconds() > 250)
+    {
+        auto bod = m_body->body->GetPosition();
+        vec2 pos = {bod.x, bod.y};
+
+        vec2 dir = math::normalize(Renderer::Get().getGlobalMousePosition() - pos);
+
+        m_pWorld->spawnBullet({pos.x, pos.y}, dir);
+        exertHeat(5.f);
+        m_shootTimer.restart();
+    }
 }
 
 void Player::update(float dt)
 {
     control(dt);
+    shoot();
 
-    m_heat = std::max(m_heat - dt * 5.f, 0.f);
+    if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
+    {
+        m_heat = std::max(m_heat - dt * HeatRegen, 0.f);
+
+        if (m_heat == 0.f)
+            m_overheat = false;
+    }
+
+    sf::Vector2f bodyPos = {m_body->body->GetPosition().x, m_body->body->GetPosition().y};
+    Renderer::Get().setView(bodyPos);
 
     HudLayer::setHeat(m_heat);
 }
@@ -94,4 +118,14 @@ void Player::draw()
     {
         Renderer::Get().drawLineScaled(rc.m_point, rc.m_point + rc.m_normal, sf::Color::Blue);
     }
+}
+
+void Player::exertHeat(float heat)
+{
+    m_heat = std::min(m_heat + heat, 100.f);
+    if (m_heat >= 100.f)
+    {
+        m_overheat = true;
+    }
+    m_heatTimer.restart();
 }

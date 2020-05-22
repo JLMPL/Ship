@@ -17,4 +17,8 @@ public:
 private:
     sf::Vertex m_verts[3];
     sf::RectangleShape m_rect;
+
+    sf::Font m_font;
+    sf::Text m_text;
+    bool m_overheat = false;
 };
