@@ -16,12 +16,8 @@ void Game::processEvents()
 {
     while (m_window.pollEvent(m_event))
     {
-        if (m_event.type == sf::Event::Closed ||
-            (m_event.type == sf::Event::KeyPressed &&
-             m_event.key.code == sf::Keyboard::Escape))
-        {
+        if (m_event.type == sf::Event::Closed)
             m_window.close();
-        }
     }
 }
 

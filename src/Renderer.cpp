@@ -1,6 +1,6 @@
 #include "Renderer.hpp"
 
-static constexpr float ViewScaling = 50.f;
+static constexpr float ViewScaling = 40.f;
 
 void Renderer::init(sf::RenderWindow& window)
 {

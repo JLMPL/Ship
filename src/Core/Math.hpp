@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
 
+using vec2 = sf::Vector2f;
+
 namespace math
 {
 

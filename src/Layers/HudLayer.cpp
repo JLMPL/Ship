@@ -1,10 +1,13 @@
 #include "HudLayer.hpp"
 #include "LayerStack.hpp"
 #include "Renderer.hpp"
+#include <cmath>
 
 // FIXME: Hardcoded resolution
 
 static constexpr float HeatBarHeight = 250.f;
+
+static float l_heat = 0.f;
 
 HudLayer::HudLayer(LayerStack& layerStack)
     : Layer(layerStack)
@@ -23,6 +26,9 @@ HudLayer::HudLayer(LayerStack& layerStack)
 
 void HudLayer::update(float dt)
 {
+    float actual = (1080 - (HeatBarHeight + 32)) + (250.f - (l_heat * 2.5));
+
+    m_rect.setPosition(m_rect.getPosition().x, actual);
 }
 
 void HudLayer::draw()
@@ -31,3 +37,7 @@ void HudLayer::draw()
     Renderer::Get().draw(m_rect);
 }
 
+void HudLayer::setHeat(float level)
+{
+    l_heat = std::min(std::max(level, 0.f), 100.f);
+}

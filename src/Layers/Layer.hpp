@@ -21,6 +21,9 @@ public:
         None
     };
 
+    template <typename T>
+    T* as() { return static_cast<T*>(this); }
+
     Layer(LayerStack& layerStack) :
         m_layerStack(layerStack)
     {}
