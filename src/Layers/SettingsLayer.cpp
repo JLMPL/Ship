@@ -40,8 +40,8 @@ void SettingsLayer::update(float dt)
 
 void SettingsLayer::draw()
 {
-    Renderer::Get().draw(m_title);
-    Renderer::Get().draw(m_settings);
+    Renderer::get().draw(m_title);
+    Renderer::get().draw(m_settings);
 
     m_menu.draw();
 }

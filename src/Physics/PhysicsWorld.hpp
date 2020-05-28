@@ -2,6 +2,7 @@
 #include "DebugDrawer.hpp"
 #include "RigidBody.hpp"
 #include "RaycastCallback.hpp"
+#include "ContactListener.hpp"
 #include "Core/Math.hpp"
 #include <vector>
 
@@ -25,4 +26,5 @@ private:
     std::vector<RigidBody::Ptr> m_bodies;
 
     DebugDrawer m_pDrawer;
+    ContactListener m_contactListener;
 };

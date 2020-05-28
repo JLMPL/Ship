@@ -19,8 +19,9 @@ public:
     void setView(const sf::Vector2f& pos);
 
     sf::Vector2f getGlobalMousePosition() const;
+    sf::Vector2f getLocalMousePosition() const;
 
-    static Renderer& Get()
+    static Renderer& get()
     {
         static Renderer renderer;
         return renderer;

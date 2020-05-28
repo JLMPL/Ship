@@ -19,6 +19,11 @@ void Menu::addItem(const std::string& name, std::function<void (void)>&& callbac
     item.text.setFont(m_font);
     item.text.setCharacterSize(32);
     item.text.setString(item.name);
+
+    if (item.active && m_items.size() - 1 < m_selection)
+    {
+        m_selection = m_items.size() - 1;
+    }
 }
 
 void Menu::update(float dt)
@@ -65,7 +70,7 @@ void Menu::draw()
     for (auto& item : m_items)
     {
         item.text.setPosition({32, 300 + i});
-        Renderer::Get().draw(item.text);
+        Renderer::get().draw(item.text);
         i += 48;
     }
 }

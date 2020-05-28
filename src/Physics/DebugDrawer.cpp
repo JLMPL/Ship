@@ -13,7 +13,7 @@ void DebugDrawer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b
 
     verts.push_back(verts[0]);
 
-    Renderer::Get().drawScaled(&verts[0], vertexCount, sf::LineStrip);
+    Renderer::get().drawScaled(&verts[0], vertexCount, sf::LineStrip);
 }
 
 void DebugDrawer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -28,8 +28,8 @@ void DebugDrawer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, co
 
     verts.push_back(verts[0]);
 
-    // Renderer::Get().draw(&verts[0], verts.size(), sf::TriangleFan);
-    Renderer::Get().drawScaled(&verts[0], verts.size(), sf::LineStrip);
+    // Renderer::get().draw(&verts[0], verts.size(), sf::TriangleFan);
+    Renderer::get().drawScaled(&verts[0], verts.size(), sf::LineStrip);
 }
 
 void DebugDrawer::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
@@ -53,7 +53,7 @@ void DebugDrawer::DrawSolidCircle(const b2Vec2& center, float radius, const b2Ve
         i++;
     }
 
-    Renderer::Get().drawScaled(&verts[0], verts.size(), sf::LineStrip);
+    Renderer::get().drawScaled(&verts[0], verts.size(), sf::LineStrip);
 }
 
 void DebugDrawer::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)

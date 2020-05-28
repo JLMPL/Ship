@@ -52,8 +52,8 @@ void BackgroundLayer::update(float dt)
 
 void BackgroundLayer::draw()
 {
-    Renderer::Get().draw(&m_back2[0], m_back2.size(), sf::Points);
-    Renderer::Get().draw(&m_back[0], m_back.size(), sf::Points);
-    Renderer::Get().draw(&m_stars[0], m_stars.size(), sf::Points);
+    Renderer::get().draw(&m_back2[0], m_back2.size(), sf::Points);
+    Renderer::get().draw(&m_back[0], m_back.size(), sf::Points);
+    Renderer::get().draw(&m_stars[0], m_stars.size(), sf::Points);
 }
 

@@ -6,7 +6,7 @@ Game::Game()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
     m_window.create(sf::VideoMode(1920, 1080), "Starry Stealers", sf::Style::Fullscreen, settings);
-    Renderer::Get().init(m_window);
+    Renderer::get().init(m_window);
 
     m_layerStack.push(Layer::Type::Background);
     m_layerStack.push(Layer::Type::MainMenu);

@@ -4,11 +4,19 @@
 
 #include "Renderer.hpp"
 
+enum CollisionGroup
+{
+    CelestialBodies = 1 << 0,
+    Ships = 1 << 1,
+    Bullets = 1 << 2
+};
+
 PhysicsWorld::PhysicsWorld()
     : m_pWorld({0.f, 0.f})
 {
     m_pDrawer.SetFlags(b2Draw::e_shapeBit);
     m_pWorld.SetDebugDraw(&m_pDrawer);
+    m_pWorld.SetContactListener(&m_contactListener);
 
     b2BodyDef groundBodyDef;
     groundBodyDef.position.Set(10.0f, 10.0f);
@@ -17,6 +25,14 @@ PhysicsWorld::PhysicsWorld()
     b2CircleShape groundShape;
     groundShape.m_p.Set(0.f, 0.f);
     groundShape.m_radius = 2.f;
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &groundShape;
+    fixtureDef.density = 1.f;
+    fixtureDef.friction = 0.3f;
+    fixtureDef.filter.categoryBits = CollisionGroup::CelestialBodies;
+    fixtureDef.filter.maskBits = CollisionGroup::Ships | CollisionGroup::Bullets;
+
     m_groundBody->CreateFixture(&groundShape, 0.1f);
 }
 
@@ -46,6 +62,8 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos)
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.5f;
     fixtureDef.friction = 0.3f;
+    fixtureDef.filter.categoryBits = CollisionGroup::Ships;
+    fixtureDef.filter.maskBits = CollisionGroup::Ships | CollisionGroup::CelestialBodies | CollisionGroup::Bullets;
 
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
@@ -66,17 +84,20 @@ RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir)
     b2Vec2 verts[4];
 
     verts[0] = {0.1f, 0.f};
-    verts[1] = {-0.3f, 0.f};
+    verts[1] = {-0.1f, 0.f};
     verts[2] = {0.f, 0.1f};
     verts[3] = {0.f, -0.1f};
 
-    b2PolygonShape shape;
-    shape.Set(verts, 4);
+    b2CircleShape shape;
+    shape.m_p.Set(0,0);
+    shape.m_radius = 0.1f;
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.02f;
     fixtureDef.friction = 0.3f;
+    fixtureDef.filter.categoryBits = CollisionGroup::Bullets;
+    fixtureDef.filter.maskBits = CollisionGroup::CelestialBodies | CollisionGroup::Ships;
 
     body->CreateFixture(&fixtureDef);
     body->SetBullet(true);

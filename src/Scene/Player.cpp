@@ -3,30 +3,28 @@
 #include "Renderer.hpp"
 #include "Layers/HudLayer.hpp"
 
-static constexpr float HeatRegen = 35.f;
+static constexpr float HeatRegen = 100.f;
 
 Player::Player(PhysicsWorld* pWorld)
     : m_pWorld(pWorld)
 {
     m_body = pWorld->addRigidBody({0,0});
-    auto bd = pWorld->addRigidBody({-2,-2});
+    pWorld->addRigidBody({-2,-2});
 }
 
 void Player::control(float dt)
 {
     if (m_overheat) return;
+    if (!m_body) return;
 
-    auto rb = m_body->body;
-    sf::Vector2f bodyPos = {rb->GetPosition().x, rb->GetPosition().y};
+    sf::Vector2f bodyPos = m_body->getPosition();
 
-    sf::Vector2f mp = Renderer::Get().getGlobalMousePosition();
-    sf::Vector2f mous = {mp.x - bodyPos.x, mp.y - bodyPos.y};
+    sf::Vector2f mp = Renderer::get().getGlobalMousePosition();
+    sf::Vector2f mous = mp - bodyPos;
     mous = math::normalize(mous);
 
-    float bodyAngle = rb->GetAngle();
-    sf::Vector2f bodyVec = {cos(bodyAngle), sin(bodyAngle)};
-
-    float dot = acos(bodyVec.x*mous.x+bodyVec.y*mous.y);
+    sf::Vector2f bodyVec = m_body->getDirection();
+    float dot = acos(math::dot(bodyVec, mous));
 
     float acc = dt * 50 * dot;
 
@@ -36,7 +34,7 @@ void Player::control(float dt)
         acc = 0;
 
     if (abs(acc) > 0.0005f)
-        rb->ApplyTorque(acc, true);
+        m_body->applyTorque(acc);
 
     vec2 dir = {0,0};
 
@@ -52,12 +50,12 @@ void Player::control(float dt)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         dir.x += 1.f;
 
-    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 5.f : 2.f;
+    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 8.f : 2.f;
 
     if (dir.x != 0.f or dir.y != 0.f)
     {
         dir = math::normalize(dir);
-        rb->ApplyLinearImpulseToCenter({dir.x * dt * 2.f, dir.y * dt * speed}, true);
+        m_body->applyLinearImpulse(dir * dt * speed);
         exertHeat(10.f * dt);
     }
 }
@@ -68,10 +66,9 @@ void Player::shoot()
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_shootTimer.getElapsedTime().asMilliseconds() > 250)
     {
-        auto bod = m_body->body->GetPosition();
-        vec2 pos = {bod.x, bod.y};
+        vec2 pos = m_body->getPosition();
 
-        vec2 dir = math::normalize(Renderer::Get().getGlobalMousePosition() - pos);
+        vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
 
         m_pWorld->spawnBullet({pos.x, pos.y}, dir);
         exertHeat(5.f);
@@ -92,31 +89,28 @@ void Player::update(float dt)
             m_overheat = false;
     }
 
-    sf::Vector2f bodyPos = {m_body->body->GetPosition().x, m_body->body->GetPosition().y};
-    Renderer::Get().setView(bodyPos);
+    Renderer::get().setView(m_body->getPosition());
 
     HudLayer::setHeat(m_heat);
 }
 
 void Player::draw()
 {
-    auto rb = m_body->body;
-
-    auto bodyPos = rb->GetPosition();
-    float bodyAngle = rb->GetAngle();
-/*    Renderer::Get().drawLineScaled(
+    auto bodyPos = m_body->getPosition();
+    float bodyAngle = m_body->getAngle();
+/*    Renderer::get().drawLineScaled(
         sf::Vector2f(bodyPos.x, bodyPos.y),
         sf::Vector2f(bodyPos.x + cos(bodyAngle) * 2, bodyPos.y + sin(bodyAngle) * 2),
         sf::Color::Green);
 
-    Renderer::Get().drawLineScaled({bodyPos.x, bodyPos.y}, Renderer::Get().getGlobalMousePosition(), sf::Color::Red);
+    Renderer::get().drawLineScaled({bodyPos.x, bodyPos.y}, Renderer::get().getGlobalMousePosition(), sf::Color::Red);
 */
     RaycastCallback rc;
-    m_pWorld->castRay(&rc, {bodyPos.x, bodyPos.y}, Renderer::Get().getGlobalMousePosition());
+    m_pWorld->castRay(&rc, bodyPos, Renderer::get().getGlobalMousePosition());
 
     if (rc.m_hasHit)
     {
-        Renderer::Get().drawLineScaled(rc.m_point, rc.m_point + rc.m_normal, sf::Color::Blue);
+        Renderer::get().drawLineScaled(rc.m_point, rc.m_point + rc.m_normal, sf::Color::Blue);
     }
 }
 

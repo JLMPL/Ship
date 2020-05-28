@@ -1,6 +1,6 @@
 #include "Renderer.hpp"
 
-static constexpr float ViewScaling = 40.f;
+static constexpr float ViewScaling = 20.f;
 
 void Renderer::init(sf::RenderWindow& window)
 {
@@ -61,4 +61,10 @@ sf::Vector2f Renderer::getGlobalMousePosition() const
     mousePos /= ViewScaling;
 
     return mousePos;
+}
+
+sf::Vector2f Renderer::getLocalMousePosition() const
+{
+    auto mp = sf::Mouse::getPosition(*m_window);
+    return {float(mp.x), float(mp.y)};
 }

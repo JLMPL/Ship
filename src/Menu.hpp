@@ -26,7 +26,7 @@ private:
     std::vector<Item> m_items;
 
     sf::Font m_font;
-    int m_selection = 0;
+    int m_selection = 99;
 
     bool m_buttons[3] = {false};
     bool m_prevButtons[3] = {false};

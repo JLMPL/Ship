@@ -18,7 +18,4 @@ SETTINGS:
         resolution
         antialiasingLevel
 
-TODO:
-    implement engine heat
-
 */

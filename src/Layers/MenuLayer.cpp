@@ -43,7 +43,7 @@ void MenuLayer::update(float dt)
 
 void MenuLayer::draw()
 {
-    Renderer::Get().draw(m_title);
+    Renderer::get().draw(m_title);
 
     m_menu.draw();
 }

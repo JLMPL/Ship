@@ -1,5 +1,6 @@
 #pragma once
 #include "Libs/box2d/box2d.h"
+#include "Core/Math.hpp"
 #include <memory>
 
 class RigidBody
@@ -10,9 +11,14 @@ public:
     RigidBody(b2Body* bd, b2World* world);
     ~RigidBody();
 
-public:
-    b2Body* body = nullptr;
+    void applyTorque(float torq);
+    void applyLinearImpulse(const vec2& impulse);
+
+    vec2 getPosition() const;
+    vec2 getDirection() const;
+    float getAngle() const;
 
 private:
+    b2Body* m_body = nullptr;
     b2World* m_world = nullptr;
 };
