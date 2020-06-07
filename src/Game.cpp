@@ -1,11 +1,13 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
 
+static constexpr float FrameDuration = 1.f/60.f;
+
 Game::Game()
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 0;
-    m_window.create(sf::VideoMode(1920, 1080), "Starry Stealers", sf::Style::Fullscreen, settings);
+    m_window.create(sf::VideoMode(1280, 720), "Starry Stealers", sf::Style::Close, settings);
     Renderer::get().init(m_window);
 
     m_layerStack.push(Layer::Type::Background);
@@ -23,9 +25,9 @@ void Game::processEvents()
 
 void Game::update()
 {
-    if (m_clock.getElapsedTime().asSeconds() >= 1.f/60.f)
+    if (m_clock.getElapsedTime().asSeconds() >= FrameDuration)
     {
-        m_layerStack.update(1.f/60.f);
+        m_layerStack.update(FrameDuration);
 
         if (m_layerStack.isEmpty())
             m_window.close();

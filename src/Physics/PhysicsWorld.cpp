@@ -1,14 +1,14 @@
 #include "PhysicsWorld.hpp"
 #include "Core/Math.hpp"
-#include <SFML/Graphics.hpp>
-
 #include "Renderer.hpp"
 
 enum CollisionGroup
 {
     CelestialBodies = 1 << 0,
-    Ships = 1 << 1,
-    Bullets = 1 << 2
+    PlayerShip      = 1 << 1,
+    EnemyShip       = 1 << 2,
+    PlayerBullets   = 1 << 3,
+    EnemyBullets    = 1 << 4
 };
 
 PhysicsWorld::PhysicsWorld()
@@ -31,7 +31,11 @@ PhysicsWorld::PhysicsWorld()
     fixtureDef.density = 1.f;
     fixtureDef.friction = 0.3f;
     fixtureDef.filter.categoryBits = CollisionGroup::CelestialBodies;
-    fixtureDef.filter.maskBits = CollisionGroup::Ships | CollisionGroup::Bullets;
+    fixtureDef.filter.maskBits =
+        CollisionGroup::PlayerShip |
+        CollisionGroup::EnemyShip |
+        CollisionGroup::PlayerBullets |
+        CollisionGroup::EnemyBullets;
 
     m_groundBody->CreateFixture(&groundShape, 0.1f);
 }
@@ -41,7 +45,7 @@ PhysicsWorld::~PhysicsWorld()
     m_pWorld.DestroyBody(m_groundBody);
 }
 
-RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos)
+RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -62,8 +66,17 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos)
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.5f;
     fixtureDef.friction = 0.3f;
-    fixtureDef.filter.categoryBits = CollisionGroup::Ships;
-    fixtureDef.filter.maskBits = CollisionGroup::Ships | CollisionGroup::CelestialBodies | CollisionGroup::Bullets;
+
+    if (player)
+    {
+        fixtureDef.filter.categoryBits = CollisionGroup::PlayerShip;
+        fixtureDef.filter.maskBits = CollisionGroup::EnemyShip | CollisionGroup::CelestialBodies | CollisionGroup::EnemyBullets;
+    }
+    else
+    {
+        fixtureDef.filter.categoryBits = CollisionGroup::EnemyShip;
+        fixtureDef.filter.maskBits = CollisionGroup::PlayerShip | CollisionGroup::CelestialBodies | CollisionGroup::PlayerBullets;
+    }
 
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
@@ -73,20 +86,13 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos)
     return m_bodies.back().get();
 }
 
-RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir)
+RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(origin.x, origin.y);
 
     b2Body* body = m_pWorld.CreateBody(&bodyDef);
-
-    b2Vec2 verts[4];
-
-    verts[0] = {0.1f, 0.f};
-    verts[1] = {-0.1f, 0.f};
-    verts[2] = {0.f, 0.1f};
-    verts[3] = {0.f, -0.1f};
 
     b2CircleShape shape;
     shape.m_p.Set(0,0);
@@ -96,8 +102,17 @@ RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir)
     fixtureDef.shape = &shape;
     fixtureDef.density = 0.02f;
     fixtureDef.friction = 0.3f;
-    fixtureDef.filter.categoryBits = CollisionGroup::Bullets;
-    fixtureDef.filter.maskBits = CollisionGroup::CelestialBodies | CollisionGroup::Ships;
+
+    if (player)
+    {
+        fixtureDef.filter.categoryBits = CollisionGroup::PlayerBullets;
+        fixtureDef.filter.maskBits = CollisionGroup::CelestialBodies | CollisionGroup::EnemyShip;
+    }
+    else
+    {
+        fixtureDef.filter.categoryBits = CollisionGroup::EnemyBullets;
+        fixtureDef.filter.maskBits = CollisionGroup::CelestialBodies | CollisionGroup::PlayerShip;
+    }
 
     body->CreateFixture(&fixtureDef);
     body->SetBullet(true);

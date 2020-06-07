@@ -13,10 +13,12 @@ public:
     void draw(sf::Drawable& dw);
     void draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs = sf::RenderStates::Default);
 
+    void drawScaled(sf::Drawable& dw);
     void drawScaled(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs = sf::RenderStates::Default);
     void drawLineScaled(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& color);
 
     void setView(const sf::Vector2f& pos);
+    sf::Vector2f getViewWorldPosition() const;
 
     sf::Vector2f getGlobalMousePosition() const;
     sf::Vector2f getLocalMousePosition() const;

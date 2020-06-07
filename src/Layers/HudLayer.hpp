@@ -15,11 +15,12 @@ public:
     static void setHeat(float level);
 
 private:
-    sf::RectangleShape m_rect;
 
     sf::RectangleShape m_heatBack;
     sf::RectangleShape m_heat;
+    sf::RectangleShape m_rect;
     sf::RectangleShape m_hpBack;
+    sf::RectangleShape m_hp;
 
     sf::Font m_font;
     sf::Text m_text;

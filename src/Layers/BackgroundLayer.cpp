@@ -4,7 +4,7 @@
 #include "Random.hpp"
 #include <cmath>
 
-static constexpr float ExtentsOfSpace = 10'000.0f;
+static constexpr float ExtentsOfSpace = 5000.0f;
 
 BackgroundLayer::BackgroundLayer(LayerStack& layerStack)
     : Layer(layerStack)
@@ -38,16 +38,6 @@ BackgroundLayer::BackgroundLayer(LayerStack& layerStack)
 
 void BackgroundLayer::update(float dt)
 {
-    m_time += dt;
-
-    // for (auto& star : m_stars)
-        // star.position += sf::Vector2f(cos(m_time), sin(m_time)) * 0.01f;
-
-    // for (auto& star : m_back)
-        // star.position += sf::Vector2f(cos(m_time), sin(m_time)) * 0.005f;
-
-    // for (auto& star : m_back2)
-        // star.position += sf::Vector2f(cos(m_time), sin(m_time)) * 0.00025f;
 }
 
 void BackgroundLayer::draw()

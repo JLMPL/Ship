@@ -35,7 +35,6 @@ public:
     {
         if (index >= m_states.size())
         {
-            //crash
             printf("Error: accessing layer over the top\n");
             int* p = nullptr;
             *p = 0;

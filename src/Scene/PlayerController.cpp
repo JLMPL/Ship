@@ -1,18 +1,17 @@
-#include "Player.hpp"
-#include "Physics/PhysicsWorld.hpp"
+#include "PlayerController.hpp"
 #include "Renderer.hpp"
+#include "Scene.hpp"
 #include "Layers/HudLayer.hpp"
 
 static constexpr float HeatRegen = 100.f;
 
-Player::Player(PhysicsWorld* pWorld)
-    : m_pWorld(pWorld)
+
+PlayerController::PlayerController(Scene* scene, int id) : Controller(scene, id)
 {
-    m_body = pWorld->addRigidBody({0,0}, true);
-    pWorld->addRigidBody({-2,-2}, false);
+    m_body = m_scene->addRigidBody(m_id, true);
 }
 
-void Player::control(float dt)
+void PlayerController::control(float dt)
 {
     if (m_overheat) return;
     if (!m_body) return;
@@ -60,7 +59,7 @@ void Player::control(float dt)
     }
 }
 
-void Player::shoot()
+void PlayerController::shoot()
 {
     if (m_overheat) return;
 
@@ -70,13 +69,24 @@ void Player::shoot()
 
         vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
 
-        m_pWorld->spawnBullet({pos.x, pos.y}, dir, true);
+        // m_pWorld->spawnBullet({pos.x, pos.y}, dir, true);
         exertHeat(5.f);
         m_shootTimer.restart();
     }
 }
 
-void Player::update(float dt)
+void PlayerController::exertHeat(float heat)
+{
+    m_heat = std::min(m_heat + heat, 100.f);
+    if (m_heat >= 100.f)
+    {
+        m_overheat = true;
+    }
+    m_heatTimer.restart();
+}
+
+
+void PlayerController::update(float dt)
 {
     control(dt);
     shoot();
@@ -92,34 +102,4 @@ void Player::update(float dt)
     Renderer::get().setView(m_body->getPosition());
 
     HudLayer::setHeat(m_heat);
-}
-
-void Player::draw()
-{
-    auto bodyPos = m_body->getPosition();
-    float bodyAngle = m_body->getAngle();
-/*    Renderer::get().drawLineScaled(
-        sf::Vector2f(bodyPos.x, bodyPos.y),
-        sf::Vector2f(bodyPos.x + cos(bodyAngle) * 2, bodyPos.y + sin(bodyAngle) * 2),
-        sf::Color::Green);
-
-    Renderer::get().drawLineScaled({bodyPos.x, bodyPos.y}, Renderer::get().getGlobalMousePosition(), sf::Color::Red);
-*/
-    RaycastCallback rc;
-    m_pWorld->castRay(&rc, bodyPos, Renderer::get().getGlobalMousePosition());
-
-    if (rc.m_hasHit)
-    {
-        Renderer::get().drawLineScaled(rc.m_point, rc.m_point + rc.m_normal, sf::Color::Blue);
-    }
-}
-
-void Player::exertHeat(float heat)
-{
-    m_heat = std::min(m_heat + heat, 100.f);
-    if (m_heat >= 100.f)
-    {
-        m_overheat = true;
-    }
-    m_heatTimer.restart();
 }

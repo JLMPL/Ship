@@ -2,6 +2,7 @@
 #include "Layer.hpp"
 #include "Physics/PhysicsWorld.hpp"
 #include "Scene/Player.hpp"
+#include "Scene/Scene.hpp"
 #include <SFML/Graphics.hpp>
 
 class GameLayer : public Layer
@@ -14,6 +15,7 @@ public:
     void draw() override final;
 
 private:
-    PhysicsWorld m_physWorld;
-    std::unique_ptr<Player> m_player;
+    // PhysicsWorld m_physWorld;
+    // std::unique_ptr<Player> m_player;
+    Scene m_scene;
 };
