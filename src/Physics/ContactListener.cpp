@@ -11,15 +11,9 @@ void ContactListener::BeginContact(b2Contact *contact)
     event.type = Event::DestroyEntity;
 
     if (userDataA)
-    {
-        printf("Contact %d\n", *userDataA);
         event.receiver = *userDataA;
-    }
     if (userDataB)
-    {
-        printf("Contact %d\n", *userDataB);
         event.receiver = *userDataB;
-    }
 
     EventQueue::get().pushEvent(event);
 }

@@ -26,12 +26,14 @@ public:
     int createEntity(const vec2& pos);
     RigidBody* addRigidBody(int entity, RigidBody::Type type, const vec2& origin = {0,0}, const vec2& dir = {1,0});
 
-    void destroyEntity(int entity) const;
+    TransformComp* getTransform(int entity);
+
+    void destroyEntity(int entity);
 
 private:
     std::map<int, Entity::Ptr> m_entities;
     std::map<int, TransformComp::Ptr> m_trs;
-    std::map<int, RigidBodyComp::Ptr> m_rigids;
+    std::map<int, RigidBody::Ptr> m_rigids;
 
     std::vector<Controller::Ptr> m_controllers;
 

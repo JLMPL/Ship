@@ -81,9 +81,7 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
 
-    m_bodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip));
-
-    return m_bodies.back().get();
+    return new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip);
 }
 
 RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)
@@ -119,9 +117,7 @@ RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool p
     body->ApplyLinearImpulseToCenter({dir.x, dir.y}, true);
     body->SetTransform(body->GetPosition(), atan2(dir.x, dir.y));
 
-    m_bodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerBullet : RigidBody::EnemyBullet));
-
-    return m_bodies.back().get();
+    return new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerBullet : RigidBody::EnemyBullet);
 }
 
 void PhysicsWorld::castRay(b2RayCastCallback* callback, const sf::Vector2f& from, const sf::Vector2f& to)

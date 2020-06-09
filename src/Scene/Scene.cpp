@@ -1,11 +1,16 @@
 #include "Scene.hpp"
 #include "PlayerController.hpp"
+#include "DroneController.hpp"
+
 #include "Events/EventQueue.hpp"
 
 Scene::Scene()
 {
     int player = createEntity({0,0});
     m_controllers.emplace_back(new PlayerController(this, player));
+
+    int drone = createEntity({-4,-4});
+    m_controllers.emplace_back(new DroneController(this, drone));
 }
 
 Scene::~Scene()
@@ -53,14 +58,23 @@ RigidBody* Scene::addRigidBody(int entity, RigidBody::Type type, const vec2& ori
     else if (type == RigidBody::PlayerBullet || type == RigidBody::EnemyBullet)
         rigidBody = m_physWorld.spawnBullet(origin, dir, type == RigidBody::PlayerBullet);
 
-    m_rigids.insert(std::make_pair(entity, RigidBodyComp::Ptr(new RigidBodyComp(rigidBody))));
+    m_rigids.insert(std::make_pair(entity, RigidBody::Ptr(rigidBody)));
 
-    auto& rig = m_rigids[entity]->rb;
+    auto& rig = m_rigids[entity];
     rig->setUserData(&m_entities[entity]->id);
-    return rig;
+    return rig.get();
 }
 
-void Scene::destroyEntity(int entity) const
+TransformComp* Scene::getTransform(int entity)
 {
-    printf("Scene::destroyEntity %d\n", entity);
+    return m_trs[entity].get();
+}
+
+void Scene::destroyEntity(int entity)
+{
+    auto& ent = m_entities[entity];
+    m_trs.erase(m_trs.find(entity));
+
+    if (ent->mask & (int)ComponentMask::RigidBody)
+        m_rigids.erase(m_rigids.find(entity));
 }

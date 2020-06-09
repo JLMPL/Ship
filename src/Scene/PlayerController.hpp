@@ -1,6 +1,8 @@
 #pragma once
 #include "Controller.hpp"
 #include "Physics/RigidBody.hpp"
+#include "Components.hpp"
+
 #include <SFML/System/Clock.hpp>
 
 class PlayerController : public Controller
@@ -17,12 +19,13 @@ private:
     void exertHeat(float amount);
 
 private:
+    TransformComp* m_tr = nullptr;
     RigidBody* m_body = nullptr;
 
     float m_heat = 0.f;
-    sf::Clock m_shootTimer;
-
     sf::Clock m_heatTimer;
+
+    sf::Clock m_shootTimer;
 
     bool m_overheat = false;
 };

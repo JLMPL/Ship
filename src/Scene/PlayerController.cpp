@@ -9,6 +9,7 @@ static constexpr float HeatRegen = 100.f;
 PlayerController::PlayerController(Scene* scene, int id) : Controller(scene, id)
 {
     m_body = m_scene->addRigidBody(m_id, RigidBody::PlayerShip);
+    m_tr = m_scene->getTransform(0);
 }
 
 void PlayerController::control(float dt)
@@ -16,24 +17,26 @@ void PlayerController::control(float dt)
     if (m_overheat) return;
     if (!m_body) return;
 
-    sf::Vector2f bodyPos = m_body->getPosition();
+    m_body->rotateTowards(Renderer::get().getGlobalMousePosition(), 100 * dt);
 
-    sf::Vector2f mp = Renderer::get().getGlobalMousePosition();
-    sf::Vector2f mous = mp - bodyPos;
-    mous = math::normalize(mous);
+    // sf::Vector2f bodyPos = m_body->getPosition();
 
-    sf::Vector2f bodyVec = m_body->getDirection();
-    float dot = acos(math::dot(bodyVec, mous));
+    // sf::Vector2f mp = Renderer::get().getGlobalMousePosition();
+    // sf::Vector2f mous = mp - bodyPos;
+    // mous = math::normalize(mous);
 
-    float acc = dt * 50 * dot;
+    // sf::Vector2f bodyVec = m_body->getDirection();
+    // float dot = acos(math::dot(bodyVec, mous));
 
-    if (math::cross(mous, bodyVec) > 0)
-        acc = -acc;
-    else if (math::cross(mous, bodyVec) == 0)
-        acc = 0;
+    // float acc = dt * 50 * dot;
 
-    if (abs(acc) > 0.0005f)
-        m_body->applyTorque(acc);
+    // if (math::cross(mous, bodyVec) > 0)
+    //     acc = -acc;
+    // else if (math::cross(mous, bodyVec) == 0)
+    //     acc = 0;
+
+    // if (abs(acc) > 0.0005f)
+    //     m_body->applyTorque(acc);
 
     vec2 dir = {0,0};
 
@@ -71,9 +74,8 @@ void PlayerController::shoot()
         int bullet = m_scene->createEntity({pos.x, pos.y});
         m_scene->addRigidBody(bullet, RigidBody::PlayerBullet, pos, dir);
 
-        printf("Spawned Bullet %d\n", bullet);
-
-        EventQueue::get().registerCallback(Event::DestroyEntity, bullet, [=](const Event& event)
+        EventQueue::get().registerCallback(Event::DestroyEntity, bullet,
+        [=](const Event& event)
         {
             m_scene->destroyEntity(bullet);
         });
@@ -106,7 +108,8 @@ void PlayerController::update(float dt)
             m_overheat = false;
     }
 
-    Renderer::get().setView(m_body->getPosition());
+    m_tr->pos = m_body->getPosition();
+    Renderer::get().setView(m_tr->pos);
 
     HudLayer::setHeat(m_heat);
 }

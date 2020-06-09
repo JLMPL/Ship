@@ -15,12 +15,3 @@ struct TransformComp
     vec2 pos;
     float angle = 0.f;
 };
-
-struct RigidBodyComp
-{
-    using Ptr = std::unique_ptr<RigidBodyComp>;
-
-    RigidBody* rb = nullptr;
-
-    RigidBodyComp(RigidBody* rig) : rb(rig) {}
-};

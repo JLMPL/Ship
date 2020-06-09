@@ -1,9 +1,11 @@
+
 #pragma once
 #include "Libs/box2d/box2d.h"
 #include "Core/Math.hpp"
 #include <memory>
 
 class RigidBody
+
 {
 public:
     using Ptr = std::unique_ptr<RigidBody>;
@@ -23,6 +25,8 @@ public:
 
     void applyTorque(float torq);
     void applyLinearImpulse(const vec2& impulse);
+
+    void rotateTowards(const vec2& target, float speed);
 
     vec2 getPosition() const;
     vec2 getDirection() const;

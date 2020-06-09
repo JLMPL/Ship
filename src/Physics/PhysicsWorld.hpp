@@ -23,7 +23,7 @@ private:
     b2World m_pWorld;
 
     b2Body* m_groundBody = nullptr;
-    std::vector<RigidBody::Ptr> m_bodies;
+    // std::vector<RigidBody::Ptr> m_bodies;
 
     DebugDrawer m_pDrawer;
     ContactListener m_contactListener;
