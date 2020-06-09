@@ -9,6 +9,7 @@ struct Entity
 {
     using Ptr = std::unique_ptr<Entity>;
 
+    int id = -1;
     int mask = 0;
     int flags = 0;
 };
@@ -23,7 +24,9 @@ public:
     void draw();
 
     int createEntity(const vec2& pos);
-    RigidBody* addRigidBody(int entity, bool isPlayer);
+    RigidBody* addRigidBody(int entity, RigidBody::Type type, const vec2& origin = {0,0}, const vec2& dir = {1,0});
+
+    void destroyEntity(int entity) const;
 
 private:
     std::map<int, Entity::Ptr> m_entities;

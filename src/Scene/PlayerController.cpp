@@ -2,13 +2,13 @@
 #include "Renderer.hpp"
 #include "Scene.hpp"
 #include "Layers/HudLayer.hpp"
+#include "Events/EventQueue.hpp"
 
 static constexpr float HeatRegen = 100.f;
 
-
 PlayerController::PlayerController(Scene* scene, int id) : Controller(scene, id)
 {
-    m_body = m_scene->addRigidBody(m_id, true);
+    m_body = m_scene->addRigidBody(m_id, RigidBody::PlayerShip);
 }
 
 void PlayerController::control(float dt)
@@ -66,10 +66,18 @@ void PlayerController::shoot()
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_shootTimer.getElapsedTime().asMilliseconds() > 250)
     {
         vec2 pos = m_body->getPosition();
-
         vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
 
-        // m_pWorld->spawnBullet({pos.x, pos.y}, dir, true);
+        int bullet = m_scene->createEntity({pos.x, pos.y});
+        m_scene->addRigidBody(bullet, RigidBody::PlayerBullet, pos, dir);
+
+        printf("Spawned Bullet %d\n", bullet);
+
+        EventQueue::get().registerCallback(Event::DestroyEntity, bullet, [=](const Event& event)
+        {
+            m_scene->destroyEntity(bullet);
+        });
+
         exertHeat(5.f);
         m_shootTimer.restart();
     }
@@ -84,7 +92,6 @@ void PlayerController::exertHeat(float heat)
     }
     m_heatTimer.restart();
 }
-
 
 void PlayerController::update(float dt)
 {

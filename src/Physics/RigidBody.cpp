@@ -1,7 +1,7 @@
 #include "RigidBody.hpp"
 
-RigidBody::RigidBody(b2Body* bd, b2World* world)
-    : m_body(bd), m_world(world)
+RigidBody::RigidBody(b2Body* bd, b2World* world, Type type)
+    : m_body(bd), m_world(world), m_type(type)
 {
 }
 
@@ -35,4 +35,19 @@ vec2 RigidBody::getDirection() const
 float RigidBody::getAngle() const
 {
     return m_body->GetAngle();
+}
+
+void RigidBody::setUserData(int* id)
+{
+    m_body->SetUserData((void*)id);
+}
+
+int RigidBody::getUserData() const
+{
+    return *((int*)m_body->GetUserData());
+}
+
+const RigidBody::Type& RigidBody::getType() const
+{
+    return m_type;
 }

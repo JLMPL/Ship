@@ -8,7 +8,17 @@ class RigidBody
 public:
     using Ptr = std::unique_ptr<RigidBody>;
 
-    RigidBody(b2Body* bd, b2World* world);
+    enum Type
+    {
+        PlayerShip = 0,
+        EnemyShip,
+        PlayerBullet,
+        EnemyBullet,
+
+        Count
+    };
+
+    RigidBody(b2Body* bd, b2World* world, Type type);
     ~RigidBody();
 
     void applyTorque(float torq);
@@ -18,7 +28,14 @@ public:
     vec2 getDirection() const;
     float getAngle() const;
 
+    void setUserData(int* id);
+    int getUserData() const;
+
+    const Type& getType() const;
+
 private:
+    Type m_type = Type::Count;
+
     b2Body* m_body = nullptr;
     b2World* m_world = nullptr;
 };

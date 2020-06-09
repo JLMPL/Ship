@@ -81,7 +81,7 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
 
-    m_bodies.emplace_back(new RigidBody(body, &m_pWorld));
+    m_bodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip));
 
     return m_bodies.back().get();
 }
@@ -119,7 +119,7 @@ RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool p
     body->ApplyLinearImpulseToCenter({dir.x, dir.y}, true);
     body->SetTransform(body->GetPosition(), atan2(dir.x, dir.y));
 
-    m_bodies.emplace_back(new RigidBody(body, &m_pWorld));
+    m_bodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerBullet : RigidBody::EnemyBullet));
 
     return m_bodies.back().get();
 }
