@@ -17,32 +17,10 @@ PhysicsWorld::PhysicsWorld()
     m_pDrawer.SetFlags(b2Draw::e_shapeBit);
     m_pWorld.SetDebugDraw(&m_pDrawer);
     m_pWorld.SetContactListener(&m_contactListener);
-
-    b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(10.0f, 10.0f);
-    m_groundBody = m_pWorld.CreateBody(&groundBodyDef);
-
-    b2CircleShape groundShape;
-    groundShape.m_p.Set(0.f, 0.f);
-    groundShape.m_radius = 2.f;
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &groundShape;
-    fixtureDef.density = 1.f;
-    fixtureDef.friction = 0.3f;
-    fixtureDef.filter.categoryBits = CollisionGroup::CelestialBodies;
-    fixtureDef.filter.maskBits =
-        CollisionGroup::PlayerShip |
-        CollisionGroup::EnemyShip |
-        CollisionGroup::PlayerBullets |
-        CollisionGroup::EnemyBullets;
-
-    m_groundBody->CreateFixture(&groundShape, 0.1f);
 }
 
 PhysicsWorld::~PhysicsWorld()
 {
-    m_pWorld.DestroyBody(m_groundBody);
 }
 
 RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
@@ -75,13 +53,39 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
     else
     {
         fixtureDef.filter.categoryBits = CollisionGroup::EnemyShip;
-        fixtureDef.filter.maskBits = CollisionGroup::PlayerShip | CollisionGroup::CelestialBodies | CollisionGroup::PlayerBullets;
+        fixtureDef.filter.maskBits = CollisionGroup::PlayerShip | CollisionGroup::CelestialBodies | CollisionGroup::PlayerBullets | CollisionGroup::EnemyShip;
     }
 
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
 
     return new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip);
+}
+
+StaticBody* PhysicsWorld::addStaticBody(const vec2& pos, float radius)
+{
+    b2BodyDef bodyDef;
+    bodyDef.position.Set(pos.x, pos.y);
+    auto body = m_pWorld.CreateBody(&bodyDef);
+
+    b2CircleShape groundShape;
+    groundShape.m_p.Set(0.f, 0.f);
+    groundShape.m_radius = radius;
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &groundShape;
+    fixtureDef.density = 1.f;
+    fixtureDef.friction = 0.3f;
+    fixtureDef.filter.categoryBits = CollisionGroup::CelestialBodies;
+    fixtureDef.filter.maskBits =
+        CollisionGroup::PlayerShip |
+        CollisionGroup::EnemyShip |
+        CollisionGroup::PlayerBullets |
+        CollisionGroup::EnemyBullets;
+
+    body->CreateFixture(&groundShape, 0.1f);
+
+    return new StaticBody(body, &m_pWorld);
 }
 
 RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)

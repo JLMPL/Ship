@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Types.hpp"
 #include <memory>
 
 class LayerStack;

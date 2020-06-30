@@ -13,4 +13,6 @@ public:
 
 private:
     RigidBody* m_body = nullptr;
+
+    sf::Clock m_timer;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Types.hpp"
 #include <vector>
 #include <functional>
 #include <SFML/Graphics.hpp>

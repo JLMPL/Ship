@@ -13,9 +13,9 @@ public:
     void draw() override final;
 
     static void setHeat(float level);
+    static void setHealthPercentage(float perc);
 
 private:
-
     sf::RectangleShape m_heatBack;
     sf::RectangleShape m_heat;
     sf::RectangleShape m_rect;
@@ -23,6 +23,10 @@ private:
     sf::RectangleShape m_hp;
 
     sf::Font m_font;
-    sf::Text m_text;
+
+    sf::Text m_overheatText;
     bool m_overheat = false;
+
+    sf::Text m_mission;
+    sf::Text m_objective[3];
 };

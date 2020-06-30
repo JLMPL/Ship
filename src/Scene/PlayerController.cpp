@@ -5,11 +5,14 @@
 #include "Events/EventQueue.hpp"
 
 static constexpr float HeatRegen = 100.f;
+static constexpr float MoveHeatCost = 8.f;
+static constexpr float ShootHeatCost = 4.f;
 
 PlayerController::PlayerController(Scene* scene, int id) : Controller(scene, id)
 {
     m_body = m_scene->addRigidBody(m_id, RigidBody::PlayerShip);
     m_tr = m_scene->getTransform(0);
+    m_health = m_scene->addHealth(m_id, 100, 100);
 }
 
 void PlayerController::control(float dt)
@@ -18,25 +21,6 @@ void PlayerController::control(float dt)
     if (!m_body) return;
 
     m_body->rotateTowards(Renderer::get().getGlobalMousePosition(), 100 * dt);
-
-    // sf::Vector2f bodyPos = m_body->getPosition();
-
-    // sf::Vector2f mp = Renderer::get().getGlobalMousePosition();
-    // sf::Vector2f mous = mp - bodyPos;
-    // mous = math::normalize(mous);
-
-    // sf::Vector2f bodyVec = m_body->getDirection();
-    // float dot = acos(math::dot(bodyVec, mous));
-
-    // float acc = dt * 50 * dot;
-
-    // if (math::cross(mous, bodyVec) > 0)
-    //     acc = -acc;
-    // else if (math::cross(mous, bodyVec) == 0)
-    //     acc = 0;
-
-    // if (abs(acc) > 0.0005f)
-    //     m_body->applyTorque(acc);
 
     vec2 dir = {0,0};
 
@@ -58,8 +42,15 @@ void PlayerController::control(float dt)
     {
         dir = math::normalize(dir);
         m_body->applyLinearImpulse(dir * dt * speed);
-        exertHeat(10.f * dt);
+        exertHeat(MoveHeatCost * dt);
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        m_body->fullStop();
+    }
+
+    Renderer::get().setZoom(math::length(m_body->getLinearVelocity()));
 }
 
 void PlayerController::shoot()
@@ -74,13 +65,13 @@ void PlayerController::shoot()
         int bullet = m_scene->createEntity({pos.x, pos.y});
         m_scene->addRigidBody(bullet, RigidBody::PlayerBullet, pos, dir);
 
-        EventQueue::get().registerCallback(Event::DestroyEntity, bullet,
-        [=](const Event& event)
+        EventQueue::get().registerCallback(Event::DamageEntity, bullet,
+        [=](const Event& event, int ent)
         {
             m_scene->destroyEntity(bullet);
         });
 
-        exertHeat(5.f);
+        exertHeat(ShootHeatCost);
         m_shootTimer.restart();
     }
 }
@@ -112,4 +103,5 @@ void PlayerController::update(float dt)
     Renderer::get().setView(m_tr->pos);
 
     HudLayer::setHeat(m_heat);
+    HudLayer::setHealthPercentage(float(m_health->hp) / float(m_health->maxHp));
 }

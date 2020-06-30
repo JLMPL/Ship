@@ -29,6 +29,11 @@ void RigidBody::rotateTowards(const vec2& target, float speed)
         applyTorque(acc);
 }
 
+void RigidBody::setPosition(const vec2& pos)
+{
+    m_body->SetTransform({pos.x, pos.y}, getAngle());
+}
+
 void RigidBody::applyTorque(float torq)
 {
     m_body->ApplyTorque(torq, true);
@@ -37,6 +42,11 @@ void RigidBody::applyTorque(float torq)
 void RigidBody::applyLinearImpulse(const vec2& impulse)
 {
     m_body->ApplyLinearImpulseToCenter({impulse.x, impulse.y}, true);
+}
+
+void RigidBody::fullStop()
+{
+    m_body->SetLinearVelocity({0,0});
 }
 
 vec2 RigidBody::getPosition() const
@@ -48,12 +58,19 @@ vec2 RigidBody::getPosition() const
 vec2 RigidBody::getDirection() const
 {
     float angle = getAngle();
-    return {cos(angle), sin(angle)};
+    return {cosf(angle), sinf(angle)};
 }
 
 float RigidBody::getAngle() const
 {
     return m_body->GetAngle();
+}
+
+vec2 RigidBody::getLinearVelocity() const
+{
+    auto vel = m_body->GetLinearVelocity();
+
+    return {vel.x, vel.y};
 }
 
 void RigidBody::setUserData(int* id)

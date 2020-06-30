@@ -1,6 +1,7 @@
 #pragma once
 #include "Layer.hpp"
 #include <SFML/Graphics.hpp>
+#include <array>
 
 class BackgroundLayer : public Layer
 {
@@ -12,7 +13,7 @@ public:
     void draw() override final;
 
 private:
-    static constexpr uint NumberOfStars = 50'000u;
+    static constexpr uint NumberOfStars = 200'000u;
     std::array<sf::Vertex, NumberOfStars> m_stars;
     std::array<sf::Vertex, NumberOfStars> m_back;
     std::array<sf::Vertex, NumberOfStars> m_back2;

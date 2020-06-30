@@ -5,6 +5,7 @@ struct Event
     enum Type
     {
         DestroyEntity = 0,
+        DamageEntity = 1,
 
         Count
     };

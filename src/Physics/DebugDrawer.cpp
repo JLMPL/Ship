@@ -1,5 +1,6 @@
 #include "DebugDrawer.hpp"
 #include "Renderer.hpp"
+#include "Core/Math.hpp"
 
 void DebugDrawer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
@@ -8,7 +9,11 @@ void DebugDrawer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b
     for (int i = 0; i < vertexCount; i++)
     {
         verts[i].position = {vertices[i].x, vertices[i].y};
-        verts[i].color = {color.r * 255, color.g * 255, color.b * 255, color.a * 255};
+        verts[i].color = {
+			sf::Uint8(color.r * 255),
+			sf::Uint8(color.g * 255),
+			sf::Uint8(color.b * 255),
+			sf::Uint8(color.a * 255)};
     }
 
     verts.push_back(verts[0]);
@@ -23,7 +28,11 @@ void DebugDrawer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, co
     for (int i = 0; i < vertexCount; i++)
     {
         verts[i].position = {vertices[i].x, vertices[i].y};
-        verts[i].color = {color.r * 255, color.g * 255, color.b * 255, color.a * 255};
+		verts[i].color = {
+			sf::Uint8(color.r * 255),
+			sf::Uint8(color.g * 255),
+			sf::Uint8(color.b * 255),
+			sf::Uint8(color.a * 255)};
     }
 
     verts.push_back(verts[0]);
@@ -49,7 +58,11 @@ void DebugDrawer::DrawSolidCircle(const b2Vec2& center, float radius, const b2Ve
             (center.y) + (sin(angle) * radius)
         };
 
-        verts[i].color = {color.r * 255, color.g * 255, color.b * 255, color.a * 255};
+        verts[i].color = {
+			sf::Uint8(color.r * 255),
+			sf::Uint8(color.g * 255),
+			sf::Uint8(color.b * 255),
+			sf::Uint8(color.a * 255)};
         i++;
     }
 

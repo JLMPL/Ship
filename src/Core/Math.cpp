@@ -4,27 +4,32 @@
 namespace math
 {
 
-float length(const sf::Vector2f& v)
+float length(const vec2& v)
 {
     return sqrt(v.x * v.x + v.y * v.y);
 }
 
-sf::Vector2f normalize(const sf::Vector2f& v)
+float distance(const vec2& a, const vec2& b)
+{
+    return length(a - b);
+}
+
+vec2 normalize(const vec2& v)
 {
     float len = length(v);
 
-    return sf::Vector2f(
+    return vec2(
         v.x / len,
         v.y / len
     );
 }
 
-float dot(const sf::Vector2f& a, const sf::Vector2f& b)
+float dot(const vec2& a, const vec2& b)
 {
     return (a.x * b.x + a.y * b.y);
 }
 
-float cross(const sf::Vector2f& a, const sf::Vector2f& b)
+float cross(const vec2& a, const vec2& b)
 {
     return (a.x*b.y) - (a.y*b.x);
 }

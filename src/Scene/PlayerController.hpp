@@ -21,6 +21,7 @@ private:
 private:
     TransformComp* m_tr = nullptr;
     RigidBody* m_body = nullptr;
+    HealthComp* m_health = nullptr;
 
     float m_heat = 0.f;
     sf::Clock m_heatTimer;

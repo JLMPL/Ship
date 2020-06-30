@@ -7,13 +7,19 @@ void ContactListener::BeginContact(b2Contact *contact)
     int* userDataA = (int*)contact->GetFixtureA()->GetBody()->GetUserData();
     int* userDataB = (int*)contact->GetFixtureB()->GetBody()->GetUserData();
 
-    Event event;
-    event.type = Event::DestroyEntity;
-
     if (userDataA)
-        event.receiver = *userDataA;
+    {
+        Event kill;
+        kill.type = Event::DamageEntity;
+        kill.receiver = *userDataA;
+        EventQueue::get().pushEvent(kill);
+    }
     if (userDataB)
-        event.receiver = *userDataB;
+    {
+        Event kill;
+        kill.type = Event::DamageEntity;
+        kill.receiver = *userDataB;
+        EventQueue::get().pushEvent(kill);
+    }
 
-    EventQueue::get().pushEvent(event);
 }

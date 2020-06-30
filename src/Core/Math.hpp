@@ -6,9 +6,10 @@ using vec2 = sf::Vector2f;
 namespace math
 {
 
-float length(const sf::Vector2f& v);
-sf::Vector2f normalize(const sf::Vector2f& v);
-float dot(const sf::Vector2f& a, const sf::Vector2f& b);
-float cross(const sf::Vector2f& a, const sf::Vector2f& b);
+float length(const vec2& v);
+float distance(const vec2& a, const vec2& b);
+vec2 normalize(const vec2& v);
+float dot(const vec2& a, const vec2& b);
+float cross(const vec2& a, const vec2& b);
 
 }

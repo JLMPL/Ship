@@ -25,7 +25,7 @@ void Game::processEvents()
 
 void Game::update()
 {
-    if (m_clock.getElapsedTime().asSeconds() >= FrameDuration)
+    // if (m_clock.getElapsedTime().asSeconds() >= FrameDuration)
     {
         m_layerStack.update(FrameDuration);
 
@@ -38,9 +38,9 @@ void Game::update()
 
 void Game::draw()
 {
-    m_window.clear();
+    Renderer::get().clear();
     m_layerStack.draw();
-    m_window.display();
+    Renderer::get().display();
 }
 
 void Game::run()

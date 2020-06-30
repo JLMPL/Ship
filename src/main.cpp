@@ -3,23 +3,29 @@
 int main()
 {
     Game{}.run();
+
     return 0;
 }
 
 /*
 
-DEBUG_MENU:
-    ?pause
-    zoom
-    ?debugDraw
-
-SETTINGS:
-    graphics:
-        resolution
-        antialiasingLevel
-
 TODO:
-    Systems
-    Controllers
+- ENTITY TAGS!!!
+- RigidBody setPosition
+- ContactListener push contact events
+- Event datas
+
+ARTSTYLE:
+limited palette
+
+white
+gray
+black
+
+blue
+red
+
+yellow
+orange
 
 */

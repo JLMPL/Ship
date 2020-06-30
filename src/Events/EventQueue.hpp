@@ -8,13 +8,17 @@
 class EventQueue
 {
 public:
+    using CallbackSignature = std::function<void(const Event&, int entity)>;
+
     struct EventCallback
     {
         int ent = -1;
-        std::function<void(const Event&)> func;
+        CallbackSignature func;
     };
 
-    void registerCallback(Event::Type event, int ent, const std::function<void(const Event&)>&& callback);
+    void registerCallback(Event::Type event, int ent, const CallbackSignature& callback);
+    void unregisterForEntity(int ent);
+
     void pushEvent(const Event& event);
     void redistributeEvents();
 

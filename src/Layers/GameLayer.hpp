@@ -1,7 +1,6 @@
 #pragma once
 #include "Layer.hpp"
 #include "Physics/PhysicsWorld.hpp"
-#include "Scene/Player.hpp"
 #include "Scene/Scene.hpp"
 #include <SFML/Graphics.hpp>
 
