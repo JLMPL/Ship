@@ -88,6 +88,8 @@ void PlayerController::exertHeat(float heat)
 
 void PlayerController::update(float dt)
 {
+    if (!m_scene->getTransform(0)) return;
+
     control(dt);
     shoot();
 

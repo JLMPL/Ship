@@ -36,4 +36,5 @@ private:
     std::deque<Event> m_events;
 
     std::array<std::vector<EventCallback>, Event::Count> m_callbacks;
+    std::vector<int> m_toRemove;
 };

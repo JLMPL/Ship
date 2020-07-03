@@ -4,16 +4,16 @@
 
 DroneController::DroneController(Scene* scene, int id) : Controller(scene, id)
 {
-    m_body = m_scene->addRigidBody(m_id, RigidBody::EnemyShip);
-    m_body->applyLinearImpulse({0,0});
-	m_scene->addHealth(m_id, 3, 3);
+    auto body = m_scene->addRigidBody(m_id, RigidBody::EnemyShip);
+    body->applyLinearImpulse({0,0});
+    body->setPosition({2,2});
 
-    m_body->setPosition({2,2});
+	m_scene->addHealth(m_id, 3, 3);
 
     EventQueue::get().registerCallback(Event::DestroyEntity, m_id,
     [=](const Event& event, int ent)
     {
-        m_scene->destroyEntity(ent);
+        m_scene->destroyEntity(m_id);
     });
 }
 
@@ -23,7 +23,9 @@ void DroneController::update(float dt)
     if (!m_scene->getTransform(m_id)) return;
 
     auto playerPos = m_scene->getTransform(0)->pos;
-    m_body->rotateTowards(playerPos, 100 * dt);
+
+    auto body = m_scene->getRigidBody(m_id);
+    body->rotateTowards(playerPos, 100 * dt);
 
     auto pos = m_scene->getTransform(m_id)->pos;
 

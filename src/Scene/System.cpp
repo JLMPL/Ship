@@ -8,11 +8,18 @@ System::System(Scene* scene)
 
 void System::update()
 {
-	for (auto& [id, ent] : m_scene->m_entities)
+    int id = 0;
+	for (auto& ent : m_scene->m_entities)
 	{
+        if (!ent)
+        {
+            id++;
+            continue;
+        }
 		if ((ent->mask & m_signature) == m_signature)
 		{
 			execute(id);
 		}
+        id++;
 	}
 }

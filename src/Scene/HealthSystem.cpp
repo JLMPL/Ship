@@ -7,7 +7,6 @@ HealthSystem::HealthSystem(Scene* scene)
     : System(scene)
 {
     m_signature = (int)ComponentMask::Health;
-
 }
 
 void HealthSystem::registerEntity(int id)
@@ -17,7 +16,6 @@ void HealthSystem::registerEntity(int id)
     {
         HealthComp* hp = m_scene->getHealth(entity);
         hp->hp--;
-
         if (hp->hp < 0) hp->hp = 0;
     });
 }

@@ -6,6 +6,7 @@
 #include "Events/EventQueue.hpp"
 #include "Objective.hpp"
 #include <memory>
+#include <array>
 #include <map>
 
 struct Entity
@@ -15,6 +16,7 @@ struct Entity
     int id = -1;
     int mask = 0;
     int flags = 0;
+    bool exists = false;
 };
 
 class Scene
@@ -42,10 +44,10 @@ public:
     TransformComp* getTransform(int entity);
 
 private:
-    std::map<int, Entity::Ptr> m_entities;
-    std::map<int, TransformComp::Ptr> m_trs;
-    std::map<int, RigidBody::Ptr> m_rigids;
-	std::map<int, HealthComp::Ptr> m_healths;
+    std::array<Entity::Ptr, 1024> m_entities;
+    std::array<TransformComp::Ptr, 1024> m_trs;
+    std::array<RigidBody::Ptr, 1024> m_rigids;
+	std::array<HealthComp::Ptr, 1024> m_healths;
 
     std::vector<Controller::Ptr> m_controllers;
 

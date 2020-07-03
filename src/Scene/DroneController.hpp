@@ -12,7 +12,5 @@ public:
     void update(float dt) override final;
 
 private:
-    RigidBody* m_body = nullptr;
-
     sf::Clock m_timer;
 };

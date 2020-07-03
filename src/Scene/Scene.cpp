@@ -10,6 +10,18 @@
 
 Scene::Scene()
 {
+    for (auto& i : m_entities)
+        i.reset(nullptr);
+
+    for (auto& i : m_trs)
+        i.reset(nullptr);
+
+    for (auto& i : m_rigids)
+        i.reset(nullptr);
+
+    for (auto& i : m_healths)
+        i.reset(nullptr);
+
     m_physicsSystem = System::Ptr(new PhysicsSystem(this));
     m_healthSystem = System::Ptr(new HealthSystem(this));
 
@@ -42,9 +54,10 @@ void Scene::registerEventForEntities(int signature, Event::Type event, const Eve
 {
     for (auto& ent : m_entities)
     {
-        if ((ent.second->mask & signature) == signature)
+        if (!ent) continue;
+        if ((ent->mask & signature) == signature)
         {
-            EventQueue::get().registerCallback(event, ent.second->id, callback);
+            EventQueue::get().registerCallback(event, ent->id, callback);
         }
     }
 }
@@ -52,6 +65,12 @@ void Scene::registerEventForEntities(int signature, Event::Type event, const Eve
 void Scene::update(float dt)
 {
     EventQueue::get().redistributeEvents();
+
+    m_controllers.erase(std::remove_if(m_controllers.begin(), m_controllers.end(),
+    [](const Controller::Ptr& ctrl)
+    {
+        return ctrl->isDestroyed();
+    }), m_controllers.end());
 
     m_healthSystem->update();
 
@@ -63,9 +82,10 @@ void Scene::update(float dt)
     m_physWorld.update(dt);
     m_physicsSystem->update();
 
+    m_objective->check();
     if (m_objective->isCompleted())
     {
-        // m_objective.reset(new Objective::CreateRandom());
+        m_objective.reset(new ODestroyTheConvoy(this));
         printf("Objective completed!\n");
     }
 }
@@ -80,9 +100,9 @@ int Scene::createEntity(const vec2& pos)
     Entity::Ptr ent(new Entity());
     ent->id = m_lastEntity;
     ent->mask = (int)ComponentMask::Transform;
-    m_entities.insert(std::make_pair(m_lastEntity, std::move(ent)));
+    m_entities[m_lastEntity] = std::move(ent);
 
-    m_trs.insert(std::make_pair(m_lastEntity, TransformComp::Ptr(new TransformComp())));
+    m_trs[m_lastEntity] = TransformComp::Ptr(new TransformComp());
 
     m_lastEntity++;
     return m_lastEntity-1;
@@ -99,7 +119,7 @@ RigidBody* Scene::addRigidBody(int entity, RigidBody::Type type, const vec2& ori
     else if (type == RigidBody::PlayerBullet || type == RigidBody::EnemyBullet)
         rigidBody = m_physWorld.spawnBullet(origin, dir, type == RigidBody::PlayerBullet);
 
-    m_rigids.insert(std::make_pair(entity, RigidBody::Ptr(rigidBody)));
+    m_rigids[entity] = RigidBody::Ptr(rigidBody);
 
     auto& rig = m_rigids[entity];
     rig->setUserData(&m_entities[entity]->id);
@@ -108,19 +128,14 @@ RigidBody* Scene::addRigidBody(int entity, RigidBody::Type type, const vec2& ori
 
 RigidBody* Scene::getRigidBody(int entity)
 {
-    auto found = m_rigids.find(entity);
-
-    if (found != m_rigids.end())
-        return m_rigids[entity].get();
-    else
-        return nullptr;
+    return (m_rigids[entity]) ? m_rigids[entity].get() : nullptr;
 }
 
 HealthComp* Scene::addHealth(int entity, int max, int current)
 {
     m_entities[entity]->mask |= (int)ComponentMask::Health;
 
-    m_healths.insert(std::make_pair(entity, HealthComp::Ptr(new HealthComp())));
+    m_healths[entity] = HealthComp::Ptr(new HealthComp());
 
     HealthComp* hpc = m_healths[entity].get();
 
@@ -134,12 +149,7 @@ HealthComp* Scene::addHealth(int entity, int max, int current)
 
 HealthComp* Scene::getHealth(int entity)
 {
-    auto found = m_healths.find(entity);
-
-    if (found != m_healths.end())
-        return m_healths[entity].get();
-    else
-        return nullptr;
+    return (m_healths[entity]) ? m_healths[entity].get() : nullptr;
 }
 
 TransformComp* Scene::getTransform(int entity)
@@ -149,14 +159,13 @@ TransformComp* Scene::getTransform(int entity)
 
 void Scene::destroyEntity(int entity)
 {
-    auto& ent = m_entities[entity];
-    m_trs.erase(m_trs.find(entity));
+    if (!m_entities[entity]) return;
 
-    if (ent->mask & (int)ComponentMask::RigidBody)
-        m_rigids.erase(m_rigids.find(entity));
+    m_entities[entity].reset(nullptr);
+    m_trs[entity].reset(nullptr);
+    m_rigids[entity].reset(nullptr);
+    m_healths[entity].reset(nullptr);
 
-    if (ent->mask & (int)ComponentMask::Health)
-        m_healths.erase(m_healths.find(entity));
-
+    //TODO: Clear those somehow
     EventQueue::get().unregisterForEntity(entity);
 }

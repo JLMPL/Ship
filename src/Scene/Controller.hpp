@@ -15,6 +15,8 @@ public:
 
     virtual void update(float dt) = 0;
 
+    bool isDestroyed() const;
+
 protected:
     Scene* m_scene = nullptr;
     int m_id = -1;

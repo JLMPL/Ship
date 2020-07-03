@@ -7,16 +7,7 @@ void EventQueue::registerCallback(Event::Type event, int ent, const CallbackSign
 
 void EventQueue::unregisterForEntity(int ent)
 {
-    for (auto& calls : m_callbacks)
-    {
-        for (auto i = calls.begin(); i != calls.end();)
-        {
-            if ((*i).ent == ent)
-                i = calls.erase(i);
-            else
-                i++;
-        }
-    }
+    m_toRemove.push_back(ent);
 }
 
 void EventQueue::pushEvent(const Event& event)
@@ -26,6 +17,21 @@ void EventQueue::pushEvent(const Event& event)
 
 void EventQueue::redistributeEvents()
 {
+    for (auto& ent : m_toRemove)
+    {
+        for (auto& calls : m_callbacks)
+        {
+            for (auto i = calls.begin(); i != calls.end();)
+            {
+                if ((*i).ent == ent)
+                    i = calls.erase(i);
+                else
+                    i++;
+            }
+        }
+    }
+    m_toRemove.clear();
+
     for (auto& event : m_events)
     {
         for (auto& callback : m_callbacks[event.type])

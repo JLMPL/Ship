@@ -9,9 +9,10 @@ int main()
 
 /*
 
+FIXME: Fucking crash
+
 TODO:
 - ENTITY TAGS!!!
-- RigidBody setPosition
 - ContactListener push contact events
 - Event datas
 
