@@ -1,5 +1,5 @@
 #include "DroneController.hpp"
-#include "Scene.hpp"
+#include "Scene/Scene.hpp"
 #include "Events/Event.hpp"
 
 DroneController::DroneController(Scene* scene, int id) : Controller(scene, id)

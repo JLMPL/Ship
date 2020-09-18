@@ -23,8 +23,10 @@ public:
 
 private:
     b2World m_pWorld;
-    // std::vector<RigidBody::Ptr> m_bodies;
+    std::vector<RigidBody::Ptr> m_rigidBodies;
+    std::vector<StaticBody::Ptr> m_staticBodies;
 
     DebugDrawer m_pDrawer;
     ContactListener m_contactListener;
+
 };

@@ -69,6 +69,9 @@ void HudLayer::update(float dt)
     float actual = 32 + (256.f - (l_heat * 2.56));
     m_heat.setScale({1.f - (l_heat / 100.f), 1.f});
 
+    float heat1 = 1 - (l_heat / 100.f);
+    m_heat.setFillColor({255, heat1 * 255, heat1 * 255, 255});
+
     m_rect.setPosition(actual, m_rect.getPosition().y);
 
     if (l_heat == 100.f)

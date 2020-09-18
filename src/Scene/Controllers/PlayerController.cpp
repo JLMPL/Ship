@@ -1,6 +1,6 @@
 #include "PlayerController.hpp"
 #include "Renderer.hpp"
-#include "Scene.hpp"
+#include "Scene/Scene.hpp"
 #include "Layers/HudLayer.hpp"
 #include "Events/EventQueue.hpp"
 

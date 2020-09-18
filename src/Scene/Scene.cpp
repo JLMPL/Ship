@@ -1,10 +1,9 @@
 #include "Scene.hpp"
-#include "PlayerController.hpp"
-#include "DroneController.hpp"
-#include "PhysicsSystem.hpp"
-#include "HealthSystem.hpp"
+#include "Controllers/PlayerController.hpp"
+#include "Controllers/DroneController.hpp"
 #include "Events/EventQueue.hpp"
 #include "Random.hpp"
+#include "Scene/Systems.hpp"
 
 #include "ODestroyTheConvoy.hpp"
 
@@ -21,9 +20,6 @@ Scene::Scene()
 
     for (auto& i : m_healths)
         i.reset(nullptr);
-
-    m_physicsSystem = System::Ptr(new PhysicsSystem(this));
-    m_healthSystem = System::Ptr(new HealthSystem(this));
 
     int player = createEntity({0,0});
     m_controllers.emplace_back(new PlayerController(this, player));
@@ -72,7 +68,7 @@ void Scene::update(float dt)
         return ctrl->isDestroyed();
     }), m_controllers.end());
 
-    m_healthSystem->update();
+    healthSystemUpdate(this);
 
     for (auto& controller : m_controllers)
     {
@@ -80,7 +76,7 @@ void Scene::update(float dt)
     }
 
     m_physWorld.update(dt);
-    m_physicsSystem->update();
+    physicsSystemUpdate(this);
 
     m_objective->check();
     if (m_objective->isCompleted())
@@ -142,7 +138,7 @@ HealthComp* Scene::addHealth(int entity, int max, int current)
     hpc->maxHp = max;
     hpc->hp = current;
 
-    static_cast<HealthSystem*>(m_healthSystem.get())->registerEntity(entity);
+    healthSystemRegisterEntity(this, entity);
 
     return hpc;
 }

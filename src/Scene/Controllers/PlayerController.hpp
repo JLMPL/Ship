@@ -1,7 +1,7 @@
 #pragma once
-#include "Controller.hpp"
+#include "Scene/Controller.hpp"
 #include "Physics/RigidBody.hpp"
-#include "Components.hpp"
+#include "Scene/Components.hpp"
 
 #include <SFML/System/Clock.hpp>
 

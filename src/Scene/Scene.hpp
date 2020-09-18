@@ -2,7 +2,6 @@
 #include "Components.hpp"
 #include "Controller.hpp"
 #include "Physics/PhysicsWorld.hpp"
-#include "System.hpp"
 #include "Events/EventQueue.hpp"
 #include "Objective.hpp"
 #include <memory>
@@ -43,23 +42,22 @@ public:
 
     TransformComp* getTransform(int entity);
 
-private:
+public:
     std::array<Entity::Ptr, 1024> m_entities;
+
+private:
     std::array<TransformComp::Ptr, 1024> m_trs;
     std::array<RigidBody::Ptr, 1024> m_rigids;
 	std::array<HealthComp::Ptr, 1024> m_healths;
+
 
     std::vector<Controller::Ptr> m_controllers;
 
     int m_lastEntity = 0;
 
     PhysicsWorld m_physWorld;
-	System::Ptr m_physicsSystem;
-    System::Ptr m_healthSystem;
 
     std::vector<StaticBody::Ptr> m_bobs;
 
     Objective::Ptr m_objective;
-
-	friend class System;
 };

@@ -6,3 +6,4 @@ Makefile
 out
 .gitignore
 src/Libs
+run.sh

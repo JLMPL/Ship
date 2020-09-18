@@ -1,5 +1,5 @@
 #pragma once
-#include "Controller.hpp"
+#include "Scene/Controller.hpp"
 #include "Physics/RigidBody.hpp"
 #include <SFML/System/Clock.hpp>
 
