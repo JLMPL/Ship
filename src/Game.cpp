@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
+#include "Core/Timer.hpp"
 
 static constexpr float FrameDuration = 1.f/60.f;
 
@@ -26,13 +27,16 @@ void Game::processEvents()
 void Game::update()
 {
     // if (m_clock.getElapsedTime().asSeconds() >= FrameDuration)
+
+    timer::delta = m_clock.restart().asSeconds();
+
     {
-        m_layerStack.update(FrameDuration);
+        m_layerStack.update(timer::delta);
 
         if (m_layerStack.isEmpty())
             m_window.close();
 
-        m_clock.restart();
+        // m_clock.restart();
     }
 }
 

@@ -10,6 +10,7 @@ static constexpr float HealthBarHeight = 40.f;
 
 static float l_heat = 0.f;
 static float l_healthPercentage = 1.f;
+static vec2i l_playerCoords = {0,0};
 
 HudLayer::HudLayer(LayerStack& layerStack)
     : Layer(layerStack)
@@ -62,6 +63,11 @@ HudLayer::HudLayer(LayerStack& layerStack)
     m_objective[0].setString("Destroy the Protector - 0/1");
     m_objective[1].setString("Destroy the Drones - 1/3");
     m_objective[2].setString("Destroy the Swarm - 0/1");
+
+    m_coords.setFont(m_font);
+    m_coords.setCharacterSize(18);
+    m_coords.setFillColor(sf::Color::White);
+    m_coords.setPosition({32, DisplayHeight - 128});
 }
 
 void HudLayer::update(float dt)
@@ -97,6 +103,9 @@ void HudLayer::draw()
 
     for (int i = 0; i < 3; i++)
         Renderer::get().draw(m_objective[i]);
+
+    m_coords.setString(std::to_string(l_playerCoords.x) + ", " + std::to_string(l_playerCoords.y));
+    Renderer::get().draw(m_coords);
 }
 
 void HudLayer::setHeat(float level)
@@ -107,4 +116,9 @@ void HudLayer::setHeat(float level)
 void HudLayer::setHealthPercentage(float perc)
 {
     l_healthPercentage = perc;
+}
+
+void HudLayer::setPlayerCoords(int x, int y)
+{
+    l_playerCoords = {x, y};
 }

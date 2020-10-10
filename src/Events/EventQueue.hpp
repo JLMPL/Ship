@@ -5,15 +5,15 @@
 #include <array>
 #include <vector>
 
-namespace EventQueue
-{
+// namespace EventQueue
+// {
 
-void push(const Event& event);
-int getNumEvents();
-const Event& getEvent(int index);
-void clear();
+// void push(const Event& event);
+// int getNumEvents();
+// const Event& getEvent(int index);
+// void clear();
 
-}
+// }
 
 class EventQueue
 {

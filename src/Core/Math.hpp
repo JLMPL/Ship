@@ -2,6 +2,7 @@
 #include <SFML/System/Vector2.hpp>
 
 using vec2 = sf::Vector2f;
+using vec2i = sf::Vector2i;
 
 namespace math
 {

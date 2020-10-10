@@ -14,6 +14,7 @@ public:
 
     static void setHeat(float level);
     static void setHealthPercentage(float perc);
+    static void setPlayerCoords(int x, int y);
 
 private:
     sf::RectangleShape m_heatBack;
@@ -29,4 +30,6 @@ private:
 
     sf::Text m_mission;
     sf::Text m_objective[3];
+
+    sf::Text m_coords;
 };

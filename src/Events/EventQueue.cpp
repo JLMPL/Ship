@@ -1,31 +1,31 @@
 #include "EventQueue.hpp"
 
-namespace EventQueue
-{
+// namespace EventQueue
+// {
 
-std::vector<Event> events;
+// std::vector<Event> events;
 
-void push(const Event& event)
-{
-    events.push_back(event);
-}
+// void push(const Event& event)
+// {
+//     events.push_back(event);
+// }
 
-int getNumEvents()
-{
-    return events.size();
-}
+// int getNumEvents()
+// {
+//     return events.size();
+// }
 
-const Event& getEvent(int index)
-{
-    return events[index];
-}
+// const Event& getEvent(int index)
+// {
+//     return events[index];
+// }
 
-void clear()
-{
-    events.clear();
-}
+// void clear()
+// {
+//     events.clear();
+// }
 
-}
+// }
 
 void EventQueue::registerCallback(Event::Type event, int ent, const CallbackSignature& callback)
 {
