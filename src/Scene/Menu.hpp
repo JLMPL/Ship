@@ -1,10 +1,11 @@
 #pragma once
+#include "SceneObject.hpp"
 #include "Core/Types.hpp"
 #include <vector>
 #include <functional>
 #include <SFML/Graphics.hpp>
 
-class Menu
+class Menu : public SceneObject
 {
 public:
     struct Item
@@ -16,7 +17,7 @@ public:
         sf::Text text;
     };
 
-    Menu();
+    Menu(SceneContext* context);
 
     void addItem(const std::string& name, std::function<void (void)>&& callback, bool active = true);
 

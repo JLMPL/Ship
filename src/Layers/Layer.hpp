@@ -1,39 +1,39 @@
-#pragma once
-#include "Core/Types.hpp"
-#include <memory>
+// #pragma once
+// #include "Core/Types.hpp"
+// #include <memory>
 
-class LayerStack;
+// class LayerStack;
 
-class Layer
-{
-public:
-    using Ptr = std::unique_ptr<Layer>;
+// class Layer
+// {
+// public:
+//     using Ptr = std::unique_ptr<Layer>;
 
-    enum class Type
-    {
-        MainMenu,
-        Settings,
-        Game,
-        Credits,
-        Pause,
-        Background,
-        Hud,
+//     enum class Type
+//     {
+//         MainMenu,
+//         Settings,
+//         Game,
+//         Credits,
+//         Pause,
+//         Background,
+//         Hud,
 
-        None
-    };
+//         None
+//     };
 
-    template <typename T>
-    T* as() { return static_cast<T*>(this); }
+//     template <typename T>
+//     T* as() { return static_cast<T*>(this); }
 
-    Layer(LayerStack& layerStack) :
-        m_layerStack(layerStack)
-    {}
+//     Layer(LayerStack& layerStack) :
+//         m_layerStack(layerStack)
+//     {}
 
-    virtual ~Layer() = default;
+//     virtual ~Layer() = default;
 
-    virtual void update(float dt) = 0;
-    virtual void draw() = 0;
+//     virtual void update(float dt) = 0;
+//     virtual void draw() = 0;
 
-protected:
-    LayerStack& m_layerStack;
-};
+// protected:
+//     LayerStack& m_layerStack;
+// };

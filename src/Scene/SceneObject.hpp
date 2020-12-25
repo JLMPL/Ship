@@ -4,14 +4,14 @@
 
 struct SceneContext;
 
-class Entity
+class SceneObject
 {
 public:
-    using Ptr = std::unique_ptr<Entity>;
+    using Ptr = std::unique_ptr<SceneObject>;
 
-    Entity(SceneContext* context)
+    SceneObject(SceneContext* context)
      : m_sContext(context) {}
-    virtual ~Entity() {};
+    virtual ~SceneObject() {};
 
     virtual void update(float dt) = 0;
     virtual void draw() = 0;

@@ -1,13 +1,12 @@
-#include "BackgroundLayer.hpp"
-#include "LayerStack.hpp"
+#include "StarBackground.hpp"
 #include "Renderer.hpp"
 #include "Random.hpp"
 #include <cmath>
 
 static constexpr float ExtentsOfSpace = 1000.0f;
 
-BackgroundLayer::BackgroundLayer(LayerStack& layerStack)
-    : Layer(layerStack)
+StarBackground::StarBackground(SceneContext* context)
+    : SceneObject(context)
 {
     for (auto& star : m_stars)
     {
@@ -36,11 +35,11 @@ BackgroundLayer::BackgroundLayer(LayerStack& layerStack)
     }
 }
 
-void BackgroundLayer::update(float dt)
+void StarBackground::update(float dt)
 {
 }
 
-void BackgroundLayer::draw()
+void StarBackground::draw()
 {
     Renderer::get().drawScaled(&m_back2[0], m_back2.size(), sf::Points);
     Renderer::get().drawScaled(&m_back[0], m_back.size(), sf::Points);

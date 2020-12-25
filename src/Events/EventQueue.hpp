@@ -5,16 +5,6 @@
 #include <array>
 #include <vector>
 
-// namespace EventQueue
-// {
-
-// void push(const Event& event);
-// int getNumEvents();
-// const Event& getEvent(int index);
-// void clear();
-
-// }
-
 class EventQueue
 {
 public:

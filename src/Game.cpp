@@ -11,8 +11,10 @@ Game::Game()
     m_window.create(sf::VideoMode(1280, 720), "Starry Stealers", sf::Style::Close, settings);
     Renderer::get().init(m_window);
 
-    m_layerStack.push(Layer::Type::Background);
-    m_layerStack.push(Layer::Type::MainMenu);
+
+
+    // m_layerStack.push(Layer::Type::Background);
+    // m_layerStack.push(Layer::Type::MainMenu);
 }
 
 void Game::processEvents()
@@ -31,10 +33,12 @@ void Game::update()
     timer::delta = m_clock.restart().asSeconds();
 
     {
-        m_layerStack.update(timer::delta);
+        // m_layerStack.update(timer::delta);
 
-        if (m_layerStack.isEmpty())
-            m_window.close();
+        m_scene.update(timer::delta);
+
+        // if (m_layerStack.isEmpty())
+            // m_window.close();
 
         // m_clock.restart();
     }
@@ -43,7 +47,8 @@ void Game::update()
 void Game::draw()
 {
     Renderer::get().clear();
-    m_layerStack.draw();
+    // m_layerStack.draw();
+    m_scene.draw();
     Renderer::get().display();
 }
 

@@ -1,8 +1,8 @@
 #pragma once
-#include "Entity.hpp"
+#include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
 
-class Drone : public Entity
+class Drone : public SceneObject
 {
 public:
     Drone(SceneContext* context);

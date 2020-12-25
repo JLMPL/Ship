@@ -1,8 +1,8 @@
 #include "Menu.hpp"
-#include "Menu.hpp"
 #include "Renderer.hpp"
 
-Menu::Menu()
+Menu::Menu(SceneContext* context)
+ : SceneObject(context)
 {
     m_font.loadFromFile("data/NotoSans-Regular.ttf");
     m_timer.restart();

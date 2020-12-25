@@ -1,5 +1,5 @@
 #pragma once
-#include "Layers/LayerStack.hpp"
+#include "Scene/Scene.hpp"
 #include <SFML/Graphics.hpp>
 
 class Game
@@ -20,5 +20,7 @@ private:
     sf::Event m_event;
     sf::Clock m_clock;
 
-    LayerStack m_layerStack;
+    Scene m_scene;
+
+    // LayerStack m_layerStack;
 };

@@ -2,15 +2,15 @@
 
 float RaycastCallback::ReportFixture(
     b2Fixture *fixture,
-    const b2Vec2 &point,
-    const b2Vec2 &normal,
-    float fraction)
+    const b2Vec2 &p,
+    const b2Vec2 &n,
+    float f)
 {
-    m_point = {point.x, point.y};
-    m_normal = {normal.x, normal.y};
-    m_fraction = fraction;
+    point = {p.x, p.y};
+    normal = {n.x, n.y};
+    fraction = f;
 
-    m_hasHit = true;
+    hasHit = true;
 
     return 0;
 }

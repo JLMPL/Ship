@@ -12,8 +12,8 @@ public:
         float fraction) override final;
 
 public:
-    sf::Vector2f m_point;
-    sf::Vector2f m_normal;
-    float m_fraction;
-    bool m_hasHit = false;
+    sf::Vector2f point;
+    sf::Vector2f normal;
+    float fraction;
+    bool hasHit = false;
 };

@@ -1,13 +1,13 @@
 #pragma once
-#include "Layer.hpp"
+#include "SceneObject.hpp"
 #include <SFML/Graphics.hpp>
 #include <array>
 
-class BackgroundLayer : public Layer
+class StarBackground : public SceneObject
 {
 public:
-    BackgroundLayer(LayerStack& ss);
-    ~BackgroundLayer() = default;
+    StarBackground(SceneContext* context);
+    ~StarBackground() = default;
 
     void update(float dt) override final;
     void draw() override final;
