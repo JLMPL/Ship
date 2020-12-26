@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
+#include <SFML/System/Clock.hpp>
 
 class Bullet : public SceneObject
 {
@@ -13,5 +14,6 @@ public:
     void draw() override final;
 
 private:
-    RigidBody* m_body = nullptr;
+    RigidBody::Ref m_body = nullptr;
+    sf::Clock m_clock;
 };

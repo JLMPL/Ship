@@ -16,14 +16,14 @@ public:
     void update(float dt);
     void draw();
 
-    RigidBody* addRigidBody(const vec2& pos, bool player);
+    RigidBody::Ref addRigidBody(const vec2& pos, bool player);
+    RigidBody::Ref spawnBullet(const vec2& origin, const vec2& dir, bool player);
     StaticBody* addStaticBody(const vec2& pos, float radius);
-    RigidBody* spawnBullet(const vec2& origin, const vec2& dir, bool player);
     void castRay(b2RayCastCallback* callback, const sf::Vector2f& from, const sf::Vector2f& to);
 
 private:
     b2World m_pWorld;
-    std::vector<RigidBody::Ptr> m_rigidBodies;
+    std::vector<RigidBody::Ref> m_rigidBodies;
     std::vector<StaticBody::Ptr> m_staticBodies;
 
     DebugDrawer m_pDrawer;

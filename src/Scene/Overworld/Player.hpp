@@ -22,7 +22,7 @@ public:
     void shoot();
 
 private:
-    RigidBody* m_body = nullptr;
+    RigidBody::Ref m_body = nullptr;
 
     float m_heat = 0.f;
     sf::Clock m_heatTimer;

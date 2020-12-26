@@ -7,6 +7,7 @@ class RigidBody
 {
 public:
     using Ptr = std::unique_ptr<RigidBody>;
+    using Ref = std::shared_ptr<RigidBody>;
 
     enum Type
     {

@@ -12,6 +12,7 @@ public:
     ~Scene() = default;
 
     void ready();
+    void spawnAndDestroyObjects();
     void update(float dt);
     void draw();
 

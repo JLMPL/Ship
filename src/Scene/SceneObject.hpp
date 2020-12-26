@@ -27,9 +27,14 @@ public:
 
     const std::string& getName() const;
 
+    void destory();
+    bool isDestroyed();
+
 protected:
     Scene* m_scene = nullptr;
     vec2 m_pos;
+
+    bool m_destroyed = false;
 
     std::string m_name = "[blank]";
 };

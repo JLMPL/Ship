@@ -12,7 +12,7 @@ public:
     void draw() override final;
 
 private:
-    RigidBody* m_body = nullptr;
+    RigidBody::Ref m_body = nullptr;
 
     SceneObject* m_player = nullptr;
 };

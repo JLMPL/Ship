@@ -27,13 +27,26 @@ void Scene::ready()
         object->ready();
 }
 
-void Scene::update(float dt)
+void Scene::spawnAndDestroyObjects()
 {
+    for (auto i = m_objects.begin(); i != m_objects.end();)
+    {
+        if ((*i)->isDestroyed())
+            i = m_objects.erase(i);
+        else
+            i++;
+    }
+
     for (auto& obj : m_spawnQueue)
     {
         m_objects.emplace_back(obj);
     }
     m_spawnQueue.clear();
+}
+
+void Scene::update(float dt)
+{
+    spawnAndDestroyObjects();
 
     for (auto& ent : m_objects)
         ent->update(dt);
@@ -59,12 +72,6 @@ SceneObject* Scene::findObject(const std::string& name)
 
     return nullptr;
 }
-
-// SceneObject* Scene::spawnObject(SceneObject* obj)
-// {
-//     m_objects.emplace_back(obj);
-//     return m_objects.back().get();
-// }
 
 PhysicsWorld* Scene::getPhysicsWorld()
 {

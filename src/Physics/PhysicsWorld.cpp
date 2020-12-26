@@ -23,7 +23,7 @@ PhysicsWorld::~PhysicsWorld()
 {
 }
 
-RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
+RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -59,11 +59,9 @@ RigidBody* PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
 
-    // return new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip);
-
     m_rigidBodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip));
 
-    return m_rigidBodies.back().get();
+    return m_rigidBodies.back();
 }
 
 StaticBody* PhysicsWorld::addStaticBody(const vec2& pos, float radius)
@@ -89,13 +87,11 @@ StaticBody* PhysicsWorld::addStaticBody(const vec2& pos, float radius)
 
     body->CreateFixture(&groundShape, 0.1f);
 
-    // return new StaticBody(body, &m_pWorld);
-
     m_staticBodies.emplace_back(new StaticBody(body, &m_pWorld));
     return m_staticBodies.back().get();
 }
 
-RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)
+RigidBody::Ref PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -128,10 +124,8 @@ RigidBody* PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool p
     body->ApplyLinearImpulseToCenter({dir.x, dir.y}, true);
     body->SetTransform(body->GetPosition(), atan2(dir.x, dir.y));
 
-    // return new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerBullet : RigidBody::EnemyBullet);
-
     m_rigidBodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerBullet : RigidBody::EnemyBullet));
-    return m_rigidBodies.back().get();
+    return m_rigidBodies.back();
 }
 
 void PhysicsWorld::castRay(b2RayCastCallback* callback, const sf::Vector2f& from, const sf::Vector2f& to)
@@ -141,6 +135,14 @@ void PhysicsWorld::castRay(b2RayCastCallback* callback, const sf::Vector2f& from
 
 void PhysicsWorld::update(float dt)
 {
+    for (auto i = m_rigidBodies.begin(); i != m_rigidBodies.end();)
+    {
+        if (i->use_count() == 1)
+            m_rigidBodies.erase(i);
+        else
+            i++;
+    }
+
     m_pWorld.Step(dt, 6, 2);
 }
 
@@ -148,3 +150,4 @@ void PhysicsWorld::draw()
 {
     m_pWorld.DebugDraw();
 }
+
