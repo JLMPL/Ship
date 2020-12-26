@@ -5,25 +5,33 @@
 #include <array>
 #include <map>
 
-struct SceneContext
-{
-    PhysicsWorld* physWorld = nullptr;
-};
-
 class Scene
 {
 public:
     Scene();
-    ~Scene();
+    ~Scene() = default;
 
+    void ready();
     void update(float dt);
     void draw();
 
+    SceneObject* findObject(const std::string& name);
+
+    template <typename T, typename... TArgs>
+    T* spawnObject(TArgs... args)
+    {
+        m_spawnQueue.push_back(new T(this));
+
+        T* obj = static_cast<T*>(m_spawnQueue.back());
+        obj->ready(args...);
+
+        return obj;
+    }
+
+    PhysicsWorld* getPhysicsWorld();
+
 private:
+    std::vector<SceneObject*> m_spawnQueue;
     std::vector<SceneObject::Ptr> m_objects;
-    int m_lastEntity = 0;
-
-    PhysicsWorld m_physWorld;
-
-    SceneContext m_context;
+    PhysicsWorld m_physicsWorld;
 };

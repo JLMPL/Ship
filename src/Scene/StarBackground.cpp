@@ -5,8 +5,8 @@
 
 static constexpr float ExtentsOfSpace = 1000.0f;
 
-StarBackground::StarBackground(SceneContext* context)
-    : SceneObject(context)
+StarBackground::StarBackground(Scene* scene)
+    : SceneObject(scene)
 {
     for (auto& star : m_stars)
     {

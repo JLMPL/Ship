@@ -1,18 +1,26 @@
 #include "Player.hpp"
 #include "Scene/Scene.hpp"
+#include "Bullet.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Hud.hpp"
 
 static constexpr float HeatRegen = 100.f;
 static constexpr float MoveHeatCost = 8.f;
 static constexpr float ShootHeatCost = 4.f;
 
-Player::Player(SceneContext* context)
-    : SceneObject(context)
+Player::Player(Scene* scene)
+    : SceneObject(scene)
 {
-    m_body = m_sContext->physWorld->addRigidBody({0,0}, false);
+    m_name = "player_ship";
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false);
 
     m_body->applyLinearImpulse({1,0});
+}
+
+void Player::ready()
+{
+    m_hud = m_scene->findObject("hud")->as<Hud>();
 }
 
 void Player::exertHeat(float hdiff)
@@ -51,8 +59,8 @@ void Player::shoot()
         vec2 pos = m_body->getPosition();
         vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
 
-        // int bullet = scene->createEntity({pos.x, pos.y});
-        m_sContext->physWorld->spawnBullet(m_pos, m_body->getDirection(), true);
+        Bullet* bullet = m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
+        // bullet->ready();
 
         exertHeat(ShootHeatCost);
         m_shootTimer.restart();
@@ -72,9 +80,9 @@ void Player::update(float dt)
             m_overheat = false;
     }
 
-    // HudLayer::setPlayerCoords(m_pos.x, m_pos.y);
-    // HudLayer::setHeat(m_heat);
-    // HudLayer::setHealthPercentage(float(m_health) / float(m_maxHealth));
+    m_hud->setPlayerCoords(m_pos.x, m_pos.y);
+    m_hud->setHeat(m_heat);
+    m_hud->setHealthPercentage(float(m_health) / float(m_maxHealth));
 
     m_pos = m_body->getPosition();
 }

@@ -8,29 +8,37 @@
 
 Scene::Scene()
 {
-    m_context.physWorld = &m_physWorld;
-
     for (int i = 0; i < 1000; i++)
     {
-        m_physWorld.addStaticBody({rando::inRange(-1000.f, 1000.f), rando::inRange(-1000.f, 1000.f)}, rando::inRange(2.f, 5.f));
+        m_physicsWorld.addStaticBody({rando::inRange(-1000.f, 1000.f), rando::inRange(-1000.f, 1000.f)}, rando::inRange(2.f, 5.f));
     }
 
-    m_objects.emplace_back(new StarBackground(&m_context));
-    m_objects.emplace_back(new Player(&m_context));
-    m_objects.emplace_back(new Drone(&m_context));
-    m_objects.emplace_back(new Hud(&m_context));
+    m_objects.emplace_back(new StarBackground(this));
+    m_objects.emplace_back(new Player(this));
+    m_objects.emplace_back(new Drone(this));
+    m_objects.emplace_back(new Hud(this));
+
+    ready();
 }
 
-Scene::~Scene()
+void Scene::ready()
 {
+    for (auto& object : m_objects)
+        object->ready();
 }
 
 void Scene::update(float dt)
 {
+    for (auto& obj : m_spawnQueue)
+    {
+        m_objects.emplace_back(obj);
+    }
+    m_spawnQueue.clear();
+
     for (auto& ent : m_objects)
         ent->update(dt);
 
-    m_physWorld.update(dt);
+    m_physicsWorld.update(dt);
 }
 
 void Scene::draw()
@@ -38,5 +46,27 @@ void Scene::draw()
     for (auto& ent : m_objects)
         ent->draw();
 
-    m_physWorld.draw();
+    m_physicsWorld.draw();
+}
+
+SceneObject* Scene::findObject(const std::string& name)
+{
+    for (auto& object : m_objects)
+    {
+        if (object->getName() == name)
+            return object.get();
+    }
+
+    return nullptr;
+}
+
+// SceneObject* Scene::spawnObject(SceneObject* obj)
+// {
+//     m_objects.emplace_back(obj);
+//     return m_objects.back().get();
+// }
+
+PhysicsWorld* Scene::getPhysicsWorld()
+{
+    return &m_physicsWorld;
 }

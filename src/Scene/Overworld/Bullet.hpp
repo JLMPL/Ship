@@ -2,17 +2,16 @@
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
 
-class Drone : public SceneObject
+class Bullet : public SceneObject
 {
 public:
-    Drone(Scene* scene);
-    ~Drone() = default;
+    Bullet(Scene* scene);
+    ~Bullet() = default;
 
+    void ready(const vec2& pos, const vec2& dir, bool player = false);
     void update(float dt) override final;
     void draw() override final;
 
 private:
     RigidBody* m_body = nullptr;
-
-    SceneObject* m_player = nullptr;
 };

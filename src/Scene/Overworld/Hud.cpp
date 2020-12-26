@@ -7,9 +7,11 @@
 // static constexpr float HeatBarHeight = 250.f;
 static constexpr float HealthBarHeight = 40.f;
 
-Hud::Hud(SceneContext* context)
-    : SceneObject(context)
+Hud::Hud(Scene* scene)
+    : SceneObject(scene)
 {
+    m_name = "hud";
+
     m_hpBack.setSize({256, HealthBarHeight});
     m_hpBack.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
     m_hpBack.setFillColor({32,32,32,255});
@@ -40,7 +42,7 @@ Hud::Hud(SceneContext* context)
     m_coords.setFont(m_font);
     m_coords.setCharacterSize(24);
     m_coords.setFillColor(sf::Color::White);
-    m_coords.setPosition({32, DisplayHeight - 110});
+    m_coords.setPosition({32, DisplayHeight - 112});
 }
 
 void Hud::update(float dt)

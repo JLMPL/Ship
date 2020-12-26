@@ -17,7 +17,7 @@ public:
         sf::Text text;
     };
 
-    Menu(SceneContext* context);
+    Menu(Scene* scene);
 
     void addItem(const std::string& name, std::function<void (void)>&& callback, bool active = true);
 

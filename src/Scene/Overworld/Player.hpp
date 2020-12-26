@@ -4,11 +4,15 @@
 #include "Core/Timer.hpp"
 #include <SFML/System/Clock.hpp>
 
+class Hud;
+
 class Player : public SceneObject
 {
 public:
-    Player(SceneContext* context);
+    Player(Scene* scene);
     ~Player() = default;
+
+    void ready() override final;
 
     void update(float dt) override final;
     void draw() override final;
@@ -28,5 +32,7 @@ private:
     int m_maxHealth = 10;
 
     bool m_overheat = false;
+
+    Hud* m_hud = nullptr;
 
 };

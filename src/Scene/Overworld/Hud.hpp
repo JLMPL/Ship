@@ -6,7 +6,7 @@
 class Hud : public SceneObject
 {
 public:
-    Hud(SceneContext* context);
+    Hud(Scene* scene);
     ~Hud() = default;
 
     void update(float dt) override final;

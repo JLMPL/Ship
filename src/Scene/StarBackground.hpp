@@ -6,7 +6,7 @@
 class StarBackground : public SceneObject
 {
 public:
-    StarBackground(SceneContext* context);
+    StarBackground(Scene* scene);
     ~StarBackground() = default;
 
     void update(float dt) override final;
