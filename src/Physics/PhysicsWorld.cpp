@@ -19,10 +19,6 @@ PhysicsWorld::PhysicsWorld()
     m_pWorld.SetContactListener(&m_contactListener);
 }
 
-PhysicsWorld::~PhysicsWorld()
-{
-}
-
 RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
 {
     b2BodyDef bodyDef;
@@ -64,7 +60,7 @@ RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
     return m_rigidBodies.back();
 }
 
-StaticBody* PhysicsWorld::addStaticBody(const vec2& pos, float radius)
+StaticBody::Ref PhysicsWorld::addStaticBody(const vec2& pos, float radius)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(pos.x, pos.y);
@@ -88,7 +84,7 @@ StaticBody* PhysicsWorld::addStaticBody(const vec2& pos, float radius)
     body->CreateFixture(&groundShape, 0.1f);
 
     m_staticBodies.emplace_back(new StaticBody(body, &m_pWorld));
-    return m_staticBodies.back().get();
+    return m_staticBodies.back();
 }
 
 RigidBody::Ref PhysicsWorld::spawnBullet(const vec2& origin, const vec2& dir, bool player)
@@ -139,6 +135,14 @@ void PhysicsWorld::update(float dt)
     {
         if (i->use_count() == 1)
             m_rigidBodies.erase(i);
+        else
+            i++;
+    }
+
+    for (auto i = m_staticBodies.begin(); i != m_staticBodies.end();)
+    {
+        if (i->use_count() == 1)
+            m_staticBodies.erase(i);
         else
             i++;
     }

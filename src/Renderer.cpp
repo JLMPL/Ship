@@ -1,7 +1,8 @@
 #include "Renderer.hpp"
 #include "Core/Config.hpp"
 
-static constexpr float ZoomCap = 0.07f;
+// static constexpr float ZoomCap = 0.07f;
+static constexpr float ZoomCap = 0.2f;
 
 void Renderer::init(sf::RenderWindow& window)
 {

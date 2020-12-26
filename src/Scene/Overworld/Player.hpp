@@ -6,6 +6,13 @@
 
 class Hud;
 
+enum class Weapon
+{
+    BASIC,
+    SHOTGUN,
+    COUNT
+};
+
 class Player : public SceneObject
 {
 public:
@@ -32,6 +39,8 @@ private:
     int m_maxHealth = 10;
 
     bool m_overheat = false;
+
+    Weapon m_weapon = Weapon::BASIC;
 
     Hud* m_hud = nullptr;
 

@@ -7,6 +7,7 @@ class StaticBody
 {
 public:
     using Ptr = std::unique_ptr<StaticBody>;
+    using Ref = std::shared_ptr<StaticBody>;
 
     StaticBody(b2Body* bd, b2World* world);
     ~StaticBody();

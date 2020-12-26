@@ -36,8 +36,8 @@ public:
     vec2 getLinearVelocity() const;
     float getAngle() const;
 
-    void setUserData(int* id);
-    int getUserData() const;
+    void setUserData(void* id);
+    void* getUserData() const;
 
     const Type& getType() const;
 

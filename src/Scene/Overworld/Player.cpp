@@ -13,7 +13,7 @@ Player::Player(Scene* scene)
     : SceneObject(scene)
 {
     m_name = "player_ship";
-    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false);
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
 
     m_body->applyLinearImpulse({1,0});
 }
@@ -54,13 +54,37 @@ void Player::shoot()
 {
     if (m_overheat) return;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && m_shootTimer.getElapsedTime().asMilliseconds() > 250)
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         vec2 pos = m_body->getPosition();
         vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
 
-        Bullet* bullet = m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
-        // bullet->ready();
+        switch (m_weapon)
+        {
+            case Weapon::BASIC:
+            {
+                if (m_shootTimer.getElapsedTime() < sf::milliseconds(100))
+                    return;
+
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
+            }
+            break;
+            case Weapon::SHOTGUN:
+            {
+                if (m_shootTimer.getElapsedTime() < sf::seconds(0.5))
+                    return;
+
+                vec2 side = vec2(dir.y, -dir.x) * 0.5f;
+
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, true);
+
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), true);
+            }
+            break;
+        }
 
         exertHeat(ShootHeatCost);
         m_shootTimer.restart();
@@ -71,6 +95,11 @@ void Player::update(float dt)
 {
     control();
     shoot();
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        m_weapon = Weapon::BASIC;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        m_weapon = Weapon::SHOTGUN;
 
     if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
     {

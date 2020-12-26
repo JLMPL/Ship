@@ -3,6 +3,7 @@
 RigidBody::RigidBody(b2Body* bd, b2World* world, Type type)
     : m_body(bd), m_world(world), m_type(type)
 {
+    setUserData(NULL);
 }
 
 RigidBody::~RigidBody()
@@ -73,14 +74,14 @@ vec2 RigidBody::getLinearVelocity() const
     return {vel.x, vel.y};
 }
 
-void RigidBody::setUserData(int* id)
+void RigidBody::setUserData(void* id)
 {
-    m_body->SetUserData((void*)id);
+    m_body->SetUserData(id);
 }
 
-int RigidBody::getUserData() const
+void* RigidBody::getUserData() const
 {
-    return *((int*)m_body->GetUserData());
+    return m_body->GetUserData();
 }
 
 const RigidBody::Type& RigidBody::getType() const

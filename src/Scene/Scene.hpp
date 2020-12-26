@@ -34,5 +34,6 @@ public:
 private:
     std::vector<SceneObject*> m_spawnQueue;
     std::vector<SceneObject::Ptr> m_objects;
+    std::vector<StaticBody::Ref> m_planets;
     PhysicsWorld m_physicsWorld;
 };

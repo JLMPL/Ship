@@ -10,7 +10,10 @@ Scene::Scene()
 {
     for (int i = 0; i < 1000; i++)
     {
-        m_physicsWorld.addStaticBody({rando::inRange(-1000.f, 1000.f), rando::inRange(-1000.f, 1000.f)}, rando::inRange(2.f, 5.f));
+        m_planets.push_back(m_physicsWorld.addStaticBody({
+            rando::inRange(-1000.f, 1000.f),
+            rando::inRange(-1000.f, 1000.f)},
+            rando::inRange(2.f, 5.f)));
     }
 
     m_objects.emplace_back(new StarBackground(this));
