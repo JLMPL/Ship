@@ -14,8 +14,6 @@ Player::Player(Scene* scene)
 {
     m_name = "player_ship";
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
-
-    m_body->applyLinearImpulse({1,0});
 }
 
 void Player::ready()
@@ -74,7 +72,7 @@ void Player::shoot()
                 if (m_shootTimer.getElapsedTime() < sf::seconds(0.5))
                     return;
 
-                vec2 side = vec2(dir.y, -dir.x) * 0.5f;
+                vec2 side = vec2(dir.y, -dir.x) * 0.25f;
 
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, true);
@@ -119,4 +117,9 @@ void Player::update(float dt)
 void Player::draw()
 {
     Renderer::get().setView(m_pos);
+}
+
+void Player::setPosition(const vec2& pos)
+{
+    m_body->setPosition(pos);
 }

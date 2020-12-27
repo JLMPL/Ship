@@ -18,7 +18,13 @@ Scene::Scene()
 
     m_objects.emplace_back(new StarBackground(this));
     m_objects.emplace_back(new Player(this));
-    m_objects.emplace_back(new Drone(this));
+
+    for (int i = 0; i < 10; i++)
+    {
+        m_objects.emplace_back(new Drone(this));
+        m_objects.back()->setPosition(vec2(i,0));
+    }
+
     m_objects.emplace_back(new Hud(this));
 
     ready();

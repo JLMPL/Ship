@@ -23,11 +23,15 @@ public:
 
     virtual void update(float dt) = 0;
     virtual void draw() = 0;
-    const vec2& getPosition() const;
 
+    virtual void onContact(SceneObject* other) {}
+
+    virtual void setPosition(const vec2& pos);
+
+    const vec2& getPosition() const;
     const std::string& getName() const;
 
-    void destory();
+    void destroy();
     bool isDestroyed();
 
 protected:

@@ -28,6 +28,8 @@ public:
     void exertHeat(float hdiff);
     void shoot();
 
+    void setPosition(const vec2& pos) override final;
+
 private:
     RigidBody::Ref m_body = nullptr;
 

@@ -2,12 +2,13 @@
 #include "Scene/Scene.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include <algorithm>
 
 Drone::Drone(Scene* scene)
     : SceneObject(scene)
 {
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false);
-    m_body->applyLinearImpulse({1,0});
+    m_body->setUserData((void*)this);
 
     m_player = m_scene->findObject("player_ship");
 }
@@ -26,4 +27,17 @@ void Drone::update(float dt)
 void Drone::draw()
 {
 
+}
+
+void Drone::onContact(SceneObject* other)
+{
+    if (!other) return;
+
+    if (other->getName() == "player_bullet")
+    {
+        m_health = std::max(0, --m_health);
+
+        if (m_health == 0)
+            destroy();
+    }
 }

@@ -13,6 +13,8 @@ public:
     void update(float dt) override final;
     void draw() override final;
 
+    void onContact(SceneObject* other) override final;
+
 private:
     RigidBody::Ref m_body = nullptr;
     sf::Clock m_clock;
