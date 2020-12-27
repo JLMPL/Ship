@@ -30,6 +30,7 @@ public:
 
     void setPosition(const vec2& pos) override final;
 
+    void onContact(SceneObject* other) override final;
 private:
     RigidBody::Ref m_body = nullptr;
 
@@ -37,8 +38,8 @@ private:
     sf::Clock m_heatTimer;
     sf::Clock m_shootTimer;
 
-    int m_health = 10;
-    int m_maxHealth = 10;
+    int m_health = 100;
+    int m_maxHealth = 100;
 
     bool m_overheat = false;
 

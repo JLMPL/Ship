@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
+#include "Scene/UI/ProgressBar.hpp"
+#include <SFML/System/Clock.hpp>
 
 class Drone : public SceneObject
 {
@@ -20,4 +22,8 @@ private:
 
     int m_maxHealth = 10;
     int m_health = 10;
+
+    ProgressBar m_healthbar;
+
+    sf::Clock m_clock;
 };

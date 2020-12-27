@@ -14,6 +14,7 @@ Player::Player(Scene* scene)
 {
     m_name = "player_ship";
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
+    m_body->setUserData(this);
 }
 
 void Player::ready()
@@ -122,4 +123,14 @@ void Player::draw()
 void Player::setPosition(const vec2& pos)
 {
     m_body->setPosition(pos);
+}
+
+void Player::onContact(SceneObject* other)
+{
+    if (!other) return;
+
+    if (other->getName() == "enemy_bullet")
+    {
+        m_health = std::max(0, --m_health);
+    }
 }
