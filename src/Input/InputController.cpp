@@ -42,7 +42,7 @@ void InputController::update()
 {
     SDL_GameControllerUpdate();
 
-    m_cursor += getLeftStick() * 10.f * timer::delta;
+    m_cursor += getLeftStick() * 20.f * timer::delta;
 }
 
 bool InputController::isButton(Button button)

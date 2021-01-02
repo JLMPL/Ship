@@ -1,4 +1,6 @@
 #include "Input.hpp"
+#include "Renderer.hpp"
+#include "Core/Config.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
 //hard choices arent' for me
@@ -15,6 +17,10 @@ void InputLocator::init()
 {
     m_keyboardService.init();
     m_controllerService.init();
+
+    m_font.loadFromFile("data/DejaVuSans.ttf");
+    m_text.setFont(m_font);
+    m_text.setCharacterSize(20);
 }
 
 void InputLocator::update()
@@ -34,7 +40,27 @@ void InputLocator::update()
     m_selected->update();
 }
 
+void InputLocator::debugDraw()
+{
+    if (isController())
+        m_text.setString("input: Controller");
+    else
+        m_text.setString("input: Keyboard & Mouse");
+
+    m_text.setPosition({
+        DisplayWidth - (m_text.getLocalBounds().width + 24),
+        24.f
+    });
+
+    Renderer::get().draw(m_text);
+}
+
 InputService* InputLocator::get()
 {
     return m_selected;
+}
+
+bool InputLocator::isController() const
+{
+    return m_selected == &m_controllerService;
 }

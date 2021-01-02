@@ -63,6 +63,8 @@ void Game::draw()
 {
     Renderer::get().clear();
     m_scene->draw();
+
+    Input.debugDraw();
     Renderer::get().display();
 }
 
