@@ -10,6 +10,8 @@ public:
 
     void run();
 
+    void changeScene(Scene* scene);
+
 private:
     void processEvents();
     void update();
@@ -20,7 +22,6 @@ private:
     sf::Event m_event;
     sf::Clock m_clock;
 
-    Scene m_scene;
-
-    // LayerStack m_layerStack;
+    Scene* m_nextScene = nullptr;
+    Scene::Ptr m_scene = nullptr;
 };

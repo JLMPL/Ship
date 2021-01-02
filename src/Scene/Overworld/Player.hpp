@@ -10,6 +10,7 @@ enum class Weapon
 {
     BASIC,
     SHOTGUN,
+    LASER,
     COUNT
 };
 
@@ -46,5 +47,9 @@ private:
     Weapon m_weapon = Weapon::BASIC;
 
     Hud* m_hud = nullptr;
+
+    vec2 m_rayhit;
+
+    vec2 m_aim;
 
 };

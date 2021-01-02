@@ -2,6 +2,8 @@
 #include "Libs/box2d/box2d.h"
 #include "Core/Math.hpp"
 
+class SceneObject;
+
 class RaycastCallback : public b2RayCastCallback
 {
 public:
@@ -12,6 +14,7 @@ public:
         float fraction) override final;
 
 public:
+    SceneObject* object = nullptr;
     sf::Vector2f point;
     sf::Vector2f normal;
     float fraction;

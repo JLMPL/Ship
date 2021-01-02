@@ -11,16 +11,16 @@ StarBackground::StarBackground(Scene* scene)
     for (auto& star : m_stars)
     {
         star = sf::Vertex({
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace),
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace)
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace),
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace)
         });
     }
 
     for (auto& star : m_back)
     {
         star = sf::Vertex({
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace),
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace)},
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace),
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace)},
             {192,192,192,255}
         );
     }
@@ -28,8 +28,8 @@ StarBackground::StarBackground(Scene* scene)
     for (auto& star : m_back2)
     {
         star = sf::Vertex({
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace),
-            rando::inRange(-ExtentsOfSpace, ExtentsOfSpace)},
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace),
+            rng::inRange(-ExtentsOfSpace, ExtentsOfSpace)},
             {100,100,100,255}
         );
     }

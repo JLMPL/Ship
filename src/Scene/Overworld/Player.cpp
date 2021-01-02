@@ -3,11 +3,13 @@
 #include "Bullet.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Drone.hpp"
 #include "Hud.hpp"
 
 static constexpr float HeatRegen = 100.f;
 static constexpr float MoveHeatCost = 8.f;
-static constexpr float ShootHeatCost = 4.f;
+static constexpr float ShootHeatCost = 2.f;
+static constexpr float LaserHeatCost = 50.f; //per second
 
 Player::Player(Scene* scene)
     : SceneObject(scene)
@@ -15,6 +17,11 @@ Player::Player(Scene* scene)
     m_name = "player_ship";
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
     m_body->setUserData(this);
+
+    // if (sf::Joystick::isConnected(0))
+        // printf("gamepad@\n");
+
+    printf("button count %d\n", sf::Joystick::getButtonCount(0));
 }
 
 void Player::ready()
@@ -34,13 +41,30 @@ void Player::exertHeat(float hdiff)
 
 void Player::control()
 {
+    // for (int i = 0; i < 16; i++)
+    // {
+    //     if (sf::Joystick::isButtonPressed(0, i))
+    //         printf("%d is pressed!\n", i);
+    // }
+
+    // printf("%f %f\n", sf::Joystick::getAxisPosition(0, sf::Joystick::PovX), sf::Joystick::getAxisPosition(0, sf::Joystick::PovY));
+
     if (m_overheat) return;
 
-    m_body->rotateTowards(Renderer::get().getGlobalMousePosition(), 200 * timer::delta);
+    float ex = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+    float ey = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
 
-    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 8.f : 2.f;
+    vec2 mov = vec2(ex, ey);
+    m_aim += (mov * 0.2f) * timer::delta;
+    // m_aim = math::normalize(m_aim);
+    // m_aim *= 10.f;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    m_body->rotateTowards(m_pos + m_aim, 200 * timer::delta);
+
+    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 8.f : 4.f;
+
+    // if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    if (sf::Joystick::isButtonPressed(0, 4))
     {
         m_body->applyLinearImpulse(m_body->getDirection() * timer::delta * speed);
         exertHeat(speed * 2 * timer::delta);
@@ -53,10 +77,12 @@ void Player::shoot()
 {
     if (m_overheat) return;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    // if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Joystick::isButtonPressed(0, 5))
     {
         vec2 pos = m_body->getPosition();
-        vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
+        // vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
+        vec2 dir = math::normalize(m_aim);
 
         switch (m_weapon)
         {
@@ -66,6 +92,9 @@ void Player::shoot()
                     return;
 
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
+
+                exertHeat(ShootHeatCost);
+                m_shootTimer.restart();
             }
             break;
             case Weapon::SHOTGUN:
@@ -79,14 +108,50 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, true);
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, true);
 
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), true);
+
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), true);
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), true);
+
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), true);
+
+                exertHeat(ShootHeatCost);
+                m_shootTimer.restart();
+            }
+            break;
+            case Weapon::LASER:
+            {
+                RaycastCallback result;
+                // m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), Renderer::get().getGlobalMousePosition());
+
+                vec2 target = m_pos + (m_aim * 100.f);
+
+                if (!isnan(target.x) and !isnan(target.y))
+                {
+                    // printf("target %f %f\n", target.x, target.y);
+                    m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), target);
+
+                    m_rayhit = {result.point.x, result.point.y};
+
+                    if (m_shootTimer.getElapsedTime() > sf::milliseconds(25) && result.hasHit)
+                    {
+                        if (result.object)
+                        if (result.object->getName() == "drone")
+                        {
+                            auto drone = result.object->as<Drone>();
+                            drone->damage(7);
+                        }
+
+                        m_shootTimer.restart();
+                    }
+
+                    exertHeat(timer::delta * 50);
+                }
             }
             break;
         }
-
-        exertHeat(ShootHeatCost);
-        m_shootTimer.restart();
     }
 }
 
@@ -95,10 +160,15 @@ void Player::update(float dt)
     control();
     shoot();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+    if (sf::Joystick::isButtonPressed(0, 0))
         m_weapon = Weapon::BASIC;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+    if (sf::Joystick::isButtonPressed(0, 1))
         m_weapon = Weapon::SHOTGUN;
+    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+    if (sf::Joystick::isButtonPressed(0, 2))
+        m_weapon = Weapon::LASER;
 
     if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
     {
@@ -118,6 +188,19 @@ void Player::update(float dt)
 void Player::draw()
 {
     Renderer::get().setView(m_pos);
+
+    // if (m_weapon == Weapon::LASER && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (m_weapon == Weapon::LASER && sf::Joystick::isButtonPressed(0, 5))
+    {
+        Renderer::get().drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
+        Renderer::get().drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
+
+        Renderer::get().drawLineScaled(m_pos, m_pos + (m_aim * 100.f), sf::Color::Red);
+    }
+
+    Renderer::get().drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
+    Renderer::get().drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
+
 }
 
 void Player::setPosition(const vec2& pos)

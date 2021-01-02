@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.0)
 project(ASS)
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(PROJECT_LINK_LIBS -lm -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lbox2d -llua5.3)
+set(PROJECT_LINK_LIBS -lm -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lbox2d -llua5.3 -lSDL2 -lSDL2main)
 
 link_directories(/usr/local/lib)
 link_directories(./)

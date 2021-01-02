@@ -1,4 +1,4 @@
 #pragma once
 
-constexpr int DisplayWidth = 1280;
-constexpr int DisplayHeight = 720;
+constexpr int DisplayWidth = 1366;
+constexpr int DisplayHeight = 768;

@@ -5,16 +5,20 @@
 #include <array>
 #include <map>
 
+class Game;
+
 class Scene
 {
 public:
-    Scene();
-    ~Scene() = default;
+    using Ptr = std::unique_ptr<Scene>;
 
-    void ready();
+    Scene(Game* game);
+    virtual ~Scene() = default;
+
+    virtual void ready();
     void spawnAndDestroyObjects();
-    void update(float dt);
-    void draw();
+    virtual void update(float dt);
+    virtual void draw();
 
     SceneObject* findObject(const std::string& name);
 
@@ -31,9 +35,10 @@ public:
 
     PhysicsWorld* getPhysicsWorld();
 
-private:
+protected:
+    Game* m_game = nullptr;
+    PhysicsWorld m_physicsWorld;
+
     std::vector<SceneObject*> m_spawnQueue;
     std::vector<SceneObject::Ptr> m_objects;
-    std::vector<StaticBody::Ref> m_planets;
-    PhysicsWorld m_physicsWorld;
 };

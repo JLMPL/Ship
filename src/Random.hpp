@@ -1,9 +1,11 @@
 #pragma once
 #include <random>
 
-namespace rando
+namespace rng
 {
     extern std::mt19937 randomEngine;
+
+    void randomizeSeed();
 
     template <typename T = float>
     static T inRange(T min, T max)

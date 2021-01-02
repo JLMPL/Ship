@@ -10,20 +10,27 @@ public:
     Drone(Scene* scene);
     ~Drone() = default;
 
+    void ready(const vec2& spawnPoint = vec2(0,0));
+
     void update(float dt) override final;
     void draw() override final;
 
     void onContact(SceneObject* other) override final;
+
+    void damage(int value);
+
+    void setPosition(const vec2& pos) override final;
 
 private:
     RigidBody::Ref m_body = nullptr;
 
     SceneObject* m_player = nullptr;
 
-    int m_maxHealth = 10;
-    int m_health = 10;
+    int m_maxHealth = 100;
+    int m_health = 100;
 
     ProgressBar m_healthbar;
 
     sf::Clock m_clock;
+    vec2 m_spawnPoint;
 };
