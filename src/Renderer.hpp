@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Math.hpp"
 #include <SFML/Graphics.hpp>
 
 class Renderer
@@ -18,14 +19,16 @@ public:
 
     void drawScaled(sf::Drawable& dw);
     void drawScaled(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs = sf::RenderStates::Default);
-    void drawLineScaled(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& color);
+    void drawLineScaled(const vec2& a, const vec2& b, const sf::Color& color);
 
-    void setView(const sf::Vector2f& pos);
+    void setView(const vec2& pos);
     void setZoom(float zoom);
-    sf::Vector2f getViewWorldPosition() const;
+    vec2 getViewWorldPosition() const;
 
-    sf::Vector2f getGlobalMousePosition();
-    sf::Vector2f getLocalMousePosition() const;
+    vec2 getGlobalMousePosition();
+    vec2 getLocalMousePosition() const;
+
+    void setLocalMousePosition(const vec2& pos);
 
     static Renderer& get()
     {

@@ -3,6 +3,7 @@
 #include "Bullet.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Input/Input.hpp"
 #include "Drone.hpp"
 #include "Hud.hpp"
 
@@ -17,11 +18,6 @@ Player::Player(Scene* scene)
     m_name = "player_ship";
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
     m_body->setUserData(this);
-
-    // if (sf::Joystick::isConnected(0))
-        // printf("gamepad@\n");
-
-    printf("button count %d\n", sf::Joystick::getButtonCount(0));
 }
 
 void Player::ready()
@@ -41,30 +37,16 @@ void Player::exertHeat(float hdiff)
 
 void Player::control()
 {
-    // for (int i = 0; i < 16; i++)
-    // {
-    //     if (sf::Joystick::isButtonPressed(0, i))
-    //         printf("%d is pressed!\n", i);
-    // }
-
-    // printf("%f %f\n", sf::Joystick::getAxisPosition(0, sf::Joystick::PovX), sf::Joystick::getAxisPosition(0, sf::Joystick::PovY));
-
     if (m_overheat) return;
 
-    float ex = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
-    float ey = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
-
-    vec2 mov = vec2(ex, ey);
-    m_aim += (mov * 0.2f) * timer::delta;
-    // m_aim = math::normalize(m_aim);
-    // m_aim *= 10.f;
+    vec2 mov = Input.get()->getCursorPosition();
+    m_aim = mov;
 
     m_body->rotateTowards(m_pos + m_aim, 200 * timer::delta);
 
-    float speed = (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ? 8.f : 4.f;
+    float speed = Input.get()->getAcceleration() * 8.f;
 
-    // if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-    if (sf::Joystick::isButtonPressed(0, 4))
+    if (speed > 0)
     {
         m_body->applyLinearImpulse(m_body->getDirection() * timer::delta * speed);
         exertHeat(speed * 2 * timer::delta);
@@ -77,8 +59,7 @@ void Player::shoot()
 {
     if (m_overheat) return;
 
-    // if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    if (sf::Joystick::isButtonPressed(0, 5))
+    if (Input.get()->isFire())
     {
         vec2 pos = m_body->getPosition();
         // vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
@@ -160,14 +141,11 @@ void Player::update(float dt)
     control();
     shoot();
 
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-    if (sf::Joystick::isButtonPressed(0, 0))
+    if (Input.get()->isBaseWeapon())
         m_weapon = Weapon::BASIC;
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-    if (sf::Joystick::isButtonPressed(0, 1))
+    if (Input.get()->isShotgun())
         m_weapon = Weapon::SHOTGUN;
-    // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-    if (sf::Joystick::isButtonPressed(0, 2))
+    if (Input.get()->isLaser())
         m_weapon = Weapon::LASER;
 
     if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
@@ -189,8 +167,7 @@ void Player::draw()
 {
     Renderer::get().setView(m_pos);
 
-    // if (m_weapon == Weapon::LASER && sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    if (m_weapon == Weapon::LASER && sf::Joystick::isButtonPressed(0, 5))
+    if (m_weapon == Weapon::LASER && Input.get()->isFire())
     {
         Renderer::get().drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
         Renderer::get().drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);

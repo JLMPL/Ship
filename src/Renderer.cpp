@@ -60,7 +60,7 @@ void Renderer::drawScaled(sf::Vertex* verts, int num, sf::PrimitiveType type, co
     m_sceneTarget.draw(verts, num, type, rs);
 }
 
-void Renderer::drawLineScaled(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& color)
+void Renderer::drawLineScaled(const vec2& a, const vec2& b, const sf::Color& color)
 {
     m_sceneTarget.setView(m_view);
     sf::Vertex line[2];
@@ -73,23 +73,23 @@ void Renderer::drawLineScaled(const sf::Vector2f& a, const sf::Vector2f& b, cons
     m_sceneTarget.draw(line, 2, sf::Lines);
 }
 
-void Renderer::setView(const sf::Vector2f& pos)
+void Renderer::setView(const vec2& pos)
 {
     m_view = sf::View(pos, {DisplayWidth, DisplayHeight});
     m_view.zoom(m_zoom);
     m_sceneTarget.setView(m_view);
 }
 
-sf::Vector2f Renderer::getViewWorldPosition() const
+vec2 Renderer::getViewWorldPosition() const
 {
     return m_view.getCenter();
 }
 
-sf::Vector2f Renderer::getGlobalMousePosition()
+vec2 Renderer::getGlobalMousePosition()
 {
     m_sceneTarget.setView(m_view);
     auto mp = sf::Mouse::getPosition(*m_window);
-    sf::Vector2f mousePos = {float(mp.x), float(mp.y)};
+    vec2 mousePos = {float(mp.x), float(mp.y)};
 
     mousePos.x += m_sceneTarget.getView().getCenter().x - (DisplayWidth/ 2);
     mousePos.y += m_sceneTarget.getView().getCenter().y - (DisplayHeight/ 2);
@@ -97,10 +97,15 @@ sf::Vector2f Renderer::getGlobalMousePosition()
     return mousePos;
 }
 
-sf::Vector2f Renderer::getLocalMousePosition() const
+vec2 Renderer::getLocalMousePosition() const
 {
     auto mp = sf::Mouse::getPosition(*m_window);
     return {float(mp.x), float(mp.y)};
+}
+
+void Renderer::setLocalMousePosition(const vec2& pos)
+{
+    sf::Mouse::setPosition({pos.x, pos.y}, *m_window);
 }
 
 void Renderer::setZoom(float zoom)
