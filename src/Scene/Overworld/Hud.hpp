@@ -15,6 +15,7 @@ public:
     void setHeat(float level);
     void setHealthPercentage(float perc);
     void setPlayerCoords(int x, int y);
+    void setWeapon(int weapon);
 
 private:
     sf::RectangleShape m_heatBack;
@@ -32,4 +33,7 @@ private:
     vec2i m_playerCoords = {0,0};
 
     sf::Text m_coords;
+
+    sf::Texture m_weaponsTex;
+    sf::Sprite m_weapons[4];
 };

@@ -97,7 +97,8 @@ bool InputController::isLaser()
 
 bool InputController::isMenu()
 {
-    return isButton(BUTTON_MENU);
+    //drives me isane
+    return (isButton(BUTTON_MENU) or sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
 }
 
 bool InputController::isFire()

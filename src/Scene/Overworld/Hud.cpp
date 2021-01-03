@@ -4,7 +4,7 @@
 #include "Core/Config.hpp"
 #include <cmath>
 
-// static constexpr float HeatBarHeight = 250.f;
+static constexpr float HealthBarWidth = 250.f;
 static constexpr float HealthBarHeight = 40.f;
 
 Hud::Hud(Scene* scene)
@@ -12,19 +12,19 @@ Hud::Hud(Scene* scene)
 {
     m_name = "hud";
 
-    m_hpBack.setSize({256, HealthBarHeight});
+    m_hpBack.setSize({HealthBarWidth, HealthBarHeight});
     m_hpBack.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
     m_hpBack.setFillColor({32,32,32,255});
 
-    m_hp.setSize({256, HealthBarHeight});
+    m_hp.setSize({HealthBarWidth, HealthBarHeight});
     m_hp.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
     m_hp.setFillColor({192,192,192,255});
 
-    m_heatBack.setSize({256, 5});
+    m_heatBack.setSize({HealthBarWidth, 5});
     m_heatBack.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
     m_heatBack.setFillColor({32,32,32,255});
 
-    m_heatRect.setSize({256, 5});
+    m_heatRect.setSize({HealthBarWidth, 5});
     m_heatRect.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
     m_heatRect.setFillColor(sf::Color::White);
 
@@ -43,6 +43,24 @@ Hud::Hud(Scene* scene)
     m_coords.setCharacterSize(24);
     m_coords.setFillColor(sf::Color::White);
     m_coords.setPosition({32, DisplayHeight - 112});
+
+    //
+
+    m_weaponsTex.loadFromFile("data/weapons.png");
+
+    vec2 corner = {DisplayWidth - 128, DisplayHeight - 128};
+
+    for (int i = 0; i < 4; i++)
+    {
+        m_weapons[i].setTexture(m_weaponsTex);
+        m_weapons[i].setTextureRect({i*32,0,32,32});
+    }
+
+    m_weapons[0].setPosition(corner + vec2(32,64));
+    m_weapons[1].setPosition(corner + vec2(64,32));
+    m_weapons[2].setPosition(corner + vec2(32,0));
+    m_weapons[3].setPosition(corner + vec2(0,32));
+
 }
 
 void Hud::update(float dt)
@@ -72,6 +90,9 @@ void Hud::draw()
 
     m_coords.setString(std::to_wstring(m_playerCoords.x) + (L" ⋅ ") + std::to_wstring(m_playerCoords.y));
     Renderer::get().draw(m_coords);
+
+    for (int i = 0; i < 4; i++)
+        Renderer::get().draw(m_weapons[i]);
 }
 
 void Hud::setHeat(float level)
@@ -87,4 +108,14 @@ void Hud::setHealthPercentage(float perc)
 void Hud::setPlayerCoords(int x, int y)
 {
     m_playerCoords = {x, y};
+}
+
+void Hud::setWeapon(int weapon)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        m_weapons[i].setTextureRect({i*32, 32, 32,32});
+    }
+
+    m_weapons[weapon].setTextureRect({weapon*32, 0, 32,32});
 }

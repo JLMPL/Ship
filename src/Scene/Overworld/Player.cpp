@@ -10,6 +10,7 @@
 static constexpr float HeatRegen = 100.f;
 static constexpr float MoveHeatCost = 8.f;
 static constexpr float ShootHeatCost = 2.f;
+static constexpr float ShotgunHeatCost = 10.f;
 static constexpr float LaserHeatCost = 50.f; //per second
 
 Player::Player(Scene* scene)
@@ -106,7 +107,7 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), true);
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), true);
 
-                exertHeat(ShootHeatCost);
+                exertHeat(ShotgunHeatCost);
                 m_shootTimer.restart();
             }
             break;
@@ -121,6 +122,9 @@ void Player::shoot()
                 {
                     // printf("target %f %f\n", target.x, target.y);
                     m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), target);
+
+                    Renderer::get().shake(0.2f, 0.1f);
+                    Input.get()->rumble(0.2f, 100);
 
                     m_rayhit = {result.point.x, result.point.y};
 
@@ -156,6 +160,8 @@ void Player::update(float dt)
     if (Input.get()->isLaser())
         m_weapon = Weapon::LASER;
 
+    m_hud->setWeapon((int)m_weapon);
+
     if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
     {
         m_heat = std::max(m_heat - timer::delta * HeatRegen, 0.f);
@@ -173,7 +179,8 @@ void Player::update(float dt)
 
 void Player::draw()
 {
-    Renderer::get().setView(m_pos);
+    vec2 campos = m_pos + m_body->getLinearVelocity() * 0.2f;
+    Renderer::get().setView(campos);
 
     if (m_weapon == Weapon::LASER && Input.get()->isFire())
     {
