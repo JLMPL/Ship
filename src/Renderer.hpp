@@ -11,6 +11,10 @@ private:
 public:
     void init(sf::RenderWindow& window);
 
+    void update();
+
+    void shake(float strength, float duration);
+
     void clear();
     void display();
 
@@ -41,6 +45,14 @@ private:
     sf::RenderTexture m_sceneTarget;
     sf::RenderTexture m_uiTarget;
     sf::View m_view;
+    vec2 m_viewPos;
+
+    sf::Clock m_clock;
+    sf::Clock m_shaker;
 
     float m_zoom = 0.05f;
+
+    bool m_isShake = false;
+    float m_shakeStrength = 1.f;
+    float m_shakeDuration = 0.f;
 };

@@ -57,6 +57,8 @@ void Game::update()
 
     if (Input.get()->isMenu())
         m_window.close();
+
+    Renderer::get().update();
 }
 
 void Game::draw()

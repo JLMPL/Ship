@@ -1,5 +1,7 @@
 #include "Renderer.hpp"
 #include "Core/Config.hpp"
+#define STB_PERLIN_IMPLEMENTATION
+#include "Libs/stb_perlin.h"
 
 // static constexpr float ZoomCap = 0.07f;
 static constexpr float ZoomCap = 0.2f;
@@ -12,6 +14,37 @@ void Renderer::init(sf::RenderWindow& window)
 
     setView({0,0});
     m_view.zoom(0.05f);
+}
+
+void Renderer::update()
+{
+    if (m_isShake)
+    {
+        float tim = m_shaker.getElapsedTime().asSeconds();
+
+        if (tim > m_shakeDuration)
+            m_isShake = false;
+
+        tim += m_clock.getElapsedTime().asSeconds();
+        tim *= 100.f;
+
+        float x = stb_perlin_noise3(tim,-tim,-tim,0,0,0) * m_shakeStrength;
+        float y = stb_perlin_noise3(-tim,tim,-tim,0,0,0) * m_shakeStrength;
+
+        m_viewPos += vec2(x,y);
+    }
+
+    m_view = sf::View(m_viewPos, {DisplayWidth, DisplayHeight});
+    m_view.zoom(m_zoom);
+    m_sceneTarget.setView(m_view);
+}
+
+void Renderer::shake(float strength, float duration)
+{
+    m_isShake = true;
+    m_shakeStrength = strength;
+    m_shakeDuration = duration;
+    m_shaker.restart();
 }
 
 void Renderer::clear()
@@ -75,9 +108,7 @@ void Renderer::drawLineScaled(const vec2& a, const vec2& b, const sf::Color& col
 
 void Renderer::setView(const vec2& pos)
 {
-    m_view = sf::View(pos, {DisplayWidth, DisplayHeight});
-    m_view.zoom(m_zoom);
-    m_sceneTarget.setView(m_view);
+    m_viewPos = pos;
 }
 
 vec2 Renderer::getViewWorldPosition() const

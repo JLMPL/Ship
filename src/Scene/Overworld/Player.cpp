@@ -44,6 +44,8 @@ void Player::control()
 
     m_body->rotateTowards(m_pos + m_aim, 200 * timer::delta);
 
+    // Input.get()->rumble(Input.get()->getAcceleration() * 0.1, 20);
+
     float speed = Input.get()->getAcceleration() * 8.f;
 
     if (speed > 0)
@@ -72,6 +74,9 @@ void Player::shoot()
                 if (m_shootTimer.getElapsedTime() < sf::milliseconds(100))
                     return;
 
+                Renderer::get().shake(0.2f, 0.1f);
+                Input.get()->rumble(0.2f, 100);
+
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
 
                 exertHeat(ShootHeatCost);
@@ -82,6 +87,9 @@ void Player::shoot()
             {
                 if (m_shootTimer.getElapsedTime() < sf::seconds(0.5))
                     return;
+
+                Renderer::get().shake(0.5f, 0.1f);
+                Input.get()->rumble(1.f, 100);
 
                 vec2 side = vec2(dir.y, -dir.x) * 0.25f;
 
