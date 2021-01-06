@@ -29,9 +29,12 @@ public:
     void exertHeat(float hdiff);
     void shoot();
 
+    void addXp(int value);
+
     void setPosition(const vec2& pos) override final;
 
     void onContact(SceneObject* other) override final;
+
 private:
     RigidBody::Ref m_body = nullptr;
 
@@ -47,6 +50,9 @@ private:
     Weapon m_weapon = Weapon::BASIC;
 
     Hud* m_hud = nullptr;
+
+    int m_xp = 0;
+    int m_xpToLevel = 500;
 
     vec2 m_rayhit;
 

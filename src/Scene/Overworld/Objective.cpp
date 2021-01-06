@@ -3,6 +3,7 @@
 #include "Scene/Scene.hpp"
 #include "Random.hpp"
 #include "Drone.hpp"
+#include "Player.hpp"
 
 Objective::Objective(Scene* scene)
  : SceneObject(scene)
@@ -26,8 +27,11 @@ void Objective::generateNewObjective()
         case KILL_BANDITS:
         {
             int numBandits = rng::inRangei(3,5);
-            int x = rng::inRangei(-1000,1000);
-            int y = rng::inRangei(-1000,1000);
+            // int x = rng::inRangei(-500,500);
+            // int y = rng::inRangei(-500,500);
+
+            int x = 40;
+            int y = 0;
 
             m_rtext << sf::Color::Red <<
                 "Kill " << sf::Color::White <<
@@ -60,6 +64,7 @@ void Objective::checkCompletion()
                 m_timer.restart();
                 m_rtext.clear();
                 m_rtext << sf::Color::White << "Mission " << sf::Color::Green << "completed";
+                m_player->as<Player>()->addXp(200);
             }
         }
         break;
@@ -68,6 +73,8 @@ void Objective::checkCompletion()
 
 void Objective::ready()
 {
+    m_player = m_scene->findObject("player_ship");
+
     generateNewObjective();
 }
 

@@ -3,8 +3,10 @@
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
 #include "Bullet.hpp"
+#include "Player.hpp"
 #include "Core/Timer.hpp"
 #include <algorithm>
+#include "GameplayVars.hpp"
 
 Drone::Drone(Scene* scene)
     : SceneObject(scene)
@@ -18,6 +20,7 @@ Drone::Drone(Scene* scene)
     m_clock.restart();
 
     m_healthbar.setMaxValue(m_maxHealth);
+    m_healthbar.setValue(m_maxHealth);
 }
 
 void Drone::ready(const vec2& spawnPoint)
@@ -76,7 +79,10 @@ void Drone::damage(int value)
     m_health = std::max(0, m_health - value);
 
     if (m_health == 0)
+    {
+        m_player->as<Player>()->addXp(DroneXpValue);
         destroy();
+    }
 
     m_healthbar.setValue(m_health);
 }

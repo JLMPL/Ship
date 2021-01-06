@@ -18,7 +18,7 @@ Hud::Hud(Scene* scene)
 
     m_hp.setSize({HealthBarWidth, HealthBarHeight});
     m_hp.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
-    m_hp.setFillColor({192,192,192,255});
+    m_hp.setFillColor({192,64,32,255});
 
     m_heatBack.setSize({HealthBarWidth, 5});
     m_heatBack.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
@@ -61,6 +61,21 @@ Hud::Hud(Scene* scene)
     m_weapons[2].setPosition(corner + vec2(32,0));
     m_weapons[3].setPosition(corner + vec2(0,32));
 
+    m_xpBar.setScaled(false);
+    m_xpBar.setSize({512,24});
+    m_xpBar.setOffset({-256,0});
+    m_xpBar.setColor(sf::Color(128,0,192));
+    m_xpBar.setOutline(true);
+    m_xpBar.setPosition({DisplayWidth/2,24});
+    m_xpBar.setMaxValue(1000);
+    m_xpBar.setValue(1000);
+
+    m_xpText.setFont(m_font);
+    m_xpText.setCharacterSize(20);
+    m_xpText.setString("XP 312/500");
+    m_xpText.setPosition({DisplayWidth/2, 24});
+    m_xpText.setOutlineThickness(2);
+    m_xpText.setOutlineColor(sf::Color::Black);
 }
 
 void Hud::update(float dt)
@@ -93,6 +108,9 @@ void Hud::draw()
 
     for (int i = 0; i < 4; i++)
         Renderer::get().draw(m_weapons[i]);
+
+    m_xpBar.draw();
+    Renderer::get().draw(m_xpText);
 }
 
 void Hud::setHeat(float level)
@@ -118,4 +136,13 @@ void Hud::setWeapon(int weapon)
     }
 
     m_weapons[weapon].setTextureRect({weapon*32, 0, 32,32});
+}
+
+void Hud::setXp(int value, int max)
+{
+    m_xpBar.setValue(value);
+    m_xpBar.setMaxValue(max);
+
+    m_xpText.setString("XP " + std::to_string(value) + "/" + std::to_string(max));
+    m_xpText.setOrigin({int(m_xpText.getLocalBounds().width/2), 0});
 }

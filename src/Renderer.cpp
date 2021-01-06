@@ -9,7 +9,8 @@ static constexpr float ZoomCap = 0.2f;
 void Renderer::init(sf::RenderWindow& window)
 {
     m_window = &window;
-    m_sceneTarget.create(DisplayWidth, DisplayHeight, false);
+
+    m_sceneTarget.create(DisplayWidth, DisplayHeight);
     m_uiTarget.create(DisplayWidth, DisplayHeight, false);
 
     setView({0,0});

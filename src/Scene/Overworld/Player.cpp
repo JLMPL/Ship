@@ -6,12 +6,7 @@
 #include "Input/Input.hpp"
 #include "Drone.hpp"
 #include "Hud.hpp"
-
-static constexpr float HeatRegen = 100.f;
-static constexpr float MoveHeatCost = 8.f;
-static constexpr float ShootHeatCost = 2.f;
-static constexpr float ShotgunHeatCost = 10.f;
-static constexpr float LaserHeatCost = 50.f; //per second
+#include "GameplayVars.hpp"
 
 Player::Player(Scene* scene)
     : SceneObject(scene)
@@ -24,6 +19,7 @@ Player::Player(Scene* scene)
 void Player::ready()
 {
     m_hud = m_scene->findObject("hud")->as<Hud>();
+    m_hud->setXp(m_xp, m_xpToLevel);
 }
 
 void Player::exertHeat(float hdiff)
@@ -208,4 +204,17 @@ void Player::onContact(SceneObject* other)
     {
         m_health = std::max(0, --m_health);
     }
+}
+
+void Player::addXp(int value)
+{
+    m_xp += value;
+
+    if (m_xp >= m_xpToLevel)
+    {
+        m_xp -= m_xpToLevel;
+        m_xpToLevel *= 2;
+    }
+
+    m_hud->setXp(m_xp, m_xpToLevel);
 }

@@ -16,8 +16,16 @@ void ProgressBar::draw()
 
     m_front.setScale({scale, 1});
 
-    Renderer::get().drawScaled(m_back);
-    Renderer::get().drawScaled(m_front);
+    if (m_isScaled)
+    {
+        Renderer::get().drawScaled(m_back);
+        Renderer::get().drawScaled(m_front);
+    }
+    else
+    {
+        Renderer::get().draw(m_back);
+        Renderer::get().draw(m_front);
+    }
 }
 
 void ProgressBar::setValue(int value)
@@ -28,13 +36,12 @@ void ProgressBar::setValue(int value)
 void ProgressBar::setMaxValue(int value)
 {
     m_maxValue = value;
-    setValue(m_maxValue);
+    // setValue(m_maxValue);
 }
 
 void ProgressBar::setColor(const sf::Color& color)
 {
     m_front.setFillColor(color);
-    m_back.setOutlineColor(color);
 }
 
 void ProgressBar::setPosition(const vec2& pos)
@@ -46,4 +53,21 @@ void ProgressBar::setPosition(const vec2& pos)
 void ProgressBar::setOffset(const vec2& offset)
 {
     m_offset = offset;
+}
+
+void ProgressBar::setSize(const vec2& size)
+{
+    m_back.setSize({size.x,size.y});
+    m_front.setSize({size.x,size.y});
+}
+
+void ProgressBar::setScaled(bool value)
+{
+    m_isScaled = value;
+}
+
+void ProgressBar::setOutline(bool value)
+{
+    m_back.setOutlineThickness(value);
+    m_back.setOutlineColor(m_front.getFillColor());
 }

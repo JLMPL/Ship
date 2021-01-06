@@ -36,5 +36,7 @@ private:
     ObjectiveType m_current = OBJECTIVE_COUNT;
     std::vector<SceneObject*> m_enemies;
 
+    SceneObject* m_player = nullptr;
+
     sf::Clock m_timer;
 };

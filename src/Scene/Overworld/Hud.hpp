@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
+#include "Scene/UI/ProgressBar.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -16,6 +17,7 @@ public:
     void setHealthPercentage(float perc);
     void setPlayerCoords(int x, int y);
     void setWeapon(int weapon);
+    void setXp(int value, int max);
 
 private:
     sf::RectangleShape m_heatBack;
@@ -36,4 +38,7 @@ private:
 
     sf::Texture m_weaponsTex;
     sf::Sprite m_weapons[4];
+
+    ProgressBar m_xpBar;
+    sf::Text m_xpText;
 };
