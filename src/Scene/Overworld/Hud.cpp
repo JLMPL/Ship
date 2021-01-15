@@ -12,21 +12,19 @@ Hud::Hud(Scene* scene)
 {
     m_name = "hud";
 
-    m_hpBack.setSize({HealthBarWidth, HealthBarHeight});
-    m_hpBack.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
-    m_hpBack.setFillColor({32,32,32,255});
+    m_hpBar.setScaled(false);
+    m_hpBar.setSize({HealthBarWidth, HealthBarHeight});
+    m_hpBar.setColor({192,64,32,255});
+    m_hpBar.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
+    m_hpBar.setMaxValue(1000);
+    m_hpBar.setValue(1000);
 
-    m_hp.setSize({HealthBarWidth, HealthBarHeight});
-    m_hp.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
-    m_hp.setFillColor({192,64,32,255});
-
-    m_heatBack.setSize({HealthBarWidth, 5});
-    m_heatBack.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
-    m_heatBack.setFillColor({32,32,32,255});
-
-    m_heatRect.setSize({HealthBarWidth, 5});
-    m_heatRect.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
-    m_heatRect.setFillColor(sf::Color::White);
+    m_heatBar.setScaled(false);
+    m_heatBar.setSize({HealthBarWidth, 5});
+    m_heatBar.setColor(sf::Color::White);
+    m_heatBar.setPosition({32, DisplayHeight - (5 + 32 + HealthBarHeight + 5)});
+    m_heatBar.setMaxValue(1000);
+    m_heatBar.setValue(1000);
 
     m_font.loadFromFile("data/DejaVuSans.ttf");
 
@@ -65,41 +63,31 @@ Hud::Hud(Scene* scene)
     m_xpBar.setSize({512,24});
     m_xpBar.setOffset({-256,0});
     m_xpBar.setColor(sf::Color(128,0,192));
-    m_xpBar.setOutline(true);
+    m_xpBar.setOutline(false);
     m_xpBar.setPosition({DisplayWidth/2,24});
     m_xpBar.setMaxValue(1000);
     m_xpBar.setValue(1000);
 
     m_xpText.setFont(m_font);
     m_xpText.setCharacterSize(20);
-    m_xpText.setString("XP 312/500");
+    m_xpText.setString(L"XP 312/500");
     m_xpText.setPosition({DisplayWidth/2, 24});
-    m_xpText.setOutlineThickness(2);
-    m_xpText.setOutlineColor(sf::Color::Black);
 }
 
 void Hud::update(float dt)
 {
-    m_heatRect.setScale({1.f - (m_heat / 100.f), 1.f});
-
-    float heat1 = 1 - (m_heat / 100.f);
-    m_heatRect.setFillColor({255, heat1 * 255, heat1 * 255, 255});
+    m_heatBar.setValue(1000.f - m_heat * 10.f);
 
     if (m_heat == 100.f)
         m_overheat = true;
     if (m_heat == 0.f)
         m_overheat = false;
 
-    m_hp.setScale({m_healthPercentage, 1});
+    m_hpBar.setValue(m_healthPercentage * 1000);
 }
 
 void Hud::draw()
 {
-    Renderer::get().draw(m_hpBack);
-    Renderer::get().draw(m_hp);
-    Renderer::get().draw(m_heatBack);
-    Renderer::get().draw(m_heatRect);
-
     if (m_overheat)
         Renderer::get().draw(m_overheatText);
 
@@ -110,7 +98,11 @@ void Hud::draw()
         Renderer::get().draw(m_weapons[i]);
 
     m_xpBar.draw();
-    Renderer::get().draw(m_xpText);
+    // Renderer::get().draw(m_xpText);
+    m_xpText.draw();
+
+    m_hpBar.draw();
+    m_heatBar.draw();
 }
 
 void Hud::setHeat(float level)
@@ -143,6 +135,6 @@ void Hud::setXp(int value, int max)
     m_xpBar.setValue(value);
     m_xpBar.setMaxValue(max);
 
-    m_xpText.setString("XP " + std::to_string(value) + "/" + std::to_string(max));
-    m_xpText.setOrigin({int(m_xpText.getLocalBounds().width/2), 0});
+    m_xpText.setString(L"XP " + std::to_wstring(value) + L"/" + std::to_wstring(max));
+    // m_xpText.setOrigin({int(m_xpText.getLocalBounds().width/2), 0});
 }

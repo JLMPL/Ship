@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Renderer.hpp"
 #include "Libs/RichText/RichText.hpp"
+#include "Scene/UI/Label.hpp"
 
 enum ObjectiveType
 {
@@ -30,7 +31,7 @@ private:
 private:
     sf::Font m_font;
 
-    sfe::RichText m_rtext;
+    Label m_obj;
 
     bool m_complete = false;
     ObjectiveType m_current = OBJECTIVE_COUNT;

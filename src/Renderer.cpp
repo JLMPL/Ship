@@ -51,7 +51,7 @@ void Renderer::shake(float strength, float duration)
 void Renderer::clear()
 {
     m_window->clear();
-    m_sceneTarget.clear(sf::Color::Black);
+    m_sceneTarget.clear(sf::Color(0x222034FF));
     m_uiTarget.clear(sf::Color::Transparent);
 }
 

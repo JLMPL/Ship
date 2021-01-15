@@ -10,15 +10,14 @@ Objective::Objective(Scene* scene)
 {
     m_font.loadFromFile("data/DejaVuSans.ttf");
 
-    m_rtext.setFont(m_font);
-    m_rtext.setCharacterSize(20);
-    m_rtext.setPosition({24,24});
+    m_obj.setFont(m_font);
+    m_obj.setCharacterSize(20);
+    m_obj.setPosition({24,24});
 }
 
 void Objective::generateNewObjective()
 {
     m_complete = false;
-    m_rtext.clear();
     // m_current = (ObjectiveType)rng::inRangei(0, 2);
     m_current = ObjectiveType::KILL_BANDITS;
 
@@ -33,11 +32,9 @@ void Objective::generateNewObjective()
             int x = 40;
             int y = 0;
 
-            m_rtext << sf::Color::Red <<
-                "Kill " << sf::Color::White <<
-                std::to_string(numBandits) << " bandits " <<
-                sf::Color::Yellow << "(" << std::to_string(x) << ", " <<
-                std::to_string(y) << ")";
+            std::wstring text = L"$2Kill $0" + std::to_wstring(numBandits) + L" bandits $5(" +
+                std::to_wstring(x) + L", " + std::to_wstring(y) + L")";
+            m_obj.setString(text);
 
             for (int i = 0; i < numBandits; i++)
             {
@@ -62,8 +59,7 @@ void Objective::checkCompletion()
             {
                 m_complete = true;
                 m_timer.restart();
-                m_rtext.clear();
-                m_rtext << sf::Color::White << "Mission " << sf::Color::Green << "completed";
+                m_obj.setString(L"Mission $3completed");
                 m_player->as<Player>()->addXp(200);
             }
         }
@@ -99,5 +95,5 @@ void Objective::update(float dt)
 
 void Objective::draw()
 {
-    Renderer::get().draw(m_rtext);
+    m_obj.draw();
 }

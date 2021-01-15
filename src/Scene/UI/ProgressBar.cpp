@@ -46,7 +46,9 @@ void ProgressBar::setColor(const sf::Color& color)
 
 void ProgressBar::setPosition(const vec2& pos)
 {
-    m_back.setPosition(pos + m_offset);
+    vec2 drop = (m_isScaled) ? vec2(0,0) : vec2(3,3);
+
+    m_back.setPosition(pos + m_offset + drop);
     m_front.setPosition(pos + m_offset);
 }
 

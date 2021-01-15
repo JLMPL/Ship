@@ -28,6 +28,7 @@ private:
 
     int m_maxHealth = 100;
     int m_health = 100;
+    bool m_isDead = false;
 
     ProgressBar m_healthbar;
 

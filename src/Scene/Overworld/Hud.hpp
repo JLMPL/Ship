@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
 #include "Scene/UI/ProgressBar.hpp"
+#include "Scene/UI/Label.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -20,10 +21,8 @@ public:
     void setXp(int value, int max);
 
 private:
-    sf::RectangleShape m_heatBack;
-    sf::RectangleShape m_heatRect;
-    sf::RectangleShape m_hpBack;
-    sf::RectangleShape m_hp;
+    ProgressBar m_heatBar;
+    ProgressBar m_hpBar;
 
     sf::Font m_font;
 
@@ -40,5 +39,5 @@ private:
     sf::Sprite m_weapons[4];
 
     ProgressBar m_xpBar;
-    sf::Text m_xpText;
+    Label m_xpText;
 };

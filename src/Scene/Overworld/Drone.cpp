@@ -80,7 +80,11 @@ void Drone::damage(int value)
 
     if (m_health == 0)
     {
-        m_player->as<Player>()->addXp(DroneXpValue);
+        if (!m_isDead)
+        {
+            m_player->as<Player>()->addXp(DroneXpValue);
+            m_isDead = false;
+        }
         destroy();
     }
 
