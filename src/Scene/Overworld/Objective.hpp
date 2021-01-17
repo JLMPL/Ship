@@ -39,5 +39,5 @@ private:
 
     SceneObject* m_player = nullptr;
 
-    sf::Clock m_timer;
+    sf::Time m_timer;
 };

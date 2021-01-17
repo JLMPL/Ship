@@ -34,9 +34,19 @@ void Scene::update(float dt)
     spawnAndDestroyObjects();
 
     for (auto& ent : m_objects)
-        ent->update(dt);
+    {
+        if (!m_isPaused)
+        {
+            ent->update(dt);
+        }
+        if (m_isPaused && !ent->isPausable())
+        {
+            ent->update(dt);
+        }
+    }
 
-    m_physicsWorld.update(dt);
+    if (!m_isPaused)
+        m_physicsWorld.update(dt);
 }
 
 void Scene::draw()
@@ -61,4 +71,9 @@ SceneObject* Scene::findObject(const std::string& name)
 PhysicsWorld* Scene::getPhysicsWorld()
 {
     return &m_physicsWorld;
+}
+
+void Scene::setPause(bool value)
+{
+    m_isPaused = value;
 }

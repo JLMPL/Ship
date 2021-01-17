@@ -1,4 +1,4 @@
 #pragma once
 
-constexpr int DisplayWidth = 1280;
-constexpr int DisplayHeight = 720;
+extern int DisplayWidth;
+extern int DisplayHeight;

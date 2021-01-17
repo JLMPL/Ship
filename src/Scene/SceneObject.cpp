@@ -20,7 +20,12 @@ void SceneObject::destroy()
     m_destroyed = true;
 }
 
-bool SceneObject::isDestroyed()
+bool SceneObject::isDestroyed() const
 {
     return m_destroyed;
+}
+
+bool SceneObject::isPausable() const
+{
+    return m_pausable;
 }

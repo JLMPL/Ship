@@ -39,8 +39,8 @@ private:
     RigidBody::Ref m_body = nullptr;
 
     float m_heat = 0.f;
-    sf::Clock m_heatTimer;
-    sf::Clock m_shootTimer;
+    sf::Time m_heatTimer;
+    sf::Time m_shootTimer;
 
     int m_health = 100;
     int m_maxHealth = 100;

@@ -6,6 +6,7 @@
 #include "Overworld/Hud.hpp"
 #include "Overworld/Objective.hpp"
 #include "StarBackground.hpp"
+#include "Overworld/PauseMenu.hpp"
 
 Overworld::Overworld(Game* game)
  : Scene(game)
@@ -29,6 +30,8 @@ Overworld::Overworld(Game* game)
 
     m_objects.emplace_back(new Objective(this));
     m_objects.emplace_back(new Hud(this));
+
+    m_objects.emplace_back(new PauseMenu(this));
 
     ready();
 }

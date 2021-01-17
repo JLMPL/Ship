@@ -17,5 +17,5 @@ public:
 
 private:
     RigidBody::Ref m_body = nullptr;
-    sf::Clock m_clock;
+    sf::Time m_clock;
 };

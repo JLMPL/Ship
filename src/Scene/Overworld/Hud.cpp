@@ -7,6 +7,8 @@
 static constexpr float HealthBarWidth = 250.f;
 static constexpr float HealthBarHeight = 40.f;
 
+static constexpr float XPBarWidth = 300.f;
+
 Hud::Hud(Scene* scene)
     : SceneObject(scene)
 {
@@ -60,8 +62,8 @@ Hud::Hud(Scene* scene)
     m_weapons[3].setPosition(corner + vec2(0,32));
 
     m_xpBar.setScaled(false);
-    m_xpBar.setSize({512,24});
-    m_xpBar.setOffset({-256,0});
+    m_xpBar.setSize({XPBarWidth,24});
+    m_xpBar.setOffset({-XPBarWidth/2,0});
     m_xpBar.setColor(sf::Color(128,0,192));
     m_xpBar.setOutline(false);
     m_xpBar.setPosition({DisplayWidth/2,24});
@@ -69,9 +71,9 @@ Hud::Hud(Scene* scene)
     m_xpBar.setValue(1000);
 
     m_xpText.setFont(m_font);
-    m_xpText.setCharacterSize(20);
+    m_xpText.setCharacterSize(18);
     m_xpText.setString(L"XP 312/500");
-    m_xpText.setPosition({DisplayWidth/2, 24});
+    m_xpText.setPosition({(DisplayWidth/2 - XPBarWidth/2) + 4, 24});
 }
 
 void Hud::update(float dt)

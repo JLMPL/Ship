@@ -35,10 +35,14 @@ public:
 
     PhysicsWorld* getPhysicsWorld();
 
+    void setPause(bool value);
+
 protected:
     Game* m_game = nullptr;
     PhysicsWorld m_physicsWorld;
 
     std::vector<SceneObject*> m_spawnQueue;
     std::vector<SceneObject::Ptr> m_objects;
+
+    bool m_isPaused = false;
 };

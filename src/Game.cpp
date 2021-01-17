@@ -10,9 +10,9 @@ static constexpr float FrameDuration = 1.f/60.f;
 
 Game::Game()
 {
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 0;
-    m_window.create(sf::VideoMode(DisplayWidth, DisplayHeight), "Starry Stealers", sf::Style::Close, settings);
+    DisplayWidth = sf::VideoMode::getDesktopMode().width;
+    DisplayHeight = sf::VideoMode::getDesktopMode().height;
+    m_window.create(sf::VideoMode::getDesktopMode(), "Starry Stealers", sf::Style::Fullscreen);
     m_window.setMouseCursorGrabbed(true);
     m_window.setMouseCursorVisible(false);
 
@@ -34,6 +34,16 @@ void Game::processEvents()
     {
         if (m_event.type == sf::Event::Closed)
             m_window.close();
+        if (m_event.type == sf::Event::KeyPressed &&
+            m_event.key.code == sf::Keyboard::F8)
+        {
+            m_scene->setPause(true);
+        }
+        if (m_event.type == sf::Event::KeyPressed &&
+            m_event.key.code == sf::Keyboard::F9)
+        {
+            m_scene->setPause(false);
+        }
     }
 }
 
@@ -55,7 +65,7 @@ void Game::update()
     if (!m_scene)
         m_window.close();
 
-    if (Input.get()->isMenu())
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         m_window.close();
 
     Renderer::get().update();

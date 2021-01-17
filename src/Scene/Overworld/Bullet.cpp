@@ -12,17 +12,19 @@ void Bullet::ready(const vec2& pos, const vec2& dir, bool player)
 {
     m_body = m_scene->getPhysicsWorld()->spawnBullet(pos, dir * 10.f, player);
     m_body->setUserData((void*)this);
-    m_clock.restart();
+    m_clock = sf::seconds(0);
 
     m_name = (player) ? "player_bullet" : "enemy_bullet";
 }
 
 void Bullet::update(float dt)
 {
+    m_clock += sf::seconds(0);
+
     if (m_body)
         m_pos = m_body->getPosition();
 
-    if (m_clock.getElapsedTime() > sf::seconds(1))
+    if (m_clock > sf::seconds(1))
         destroy();
 }
 

@@ -32,13 +32,16 @@ public:
     const std::string& getName() const;
 
     void destroy();
-    bool isDestroyed();
+    bool isDestroyed() const;
+
+    bool isPausable() const;
 
 protected:
     Scene* m_scene = nullptr;
     vec2 m_pos;
 
     bool m_destroyed = false;
+    bool m_pausable = true;
 
     std::string m_name = "[blank]";
 };

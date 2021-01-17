@@ -29,7 +29,7 @@ void Player::exertHeat(float hdiff)
     if (m_heat >= 100.f)
         m_overheat = true;
 
-    m_heatTimer.restart();
+    m_heatTimer = sf::seconds(0);
 }
 
 void Player::control()
@@ -68,7 +68,7 @@ void Player::shoot()
         {
             case Weapon::BASIC:
             {
-                if (m_shootTimer.getElapsedTime() < sf::milliseconds(100))
+                if (m_shootTimer < sf::milliseconds(100))
                     return;
 
                 Renderer::get().shake(0.2f, 0.1f);
@@ -77,12 +77,12 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
 
                 exertHeat(ShootHeatCost);
-                m_shootTimer.restart();
+                m_shootTimer = sf::seconds(0);
             }
             break;
             case Weapon::SHOTGUN:
             {
-                if (m_shootTimer.getElapsedTime() < sf::seconds(0.5))
+                if (m_shootTimer < sf::seconds(0.5))
                     return;
 
                 Renderer::get().shake(0.5f, 0.1f);
@@ -104,7 +104,7 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), true);
 
                 exertHeat(ShotgunHeatCost);
-                m_shootTimer.restart();
+                m_shootTimer = sf::seconds(0);
             }
             break;
             case Weapon::LASER:
@@ -124,7 +124,7 @@ void Player::shoot()
 
                     m_rayhit = {result.point.x, result.point.y};
 
-                    if (m_shootTimer.getElapsedTime() > sf::milliseconds(25) && result.hasHit)
+                    if (m_shootTimer > sf::milliseconds(25) && result.hasHit)
                     {
                         if (result.object)
                         if (result.object->getName() == "drone")
@@ -133,7 +133,7 @@ void Player::shoot()
                             drone->damage(7);
                         }
 
-                        m_shootTimer.restart();
+                        m_shootTimer = sf::seconds(0);
                     }
 
                     exertHeat(timer::delta * 50);
@@ -146,6 +146,9 @@ void Player::shoot()
 
 void Player::update(float dt)
 {
+    m_heatTimer += sf::seconds(dt);
+    m_shootTimer += sf::seconds(dt);
+
     control();
     shoot();
 
@@ -158,7 +161,7 @@ void Player::update(float dt)
 
     m_hud->setWeapon((int)m_weapon);
 
-    if (m_heatTimer.getElapsedTime() > sf::seconds(0.5))
+    if (m_heatTimer > sf::seconds(0.5))
     {
         m_heat = std::max(m_heat - timer::delta * HeatRegen, 0.f);
 

@@ -32,6 +32,6 @@ private:
 
     ProgressBar m_healthbar;
 
-    sf::Clock m_clock;
+    sf::Time m_clock;
     vec2 m_spawnPoint;
 };

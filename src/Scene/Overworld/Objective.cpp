@@ -58,7 +58,7 @@ void Objective::checkCompletion()
             if (m_enemies.size() == 0)
             {
                 m_complete = true;
-                m_timer.restart();
+                m_timer = sf::seconds(0);
                 m_obj.setString(L"Mission $3completed");
                 m_player->as<Player>()->addXp(200);
             }
@@ -76,9 +76,11 @@ void Objective::ready()
 
 void Objective::update(float dt)
 {
+    m_timer += sf::seconds(dt);
+
     checkCompletion();
 
-    if (m_complete && m_timer.getElapsedTime() > sf::seconds(3))
+    if (m_complete && m_timer > sf::seconds(3))
     {
         generateNewObjective();
     }

@@ -17,7 +17,7 @@ Drone::Drone(Scene* scene)
     m_name = "drone";
 
     m_player = m_scene->findObject("player_ship");
-    m_clock.restart();
+    m_clock = sf::seconds(0);
 
     m_healthbar.setMaxValue(m_maxHealth);
     m_healthbar.setValue(m_maxHealth);
@@ -30,16 +30,18 @@ void Drone::ready(const vec2& spawnPoint)
 
 void Drone::update(float dt)
 {
+    m_clock += sf::seconds(dt);
+
     vec2 towards = m_player->getPosition();
     if (math::distance(m_body->getPosition(), m_player->getPosition()) < 25.f)
     {
-        if (m_clock.getElapsedTime() > sf::seconds(1))
+        if (m_clock > sf::seconds(1))
         {
             vec2 pos = m_body->getPosition();
             vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
             m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), false);
 
-            m_clock.restart();
+            m_clock = sf::seconds(0);
         }
     }
     else
