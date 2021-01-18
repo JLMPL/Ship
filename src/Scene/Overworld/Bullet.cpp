@@ -8,18 +8,20 @@ Bullet::Bullet(Scene* scene)
 {
 }
 
-void Bullet::ready(const vec2& pos, const vec2& dir, bool player)
+void Bullet::ready(const vec2& pos, const vec2& dir, int damage, bool player)
 {
     m_body = m_scene->getPhysicsWorld()->spawnBullet(pos, dir * 10.f, player);
     m_body->setUserData((void*)this);
     m_clock = sf::seconds(0);
+
+    m_damage = damage;
 
     m_name = (player) ? "player_bullet" : "enemy_bullet";
 }
 
 void Bullet::update(float dt)
 {
-    m_clock += sf::seconds(0);
+    m_clock += sf::seconds(dt);
 
     if (m_body)
         m_pos = m_body->getPosition();
@@ -37,4 +39,9 @@ void Bullet::onContact(SceneObject* other)
 {
     if (other)
         destroy();
+}
+
+int Bullet::getDamage() const
+{
+    return m_damage;
 }

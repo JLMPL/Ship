@@ -74,7 +74,7 @@ void Player::shoot()
                 Renderer::get().shake(0.2f, 0.1f);
                 Input.get()->rumble(0.2f, 100);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 20, true);
 
                 exertHeat(ShootHeatCost);
                 m_shootTimer = sf::seconds(0);
@@ -90,18 +90,18 @@ void Player::shoot()
 
                 vec2 side = vec2(dir.y, -dir.x) * 0.25f;
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, 10, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), 10, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), 10, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), 10, true);
 
                 exertHeat(ShotgunHeatCost);
                 m_shootTimer = sf::seconds(0);
@@ -205,7 +205,8 @@ void Player::onContact(SceneObject* other)
 
     if (other->getName() == "enemy_bullet")
     {
-        m_health = std::max(0, --m_health);
+        int dmg = other->as<Bullet>()->getDamage();
+        m_health = std::max(0, m_health - dmg);
     }
 }
 
