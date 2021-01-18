@@ -7,6 +7,7 @@
 #include "Drone.hpp"
 #include "Hud.hpp"
 #include "GameplayVars.hpp"
+#include "Scene/Tutorial.hpp"
 
 Player::Player(Scene* scene)
     : SceneObject(scene)
@@ -20,6 +21,9 @@ void Player::ready()
 {
     m_hud = m_scene->findObject("hud")->as<Hud>();
     m_hud->setXp(m_xp, m_xpToLevel);
+
+    auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+    tut->show(TUTORIAL_HEALTH);
 }
 
 void Player::exertHeat(float hdiff)
@@ -74,7 +78,7 @@ void Player::shoot()
                 Renderer::get().shake(0.2f, 0.1f);
                 Input.get()->rumble(0.2f, 100);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 20, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), BaseDamage, true);
 
                 exertHeat(ShootHeatCost);
                 m_shootTimer = sf::seconds(0);
@@ -90,18 +94,18 @@ void Player::shoot()
 
                 vec2 side = vec2(dir.y, -dir.x) * 0.25f;
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 10, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, 10, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), 10, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), 10, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), 10, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), 10, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), ShotgunDamage, true);
 
                 exertHeat(ShotgunHeatCost);
                 m_shootTimer = sf::seconds(0);
@@ -112,11 +116,10 @@ void Player::shoot()
                 RaycastCallback result;
                 // m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), Renderer::get().getGlobalMousePosition());
 
-                vec2 target = m_pos + (m_aim * 100.f);
+                vec2 target = m_pos + m_aim;
 
                 if (!isnan(target.x) and !isnan(target.y))
                 {
-                    // printf("target %f %f\n", target.x, target.y);
                     m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), target);
 
                     Renderer::get().shake(0.2f, 0.1f);
@@ -130,13 +133,13 @@ void Player::shoot()
                         if (result.object->getName() == "drone")
                         {
                             auto drone = result.object->as<Drone>();
-                            drone->damage(7);
+                            drone->damage(LaserDamage);
                         }
 
                         m_shootTimer = sf::seconds(0);
                     }
 
-                    exertHeat(timer::delta * 50);
+                    exertHeat(timer::delta * LaserHeatCost);
                 }
             }
             break;
@@ -186,7 +189,7 @@ void Player::draw()
         Renderer::get().drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
         Renderer::get().drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
 
-        Renderer::get().drawLineScaled(m_pos, m_pos + (m_aim * 100.f), sf::Color::Red);
+        Renderer::get().drawLineScaled(m_pos, m_pos + (m_aim), sf::Color::Red);
     }
 
     Renderer::get().drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);

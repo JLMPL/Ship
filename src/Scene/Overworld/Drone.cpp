@@ -39,7 +39,7 @@ void Drone::update(float dt)
         {
             vec2 pos = m_body->getPosition();
             vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
-            m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 1, false);
+            m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), DroneDamage, false);
 
             m_clock = sf::seconds(0);
         }
