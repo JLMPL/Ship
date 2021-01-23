@@ -23,7 +23,7 @@ void Player::ready()
     m_hud->setXp(m_xp, m_xpToLevel);
 
     auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
-    tut->show(TUTORIAL_HEALTH);
+    tut->show(TUTORIAL_OBJECTIVE);
 }
 
 void Player::exertHeat(float hdiff)
@@ -210,6 +210,9 @@ void Player::onContact(SceneObject* other)
     {
         int dmg = other->as<Bullet>()->getDamage();
         m_health = std::max(0, m_health - dmg);
+
+        auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+        tut->show(TUTORIAL_HEALTH);
     }
 }
 
@@ -224,4 +227,8 @@ void Player::addXp(int value)
     }
 
     m_hud->setXp(m_xp, m_xpToLevel);
+    m_health = std::min(m_maxHealth, m_health + 1);
+
+    auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+    tut->show(TUTORIAL_XP);
 }

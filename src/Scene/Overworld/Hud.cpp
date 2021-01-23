@@ -41,7 +41,7 @@ Hud::Hud(Scene* scene)
 
     m_coords.setFont(m_font);
     m_coords.setCharacterSize(24);
-    m_coords.setFillColor(sf::Color::White);
+    // m_coords.setFillColor(sf::Color::White);
     m_coords.setPosition({32, DisplayHeight - 112});
 
     //
@@ -93,14 +93,13 @@ void Hud::draw()
     if (m_overheat)
         Renderer::get().draw(m_overheatText);
 
-    m_coords.setString(std::to_wstring(m_playerCoords.x) + (L" ⋅ ") + std::to_wstring(m_playerCoords.y));
-    Renderer::get().draw(m_coords);
+    m_coords.setString((L"$5") + std::to_wstring(m_playerCoords.x) + (L"$0 ⋅ $5") + std::to_wstring(m_playerCoords.y));
+    m_coords.draw();
 
     for (int i = 0; i < 4; i++)
         Renderer::get().draw(m_weapons[i]);
 
     m_xpBar.draw();
-    // Renderer::get().draw(m_xpText);
     m_xpText.draw();
 
     m_hpBar.draw();

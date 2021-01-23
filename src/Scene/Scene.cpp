@@ -3,7 +3,6 @@
 Scene::Scene(Game* game)
  : m_game(game)
 {
-
 }
 
 void Scene::ready()

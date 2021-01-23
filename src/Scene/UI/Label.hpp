@@ -8,6 +8,7 @@
 #define LB_GREEN  (L"$3")
 #define LB_BLUE   (L"$4")
 #define LB_YELLOW (L"$5")
+#define LB_PURPLE (L"$6")
 
 class Label
 {
@@ -17,6 +18,7 @@ public:
     void setString(const std::wstring& text);
     void setPosition(const vec2& pos);
     void setOrigin(const vec2& origin);
+    vec2 getSize() const;
 
     void draw();
     void clear();

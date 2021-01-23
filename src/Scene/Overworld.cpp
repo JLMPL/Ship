@@ -38,18 +38,3 @@ Overworld::Overworld(Game* game)
 
     ready();
 }
-
-// void Overworld::ready()
-// {
-
-// }
-
-// void Overworld::update(float dt)
-// {
-
-// }
-
-// void Overworld::draw()
-// {
-
-// }

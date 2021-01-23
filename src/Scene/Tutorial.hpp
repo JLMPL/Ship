@@ -7,7 +7,9 @@ enum TutorialType
 {
     TUTORIAL_HEALTH,
     TUTORIAL_OBJECTIVE,
-    TUTORIAL_XP
+    TUTORIAL_XP,
+
+    TUTORIAL_COUNT
 };
 
 class Tutorial : public SceneObject
@@ -25,5 +27,9 @@ private:
     sf::FloatRect m_highlight;
     sf::Font m_font;
     Label m_text;
+
+    Label m_continue;
+
+    bool m_viewedAlready[TUTORIAL_COUNT] = {false};
     bool m_visible = false;
 };

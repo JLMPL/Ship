@@ -13,6 +13,8 @@ public:
     bool isShotgun() override final;
     bool isLaser() override final;
 
+    bool isConfirm() override final;
+
     bool isMenu() override final;
     bool isFire() override final;
 

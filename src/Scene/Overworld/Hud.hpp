@@ -33,7 +33,8 @@ private:
     float m_healthPercentage = 1.f;
     vec2i m_playerCoords = {0,0};
 
-    sf::Text m_coords;
+    // sf::Text m_coords;
+    Label m_coords;
 
     sf::Texture m_weaponsTex;
     sf::Sprite m_weapons[4];

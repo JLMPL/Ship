@@ -82,17 +82,17 @@ vec2 InputController::getRightStick()
 
 bool InputController::isBaseWeapon()
 {
-    return isButton(BUTTON_A);
+    return isButton(BUTTON_DPAD_DOWN);
 }
 
 bool InputController::isShotgun()
 {
-    return isButton(BUTTON_B);
+    return isButton(BUTTON_DPAD_RIGHT);
 }
 
 bool InputController::isLaser()
 {
-    return isButton(BUTTON_Y);
+    return isButton(BUTTON_DPAD_UP);
 }
 
 bool InputController::isMenu()
@@ -104,6 +104,11 @@ bool InputController::isMenu()
 bool InputController::isFire()
 {
     return isButton(BUTTON_RSHOULDER);
+}
+
+bool InputController::isConfirm()
+{
+    return isButton(BUTTON_A);
 }
 
 vec2 InputController::getCursorPosition()

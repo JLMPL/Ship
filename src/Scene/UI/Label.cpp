@@ -44,13 +44,16 @@ void Label::setString(const std::wstring& text)
                     m_front << sf::Color::Red;
                     break;
                 case '3':
-                    m_front << sf::Color::Green;
+                    m_front << sf::Color(0,192,0);
                     break;
                 case '4':
                     m_front << sf::Color::Blue;
                     break;
                 case '5':
                     m_front << sf::Color::Yellow;
+                    break;
+                case '6':
+                    m_front << sf::Color(128,0,192);
                     break;
                 default: break;
             }
@@ -70,8 +73,9 @@ void Label::setString(const std::wstring& text)
 
 void Label::setPosition(const vec2& pos)
 {
-    m_front.setPosition(pos);
-    m_shadow.setPosition(pos + vec2(2,2));
+    vec2 posi(int(pos.x), int(pos.y));
+    m_front.setPosition(posi);
+    m_shadow.setPosition(posi + vec2(2,2));
 }
 
 void Label::draw()
@@ -88,6 +92,12 @@ void Label::clear()
 
 void Label::setOrigin(const vec2& origin)
 {
-    m_front.setOrigin(origin);
-    m_shadow.setOrigin(origin);
+    vec2 origini(int(origin.x), int(origin.y));
+    m_front.setOrigin(origini);
+    m_shadow.setOrigin(origini);
+}
+
+vec2 Label::getSize() const
+{
+    return {m_front.getLocalBounds().width, m_front.getLocalBounds().height};
 }

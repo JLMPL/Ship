@@ -40,6 +40,11 @@ bool InputKeyboard::isFire()
     return sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 
+bool InputKeyboard::isConfirm()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Return);
+}
+
 vec2 InputKeyboard::getCursorPosition()
 {
     return m_cursor;

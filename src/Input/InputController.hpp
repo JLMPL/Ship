@@ -42,6 +42,7 @@ public:
 
     bool isMenu() override final;
     bool isFire() override final;
+    bool isConfirm() override final;
 
     vec2 getCursorPosition() override final;
     float getAcceleration() override final;
