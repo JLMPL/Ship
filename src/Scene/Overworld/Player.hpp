@@ -2,7 +2,8 @@
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
 #include "Core/Timer.hpp"
-#include <SFML/System/Clock.hpp>
+#include "Visual/Mesh.hpp"
+#include <SFML/System/Time.hpp>
 
 class Hud;
 
@@ -57,5 +58,7 @@ private:
     vec2 m_rayhit;
 
     vec2 m_aim;
+
+    Mesh m_mesh;
 
 };

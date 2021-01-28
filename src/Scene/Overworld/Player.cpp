@@ -15,6 +15,8 @@ Player::Player(Scene* scene)
     m_name = "player_ship";
     m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true);
     m_body->setUserData(this);
+
+    m_mesh.loadFromFile("data/player.obj");
 }
 
 void Player::ready()
@@ -177,6 +179,11 @@ void Player::update(float dt)
     m_hud->setHealthPercentage(float(m_health) / float(m_maxHealth));
 
     m_pos = m_body->getPosition();
+
+    m_mesh.setPosition(m_pos);
+    m_mesh.setOffset(vec2(0, 0.2));
+    m_mesh.setRotation(m_body->getAngle() + M_PI/2);
+    m_mesh.setScale(0.7f);
 }
 
 void Player::draw()
@@ -195,6 +202,7 @@ void Player::draw()
     Renderer::get().drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
     Renderer::get().drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
 
+    m_mesh.draw();
 }
 
 void Player::setPosition(const vec2& pos)
