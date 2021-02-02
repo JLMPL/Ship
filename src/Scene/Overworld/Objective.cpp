@@ -3,6 +3,7 @@
 #include "Scene/Scene.hpp"
 #include "Random.hpp"
 #include "Drone.hpp"
+#include "Merchant.hpp"
 #include "Player.hpp"
 
 Objective::Objective(Scene* scene)
@@ -18,8 +19,8 @@ Objective::Objective(Scene* scene)
 void Objective::generateNewObjective()
 {
     m_complete = false;
-    // m_current = (ObjectiveType)rng::inRangei(0, 2);
-    m_current = ObjectiveType::KILL_BANDITS;
+    m_current = (ObjectiveType)rng::inRangei(0, 1);
+    // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
     {
@@ -44,6 +45,16 @@ void Objective::generateNewObjective()
             }
         }
         break;
+        case ROB_MERCHANT:
+        {
+            std::wstring text = L"$4Rob $0Merchant";
+            m_obj.setString(text);
+
+            m_enemies.push_back(m_scene->spawnObject<Merchant>(vec2(40,0)));
+            Merchant* mr = (Merchant*)m_enemies.back();
+            mr->setPosition({40,0});
+        }
+        break;
     }
 }
 
@@ -58,12 +69,25 @@ void Objective::checkCompletion()
             if (m_enemies.size() == 0)
             {
                 m_complete = true;
-                m_timer = sf::seconds(0);
-                m_obj.setString(L"Mission $3completed");
                 m_player->as<Player>()->addXp(200);
             }
         }
         break;
+        case ROB_MERCHANT:
+        {
+            if (m_enemies.size() == 0)
+            {
+                m_complete = true;
+                m_player->as<Player>()->addXp(500);
+            }
+        }
+        break;
+    }
+
+    if (m_complete)
+    {
+        m_timer = sf::seconds(0);
+        m_obj.setString(L"Mission $3completed");
     }
 }
 
@@ -83,6 +107,15 @@ void Objective::update(float dt)
     if (m_complete && m_timer > sf::seconds(3))
     {
         generateNewObjective();
+    }
+
+    if (m_current == ROB_MERCHANT && !m_complete)
+    {
+        Merchant* mr = (Merchant*)m_enemies.back();
+        vec2 pos = mr->getPosition();
+        std::wstring text = L"$4Rob $0Merchant $5(" +
+            std::to_wstring(int(pos.x)) + L", " + std::to_wstring(int(pos.y)) + L")";
+        m_obj.setString(text);
     }
 
     if (!m_enemies.empty())
