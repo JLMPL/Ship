@@ -3,6 +3,7 @@
 #include "Physics/RigidBody.hpp"
 #include "Scene/UI/ProgressBar.hpp"
 #include <SFML/System/Clock.hpp>
+#include "Visual/Mesh.hpp"
 
 class Drone : public SceneObject
 {
@@ -34,4 +35,6 @@ private:
 
     sf::Time m_clock;
     vec2 m_spawnPoint;
+
+    Mesh m_mesh;
 };

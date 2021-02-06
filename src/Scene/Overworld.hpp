@@ -12,5 +12,4 @@ public:
     // void draw() override final;
 
 private:
-    std::vector<StaticBody::Ref> m_planets;
 };

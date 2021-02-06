@@ -2,6 +2,7 @@
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
 #include "Scene/UI/ProgressBar.hpp"
+#include "Visual/Mesh.hpp"
 #include <SFML/System/Clock.hpp>
 
 class Merchant : public SceneObject
@@ -33,4 +34,5 @@ private:
     ProgressBar m_healthbar;
 
     vec2 m_spawnPoint;
+    Mesh m_mesh;
 };

@@ -3,28 +3,21 @@
 #include <fstream>
 #include <cmath>
 
-enum AllowedColors
-{
-    ACOLOR_WHITE,
-    ACOLOR_LIGHT_GRAY,
-    ACOLOR_GRAY,
-    ACOLOR_DARK_GRAY,
-
-    ACOLOR_COUNT
-};
-
-sf::Color colorLookup[ACOLOR_COUNT + 1] =
-{
-    sf::Color(0xffffffff),//ACOLOR_WHITE
-    sf::Color(0xC0C0C0ff),//ACOLOR_LIGHT_GRAY
-    sf::Color(0x808080ff),//ACOLOR_GRAY
-    sf::Color(0x404040ff),//ACOLOR_DARK_GRAY
-    sf::Color(0xff00ffff) //ERROR_COLOR
+std::map<std::string, sf::Color> lookup = {
+    {"White",     sf::Color(0xffffffff)},
+    {"LightGray", sf::Color(0xC0C0C0ff)},
+    {"Gray",      sf::Color(0x808080ff)},
+    {"DarkGray",  sf::Color(0x404040ff)},
+    {"Blue",      sf::Color(0x0000ffff)},
+    {"DarkBlue",  sf::Color(0x000080ff)},
+    {"Red",       sf::Color(0xff0000ff)},
+    {"DarkRed",   sf::Color(0x800000ff)},
+    {"Error",     sf::Color(0xff00ffff)}
 };
 
 struct Triangle
 {
-    int color = ACOLOR_COUNT;
+    sf::Color color;
     int index[3] = {0};
 };
 
@@ -38,7 +31,7 @@ void Mesh::loadFromFile(const std::string& path)
     if (!file.good())
         printf("Error: could not load %s\n", path.c_str());
 
-    int currentColor = ACOLOR_COUNT;
+    sf::Color currentColor = lookup["Error"];
 
     while (!file.eof())
     {
@@ -57,14 +50,10 @@ void Mesh::loadFromFile(const std::string& path)
         {
             std::string color = line.substr(7, line.size()-7);
 
-            if (color == "White")
-                currentColor = ACOLOR_WHITE;
-            else if (color == "Gray")
-                currentColor = ACOLOR_GRAY;
-            else if (color == "LightGray")
-                currentColor = ACOLOR_LIGHT_GRAY;
-            else if (color == "DarkGray")
-                currentColor = ACOLOR_DARK_GRAY;
+            if (lookup.find(color) != lookup.end())
+                currentColor = lookup[color];
+            else
+                currentColor = lookup["Error"];
         }
 
         if (line[0] == 'f')
@@ -79,13 +68,13 @@ void Mesh::loadFromFile(const std::string& path)
 
     for (auto& tri : tris)
     {
-        m_verts.push_back(sf::Vertex(positions[tri.index[0]], colorLookup[tri.color]));
-        m_verts.push_back(sf::Vertex(positions[tri.index[1]], colorLookup[tri.color]));
-        m_verts.push_back(sf::Vertex(positions[tri.index[2]], colorLookup[tri.color]));
+        m_verts.push_back(sf::Vertex(positions[tri.index[0]], tri.color));
+        m_verts.push_back(sf::Vertex(positions[tri.index[1]], tri.color));
+        m_verts.push_back(sf::Vertex(positions[tri.index[2]], tri.color));
     }
 
-    for (auto& vert : m_verts)
-        printf("sf::v %f %f\n", vert.position.x, vert.position.y);
+    // for (auto& vert : m_verts)
+    //     printf("sf::v %f %f\n", vert.position.x, vert.position.y);
 }
 
 void Mesh::setPosition(const vec2& pos)

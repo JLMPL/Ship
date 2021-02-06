@@ -53,7 +53,7 @@ void Scene::draw()
     for (auto& ent : m_objects)
         ent->draw();
 
-    m_physicsWorld.draw();
+    // m_physicsWorld.draw();
 }
 
 SceneObject* Scene::findObject(const std::string& name)

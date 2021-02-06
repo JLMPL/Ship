@@ -20,6 +20,8 @@ Merchant::Merchant(Scene* scene)
 
     m_healthbar.setMaxValue(m_maxHealth);
     m_healthbar.setValue(m_maxHealth);
+
+    m_mesh.loadFromFile("data/merchant.obj");
 }
 
 void Merchant::ready(const vec2& spawnPoint)
@@ -45,6 +47,12 @@ void Merchant::update(float dt)
 
 void Merchant::draw()
 {
+    m_mesh.setPosition(m_pos);
+    m_mesh.setOffset(vec2(0, 0.2));
+    m_mesh.setRotation(m_body->getAngle() + M_PI/2);
+    m_mesh.setScale(0.7f);
+
+    m_mesh.draw();
     m_healthbar.draw();
 }
 

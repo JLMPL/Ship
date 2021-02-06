@@ -3,6 +3,7 @@
 #include "Physics/RigidBody.hpp"
 #include "Core/Timer.hpp"
 #include "Visual/Mesh.hpp"
+#include "Visual/Trail.hpp"
 #include <SFML/System/Time.hpp>
 
 class Hud;
@@ -60,5 +61,6 @@ private:
     vec2 m_aim;
 
     Mesh m_mesh;
+    Trail m_trail;
 
 };

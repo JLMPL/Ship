@@ -180,14 +180,19 @@ void Player::update(float dt)
 
     m_pos = m_body->getPosition();
 
-    m_mesh.setPosition(m_pos);
-    m_mesh.setOffset(vec2(0, 0.2));
-    m_mesh.setRotation(m_body->getAngle() + M_PI/2);
-    m_mesh.setScale(0.7f);
+    m_trail.setPosition(m_pos);
+    m_trail.update();
 }
 
 void Player::draw()
 {
+    m_mesh.setPosition(m_pos);
+    m_mesh.setOffset(vec2(0, 0.2));
+    m_mesh.setRotation(m_body->getAngle() + M_PI/2);
+    m_mesh.setScale(0.7f);
+
+    m_trail.draw();
+
     vec2 campos = m_pos + m_body->getLinearVelocity() * 0.2f;
     Renderer::get().setView(campos);
 
