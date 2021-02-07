@@ -1,9 +1,6 @@
 #pragma once
-#include "Scene/SceneObject.hpp"
-#include "Physics/RigidBody.hpp"
+#include "Spacecraft.hpp"
 #include "Core/Timer.hpp"
-#include "Visual/Mesh.hpp"
-#include "Visual/Trail.hpp"
 #include <SFML/System/Time.hpp>
 
 class Hud;
@@ -16,7 +13,7 @@ enum class Weapon
     COUNT
 };
 
-class Player : public SceneObject
+class Player : public Spacecraft
 {
 public:
     Player(Scene* scene);
@@ -33,19 +30,17 @@ public:
 
     void addXp(int value);
 
-    void setPosition(const vec2& pos) override final;
-
     void onContact(SceneObject* other) override final;
 
 private:
-    RigidBody::Ref m_body = nullptr;
+    // RigidBody::Ref m_body = nullptr;
 
     float m_heat = 0.f;
     sf::Time m_heatTimer;
     sf::Time m_shootTimer;
 
-    int m_health = 100;
-    int m_maxHealth = 100;
+    // int m_health = 100;
+    // int m_maxHealth = 100;
 
     bool m_overheat = false;
 
@@ -60,7 +55,7 @@ private:
 
     vec2 m_aim;
 
-    Mesh m_mesh;
-    Trail m_trail;
+    // Mesh m_mesh;
+    // Trail m_trail;
 
 };

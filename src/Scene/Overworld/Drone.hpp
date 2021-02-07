@@ -1,11 +1,9 @@
 #pragma once
-#include "Scene/SceneObject.hpp"
-#include "Physics/RigidBody.hpp"
+#include "Spacecraft.hpp"
 #include "Scene/UI/ProgressBar.hpp"
 #include <SFML/System/Clock.hpp>
-#include "Visual/Mesh.hpp"
 
-class Drone : public SceneObject
+class Drone : public Spacecraft
 {
 public:
     Drone(Scene* scene);
@@ -20,21 +18,13 @@ public:
 
     void damage(int value);
 
-    void setPosition(const vec2& pos) override final;
-
 private:
-    RigidBody::Ref m_body = nullptr;
-
     SceneObject* m_player = nullptr;
 
-    int m_maxHealth = 100;
-    int m_health = 100;
     bool m_isDead = false;
 
     ProgressBar m_healthbar;
 
     sf::Time m_clock;
     vec2 m_spawnPoint;
-
-    Mesh m_mesh;
 };

@@ -1,11 +1,9 @@
 #pragma once
-#include "Scene/SceneObject.hpp"
-#include "Physics/RigidBody.hpp"
+#include "Spacecraft.hpp"
 #include "Scene/UI/ProgressBar.hpp"
-#include "Visual/Mesh.hpp"
 #include <SFML/System/Clock.hpp>
 
-class Merchant : public SceneObject
+class Merchant : public Spacecraft
 {
 public:
     Merchant(Scene* scene);
@@ -20,19 +18,12 @@ public:
 
     void damage(int value);
 
-    void setPosition(const vec2& pos) override final;
-
 private:
-    RigidBody::Ref m_body = nullptr;
-
     SceneObject* m_player = nullptr;
 
-    int m_maxHealth = 500;
-    int m_health = 500;
     bool m_isDead = false;
 
     ProgressBar m_healthbar;
 
     vec2 m_spawnPoint;
-    Mesh m_mesh;
 };

@@ -2,6 +2,7 @@
 #include "Scene/SceneObject.hpp"
 #include "Physics/RigidBody.hpp"
 #include <SFML/System/Clock.hpp>
+#include "Visual/Trail.hpp"
 
 class Bullet : public SceneObject
 {
@@ -22,4 +23,6 @@ private:
     sf::Time m_clock;
 
     int m_damage = 1;
+    Trail m_trail;
+    bool m_enabled = true;
 };

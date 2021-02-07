@@ -88,3 +88,8 @@ const RigidBody::Type& RigidBody::getType() const
 {
     return m_type;
 }
+
+void RigidBody::setEnabled(bool enabled)
+{
+    m_body->SetEnabled(enabled);
+}

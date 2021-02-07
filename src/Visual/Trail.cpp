@@ -6,7 +6,7 @@ void Trail::update()
 {
     m_timer += sf::seconds(timer::delta);
 
-    if (m_timer > sf::seconds(0.1))
+    if (m_timer > sf::seconds(m_interval))
     {
         m_verts.push_back(sf::Vertex(m_pos, m_color));
         m_timer = sf::seconds(0);
@@ -37,4 +37,9 @@ void Trail::setPosition(const vec2& pos)
 void Trail::setColor(const sf::Color& color)
 {
     m_color = color;
+}
+
+void Trail::setInterval(float interval)
+{
+    m_interval = interval;
 }

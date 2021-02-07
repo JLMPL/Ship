@@ -9,11 +9,8 @@
 #include "GameplayVars.hpp"
 
 Drone::Drone(Scene* scene)
-    : SceneObject(scene)
+    : Spacecraft(scene)
 {
-    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false);
-    m_body->setUserData((void*)this);
-
     m_name = "drone";
 
     m_player = m_scene->findObject("player_ship");
@@ -27,6 +24,8 @@ Drone::Drone(Scene* scene)
 
 void Drone::ready(const vec2& spawnPoint)
 {
+    Spacecraft::ready(false);
+    m_trail.setColor(sf::Color::Red);
     m_spawnPoint = spawnPoint;
 }
 
@@ -60,16 +59,13 @@ void Drone::update(float dt)
 
     m_pos = m_body->getPosition();
     m_healthbar.setPosition(m_pos);
+
+    Spacecraft::update(dt);
 }
 
 void Drone::draw()
 {
-    m_mesh.setPosition(m_pos);
-    m_mesh.setOffset(vec2(0, 0.2));
-    m_mesh.setRotation(m_body->getAngle() + M_PI/2);
-    m_mesh.setScale(0.7f);
-
-    m_mesh.draw();
+    Spacecraft::draw();
     m_healthbar.draw();
 }
 
@@ -98,9 +94,4 @@ void Drone::damage(int value)
     }
 
     m_healthbar.setValue(m_health);
-}
-
-void Drone::setPosition(const vec2& pos)
-{
-    m_body->setPosition(pos);
 }

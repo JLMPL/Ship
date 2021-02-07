@@ -39,6 +39,8 @@ public:
     void setUserData(void* id);
     void* getUserData() const;
 
+    void setEnabled(bool enabled);
+
     const Type& getType() const;
 
 private:
