@@ -94,16 +94,25 @@ void Mesh::setRotation(float rot)
 
 void Mesh::setScale(float scale)
 {
+    m_scale = {scale, scale};
+}
+
+void Mesh::setScale(const vec2& scale)
+{
     m_scale = scale;
 }
 
-void Mesh::draw()
+void Mesh::draw(bool scaled)
 {
     m_tr = sf::Transform();
     m_tr.translate(m_position).
         rotate(m_rotation * (180.f/M_PI)).
         translate(m_offset).
-        scale(m_scale, m_scale);
+        scale(m_scale);
 
-    Renderer::get().drawScaled(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
+    if (scaled)
+        Renderer::get().drawScaled(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
+    else
+        Renderer::get().draw(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
+
 }

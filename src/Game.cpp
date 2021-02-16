@@ -1,10 +1,11 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
-#include "Core/Timer.hpp"
-#include "Scene/Overworld.hpp"
 #include "Random.hpp"
+#include "Core/Timer.hpp"
 #include "Core/Config.hpp"
 #include "Input/Input.hpp"
+#include "Scene/Overworld.hpp"
+#include "Scene/MainMenu.hpp"
 
 static constexpr float FrameDuration = 1.f/60.f;
 
@@ -12,6 +13,7 @@ Game::Game()
 {
     DisplayWidth = sf::VideoMode::getDesktopMode().width;
     DisplayHeight = sf::VideoMode::getDesktopMode().height;
+
     m_window.create(sf::VideoMode::getDesktopMode(), "Starry Stealers", sf::Style::Fullscreen);
     m_window.setMouseCursorGrabbed(true);
     m_window.setMouseCursorVisible(false);
@@ -20,12 +22,15 @@ Game::Game()
     rng::randomizeSeed();
     Input.init();
 
-    changeScene(new Overworld(this));
+    changeScene(new MainMenu(this));
 }
 
 void Game::changeScene(Scene* scene)
 {
     m_nextScene = scene;
+
+    if (!m_nextScene)
+        m_window.close();
 }
 
 void Game::processEvents()
@@ -61,9 +66,6 @@ void Game::update()
 
     if (m_scene)
         m_scene->update(timer::delta);
-
-    if (!m_scene)
-        m_window.close();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         m_window.close();

@@ -17,8 +17,9 @@ public:
     void setOffset(const vec2& offset);
     void setRotation(float rot);
     void setScale(float scale);
+    void setScale(const vec2& scale);
 
-    void draw();
+    void draw(bool scaled = true);
 
 private:
     std::vector<sf::Vertex> m_verts;
@@ -26,6 +27,6 @@ private:
     vec2 m_position;
     vec2 m_offset;
     float m_rotation = 0;
-    float m_scale = 1;
+    vec2 m_scale = {1,1};
     sf::Transform m_tr;
 };

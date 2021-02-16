@@ -3,6 +3,7 @@
 #include "Renderer.hpp"
 #include "Scene.hpp"
 #include "Input/Input.hpp"
+#include "Overworld/GameplayVars.hpp"
 
 Tutorial::Tutorial(Scene* scene)
  : SceneObject(scene)
@@ -22,6 +23,9 @@ Tutorial::Tutorial(Scene* scene)
 
 void Tutorial::show(TutorialType tut)
 {
+    if (!TutorialsEnabled)
+        return;
+
     if (m_viewedAlready[tut])
         return;
 

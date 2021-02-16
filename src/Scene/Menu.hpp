@@ -4,22 +4,25 @@
 #include <vector>
 #include <functional>
 #include <SFML/Graphics.hpp>
+#include "Visual/Mesh.hpp"
+#include "Scene/UI/Label.hpp"
 
 class Menu : public SceneObject
 {
 public:
     struct Item
     {
-        std::string name = "[name]";
+        std::wstring name = L"[name]";
         std::function<void (void)> callback;
         bool active = true;
 
-        sf::Text text;
+        Label text;
     };
 
     Menu(Scene* scene);
 
-    void addItem(const std::string& name, std::function<void (void)>&& callback, bool active = true);
+    void addItem(const std::wstring& name, std::function<void (void)>&& callback, bool active = true);
+    void setCaption(int index, const std::wstring& name);
 
     void update(float dt);
     void draw();
@@ -34,4 +37,7 @@ private:
     bool m_prevButtons[3] = {false};
 
     sf::Clock m_timer;
+    Mesh m_mesh;
+
+    float m_angle = 0.f;
 };

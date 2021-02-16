@@ -14,3 +14,6 @@ static constexpr float LaserDamage = 7;
 //drone
 constexpr int DroneXpValue = 75;
 constexpr int DroneDamage = 1;
+
+//tutorials
+extern bool TutorialsEnabled;
