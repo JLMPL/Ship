@@ -16,7 +16,7 @@ Hud::Hud(Scene* scene)
 
     m_hpBar.setScaled(false);
     m_hpBar.setSize({HealthBarWidth, HealthBarHeight});
-    m_hpBar.setColor({192,64,32,255});
+    m_hpBar.setColor({192,0,0,255});
     m_hpBar.setPosition({32, DisplayHeight - (HealthBarHeight + 32)});
     m_hpBar.setMaxValue(1000);
     m_hpBar.setValue(1000);
@@ -28,7 +28,7 @@ Hud::Hud(Scene* scene)
     m_heatBar.setMaxValue(1000);
     m_heatBar.setValue(1000);
 
-    m_font.loadFromFile("data/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
 
     m_overheatText.setFont(m_font);
     m_overheatText.setCharacterSize(32);
@@ -46,7 +46,7 @@ Hud::Hud(Scene* scene)
 
     //
 
-    m_weaponsTex.loadFromFile("data/weapons.png");
+    m_weaponsTex.loadFromFile("data/images/weapons.png");
 
     vec2 corner = {DisplayWidth - 128, DisplayHeight - 128};
 
@@ -61,19 +61,10 @@ Hud::Hud(Scene* scene)
     m_weapons[2].setPosition(corner + vec2(32,0));
     m_weapons[3].setPosition(corner + vec2(0,32));
 
-    m_xpBar.setScaled(false);
-    m_xpBar.setSize({XPBarWidth,24});
-    m_xpBar.setOffset({-XPBarWidth/2,0});
-    m_xpBar.setColor(sf::Color(128,0,192));
-    m_xpBar.setOutline(false);
-    m_xpBar.setPosition({DisplayWidth/2,24});
-    m_xpBar.setMaxValue(1000);
-    m_xpBar.setValue(1000);
-
-    m_xpText.setFont(m_font);
-    m_xpText.setCharacterSize(18);
-    m_xpText.setString(L"XP 312/500");
-    m_xpText.setPosition({(DisplayWidth/2 - XPBarWidth/2) + 4, 24});
+    m_money.setFont(m_font);
+    m_money.setCharacterSize(24);
+    m_money.setString(L"$6$ 0");
+    m_money.setPosition({(DisplayWidth/2 - XPBarWidth/2) + 4, 24});
 }
 
 void Hud::update(float dt)
@@ -99,8 +90,7 @@ void Hud::draw()
     for (int i = 0; i < 4; i++)
         Renderer::get().draw(m_weapons[i]);
 
-    m_xpBar.draw();
-    m_xpText.draw();
+    m_money.draw();
 
     m_hpBar.draw();
     m_heatBar.draw();
@@ -131,11 +121,8 @@ void Hud::setWeapon(int weapon)
     m_weapons[weapon].setTextureRect({weapon*32, 0, 32,32});
 }
 
-void Hud::setXp(int value, int max)
+void Hud::setMoney(int value)
 {
-    m_xpBar.setValue(value);
-    m_xpBar.setMaxValue(max);
-
-    m_xpText.setString(L"XP " + std::to_wstring(value) + L"/" + std::to_wstring(max));
-    // m_xpText.setOrigin({int(m_xpText.getLocalBounds().width/2), 0});
+    m_money.setString(L"$6$ " + std::to_wstring(value));
+    m_money.setPosition({(DisplayWidth / 2) - (m_money.getSize().x / 2), 24});
 }

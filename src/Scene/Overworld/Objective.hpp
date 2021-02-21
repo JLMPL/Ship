@@ -8,7 +8,7 @@
 
 enum ObjectiveType
 {
-    KILL_BANDITS,
+    KILL_BANDITS = 0,
     ROB_MERCHANT,
     PROTECT_CLIENT,
     OBJECTIVE_COUNT

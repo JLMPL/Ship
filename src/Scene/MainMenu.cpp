@@ -26,6 +26,8 @@ MainMenu::MainMenu(Game* game)
         m_game->changeScene(nullptr);
     });
 
+    m_mesh.loadFromFile("data/meshes/title.obj");
+    m_mesh.setScale(150.f);
     ready();
 }
 
@@ -39,4 +41,11 @@ void MainMenu::update(float dt)
         menu->setCaption(1, L"Tutorials: $7OFF");
 
     Scene::update(dt);
+}
+
+void MainMenu::draw()
+{
+    Scene::draw();
+
+    m_mesh.draw(false);
 }

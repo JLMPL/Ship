@@ -8,12 +8,13 @@
 #include "Hud.hpp"
 #include "GameplayVars.hpp"
 #include "Scene/Tutorial.hpp"
+#include "Audio/Audio.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
 {
     m_name = "player_ship";
-    m_mesh.loadFromFile("data/player.obj");
+    m_mesh.loadFromFile("data/meshes/player.obj");
 }
 
 void Player::ready()
@@ -21,7 +22,10 @@ void Player::ready()
     Spacecraft::ready(true);
 
     m_hud = m_scene->findObject("hud")->as<Hud>();
-    m_hud->setXp(m_xp, m_xpToLevel);
+    m_hud->setMoney(0);
+
+    Audio.playSound(_Audio::EFFECT_ENGINE);
+    Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
 
     auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
     tut->show(TUTORIAL_OBJECTIVE);
@@ -39,7 +43,12 @@ void Player::exertHeat(float hdiff)
 
 void Player::control()
 {
-    if (m_overheat) return;
+    if (m_overheat)
+    {
+        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
+        // Audio.stopSound(_Audio::EFFECT_ENGINE);
+        return;
+    }
 
     vec2 mov = Input.get()->getCursorPosition();
     m_aim = mov;
@@ -49,11 +58,17 @@ void Player::control()
     // Input.get()->rumble(Input.get()->getAcceleration() * 0.1, 20);
 
     float speed = Input.get()->getAcceleration() * 8.f;
+    Audio.setVolume(_Audio::EFFECT_ENGINE, Input.get()->getAcceleration());
 
     if (speed > 0)
     {
         m_body->applyLinearImpulse(m_body->getDirection() * timer::delta * speed);
         exertHeat(speed * 2 * timer::delta);
+    }
+    else
+    {
+        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
+        // Audio.stopSound(_Audio::EFFECT_ENGINE);
     }
 
     Renderer::get().setZoom(math::length(m_body->getLinearVelocity()));
@@ -61,7 +76,11 @@ void Player::control()
 
 void Player::shoot()
 {
-    if (m_overheat) return;
+    if (m_overheat)
+    {
+        Audio.stopSound(_Audio::EFFECT_LASER);
+        return;
+    }
 
     if (Input.get()->isFire())
     {
@@ -82,6 +101,7 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), BaseDamage, true);
 
                 exertHeat(ShootHeatCost);
+                Audio.playSound(_Audio::EFFECT_BLASTER);
                 m_shootTimer = sf::seconds(0);
             }
             break;
@@ -109,6 +129,7 @@ void Player::shoot()
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), ShotgunDamage, true);
 
                 exertHeat(ShotgunHeatCost);
+                Audio.playSound(_Audio::EFFECT_BLASTER);
                 m_shootTimer = sf::seconds(0);
             }
             break;
@@ -141,10 +162,15 @@ void Player::shoot()
                     }
 
                     exertHeat(timer::delta * LaserHeatCost);
+                    Audio.playSound(_Audio::EFFECT_LASER);
                 }
             }
             break;
         }
+    }
+    else
+    {
+        Audio.stopSound(_Audio::EFFECT_LASER);
     }
 }
 
@@ -215,17 +241,11 @@ void Player::onContact(SceneObject* other)
     }
 }
 
-void Player::addXp(int value)
+void Player::addMoney(int value)
 {
-    m_xp += value;
+    m_money += value;
 
-    if (m_xp >= m_xpToLevel)
-    {
-        m_xp -= m_xpToLevel;
-        m_xpToLevel *= 2;
-    }
-
-    m_hud->setXp(m_xp, m_xpToLevel);
+    m_hud->setMoney(m_money);
     m_health = std::min(m_maxHealth, m_health + 1);
 
     auto tut = m_scene->findObject("tutorial")->as<Tutorial>();

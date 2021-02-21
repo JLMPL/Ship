@@ -14,7 +14,7 @@ Planet::Planet(Scene* scene)
         radius);
 
     m_name = "planet";
-    m_mesh.loadFromFile("data/planet.obj");
+    m_mesh.loadFromFile("data/meshes/planet.obj");
     m_mesh.setPosition(m_body->getPosition());
     m_mesh.setScale(radius);
 }

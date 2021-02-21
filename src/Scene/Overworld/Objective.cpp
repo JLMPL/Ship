@@ -6,10 +6,13 @@
 #include "Merchant.hpp"
 #include "Player.hpp"
 
+static constexpr int BanditsValue = 200;
+static constexpr int MerchantValue = 400;
+
 Objective::Objective(Scene* scene)
  : SceneObject(scene)
 {
-    m_font.loadFromFile("data/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
 
     m_obj.setFont(m_font);
     m_obj.setCharacterSize(20);
@@ -20,13 +23,13 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    // m_current = ObjectiveType::ROB_MERCHANT;
+    m_current = ObjectiveType::KILL_BANDITS;
 
     switch (m_current)
     {
         case KILL_BANDITS:
         {
-            int numBandits = rng::inRangei(3,5);
+            int numBandits = rng::inRangei(3,25);
             // int x = rng::inRangei(-500,500);
             // int y = rng::inRangei(-500,500);
 
@@ -69,7 +72,7 @@ void Objective::checkCompletion()
             if (m_enemies.size() == 0)
             {
                 m_complete = true;
-                m_player->as<Player>()->addXp(200);
+                m_player->as<Player>()->addMoney(BanditsValue);
             }
         }
         break;
@@ -78,7 +81,7 @@ void Objective::checkCompletion()
             if (m_enemies.size() == 0)
             {
                 m_complete = true;
-                m_player->as<Player>()->addXp(500);
+                m_player->as<Player>()->addMoney(MerchantValue);
             }
         }
         break;

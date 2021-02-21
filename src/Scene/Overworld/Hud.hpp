@@ -18,7 +18,7 @@ public:
     void setHealthPercentage(float perc);
     void setPlayerCoords(int x, int y);
     void setWeapon(int weapon);
-    void setXp(int value, int max);
+    void setMoney(int value);
 
 private:
     ProgressBar m_heatBar;
@@ -39,6 +39,5 @@ private:
     sf::Texture m_weaponsTex;
     sf::Sprite m_weapons[4];
 
-    ProgressBar m_xpBar;
-    Label m_xpText;
+    Label m_money;
 };

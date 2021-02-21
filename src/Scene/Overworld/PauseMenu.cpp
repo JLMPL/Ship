@@ -10,7 +10,7 @@ PauseMenu::PauseMenu(Scene* scene)
     m_name = "pause_menu";
     m_pausable = false;
 
-    m_font.loadFromFile("data/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
     m_text.setFont(m_font);
     m_text.setCharacterSize(32);
     m_text.setString(L"Pause");

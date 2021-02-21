@@ -20,7 +20,7 @@ Merchant::Merchant(Scene* scene)
     m_healthbar.setMaxValue(m_maxHealth);
     m_healthbar.setValue(m_maxHealth);
 
-    m_mesh.loadFromFile("data/merchant.obj");
+    m_mesh.loadFromFile("data/meshes/merchant.obj");
 }
 
 void Merchant::ready(const vec2& spawnPoint)
@@ -72,7 +72,7 @@ void Merchant::damage(int value)
     {
         if (!m_isDead)
         {
-            m_player->as<Player>()->addXp(DroneXpValue);
+            m_player->as<Player>()->addMoney(DroneXpValue);
             m_isDead = false;
         }
         destroy();

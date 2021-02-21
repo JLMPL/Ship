@@ -1,13 +1,15 @@
 #include "Menu.hpp"
 #include "Renderer.hpp"
+#include "Core/Config.hpp"
+#include "Audio/Audio.hpp"
 #include <cmath>
 
 Menu::Menu(Scene* scene)
  : SceneObject(scene)
 {
-    m_font.loadFromFile("data/NotoSans-Regular.ttf");
+    m_font.loadFromFile("data/fonts/NotoSans-Regular.ttf");
     m_timer.restart();
-    m_mesh.loadFromFile("data/select_arrow.obj");
+    m_mesh.loadFromFile("data/meshes/select_arrow.obj");
     m_mesh.setScale(10.f);
 }
 
@@ -53,13 +55,21 @@ void Menu::update(float dt)
         m_selection = std::max(m_selection - 1, 0);
         if (!m_items[m_selection].active)
             m_selection++;
+
+        Audio.playSound(_Audio::EFFECT_MENU_SWITCH);
     }
 
     if (m_buttons[1] && !m_prevButtons[1])
+    {
         m_selection = std::min(m_selection + 1, int(m_items.size()) - 1);
+        Audio.playSound(_Audio::EFFECT_MENU_SWITCH);
+    }
 
     if (m_buttons[2] && !m_prevButtons[2])
+    {
         m_items[m_selection].callback();
+        Audio.playSound(_Audio::EFFECT_MENU_SELECT);
+    }
 
     // for (uint i = 0; i < m_items.size(); i++)
     // {
@@ -82,12 +92,11 @@ void Menu::draw()
     float i = 0;
     for (auto& item : m_items)
     {
-        item.text.setPosition({64, 300 + i});
-        // Renderer::get().draw(item.text);
+        item.text.setPosition({64, (DisplayHeight/2) + i});
         item.text.draw();
 
         if (ind == m_selection)
-            m_mesh.setPosition({55, 300 + i + 20});
+            m_mesh.setPosition({55, (DisplayHeight/2) + i + 20});
 
         i += 48;
         ind++;

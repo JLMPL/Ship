@@ -28,19 +28,14 @@ public:
     void exertHeat(float hdiff);
     void shoot();
 
-    void addXp(int value);
+    void addMoney(int value);
 
     void onContact(SceneObject* other) override final;
 
 private:
-    // RigidBody::Ref m_body = nullptr;
-
     float m_heat = 0.f;
     sf::Time m_heatTimer;
     sf::Time m_shootTimer;
-
-    // int m_health = 100;
-    // int m_maxHealth = 100;
 
     bool m_overheat = false;
 
@@ -48,14 +43,9 @@ private:
 
     Hud* m_hud = nullptr;
 
-    int m_xp = 0;
-    int m_xpToLevel = 500;
+    int m_money = 0;
 
     vec2 m_rayhit;
 
     vec2 m_aim;
-
-    // Mesh m_mesh;
-    // Trail m_trail;
-
 };

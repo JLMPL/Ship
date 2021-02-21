@@ -10,7 +10,7 @@ Tutorial::Tutorial(Scene* scene)
 {
     m_name = "tutorial";
     m_pausable = false;
-    m_font.loadFromFile("data/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
 
     m_text.setFont(m_font);
     m_text.setCharacterSize(20);

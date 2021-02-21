@@ -23,7 +23,7 @@ void Label::setString(const std::wstring& text)
 
     for (int i = 0; i < text.size(); i++)
     {
-        if (text[i] == '$')
+        if (text[i] == '$' && std::iswdigit(text[i+1]))
         {
             m_front << word;
             m_shadow << word;
@@ -53,7 +53,7 @@ void Label::setString(const std::wstring& text)
                     m_front << sf::Color::Yellow;
                     break;
                 case '6':
-                    m_front << sf::Color(128,0,192);
+                    m_front << sf::Color(128 * 1.1f,0,192 * 1.1f);
                     break;
                 case '7':
                     m_front << sf::Color(128,128,128);

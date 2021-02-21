@@ -7,6 +7,7 @@
 #include "Core/Timer.hpp"
 #include <algorithm>
 #include "GameplayVars.hpp"
+#include "Audio/Audio.hpp"
 
 Drone::Drone(Scene* scene)
     : Spacecraft(scene)
@@ -19,7 +20,7 @@ Drone::Drone(Scene* scene)
     m_healthbar.setMaxValue(m_maxHealth);
     m_healthbar.setValue(m_maxHealth);
 
-    m_mesh.loadFromFile("data/drone.obj");
+    m_mesh.loadFromFile("data/meshes/drone.obj");
 }
 
 void Drone::ready(const vec2& spawnPoint)
@@ -27,6 +28,7 @@ void Drone::ready(const vec2& spawnPoint)
     Spacecraft::ready(false);
     m_trail.setColor(sf::Color::Red);
     m_spawnPoint = spawnPoint;
+    Audio.setVolume(_Audio::EFFECT_ENEMY_BLASTER, 0.5);
 }
 
 void Drone::update(float dt)
@@ -41,6 +43,8 @@ void Drone::update(float dt)
             vec2 pos = m_body->getPosition();
             vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
             m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), DroneDamage, false);
+
+            Audio.playSound(_Audio::EFFECT_ENEMY_BLASTER);
 
             m_clock = sf::seconds(0);
         }
@@ -87,7 +91,7 @@ void Drone::damage(int value)
     {
         if (!m_isDead)
         {
-            m_player->as<Player>()->addXp(DroneXpValue);
+            m_player->as<Player>()->addMoney(DroneXpValue);
             m_isDead = false;
         }
         destroy();
