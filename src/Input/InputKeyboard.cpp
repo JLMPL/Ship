@@ -66,3 +66,8 @@ float InputKeyboard::getAcceleration()
 
     return acceleration;
 }
+
+bool InputKeyboard::isStore()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Tab);
+}

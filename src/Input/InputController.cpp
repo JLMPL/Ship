@@ -120,3 +120,8 @@ float InputController::getAcceleration()
 {
     return (float(SDL_GameControllerGetAxis(m_controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT)) / 32768.f);
 }
+
+bool InputController::isStore()
+{
+    return false;
+}

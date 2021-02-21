@@ -7,6 +7,7 @@
 #include "Overworld/Objective.hpp"
 #include "Overworld/PauseMenu.hpp"
 #include "Overworld/Planet.hpp"
+#include "Overworld/Store.hpp"
 #include "StarBackground.hpp"
 #include "Tutorial.hpp"
 
@@ -26,6 +27,7 @@ Overworld::Overworld(Game* game)
     m_objects.emplace_back(new Hud(this));
 
     m_objects.emplace_back(new PauseMenu(this));
+    m_objects.emplace_back(new Store(this));
 
     m_objects.emplace_back(new Tutorial(this));
 

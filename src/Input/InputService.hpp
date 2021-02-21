@@ -20,6 +20,7 @@ public:
     virtual bool isMenu() = 0;
     virtual bool isFire() = 0;
     virtual bool isConfirm() = 0;
+    virtual bool isStore() = 0;
 
     virtual void setCursorPosition(const vec2& pos)
         {m_cursor = pos;}

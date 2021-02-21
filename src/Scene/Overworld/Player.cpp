@@ -45,7 +45,7 @@ void Player::control()
 {
     if (m_overheat)
     {
-        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
+        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.2);
         // Audio.stopSound(_Audio::EFFECT_ENGINE);
         return;
     }

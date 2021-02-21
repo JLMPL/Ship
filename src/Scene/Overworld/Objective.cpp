@@ -29,7 +29,7 @@ void Objective::generateNewObjective()
     {
         case KILL_BANDITS:
         {
-            int numBandits = rng::inRangei(3,25);
+            int numBandits = rng::inRangei(3,5);
             // int x = rng::inRangei(-500,500);
             // int y = rng::inRangei(-500,500);
 
