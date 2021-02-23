@@ -23,6 +23,7 @@ private:
     sf::Time m_timer;
 
     StoreItem m_items[NumItems];
+    int m_selected = 0;
 
     bool m_isActive = false;
 };

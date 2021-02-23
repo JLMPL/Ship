@@ -82,7 +82,7 @@ void Player::shoot()
         return;
     }
 
-    if (Input.get()->isFire())
+    if (Input.get()->isAction(Action::A_FIRE))
     {
         vec2 pos = m_body->getPosition();
         // vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
@@ -182,11 +182,11 @@ void Player::update(float dt)
     control();
     shoot();
 
-    if (Input.get()->isBaseWeapon())
+    if (Input.get()->isAction(Action::A_BASE_WEAPON))
         m_weapon = Weapon::BASIC;
-    if (Input.get()->isShotgun())
+    if (Input.get()->isAction(Action::A_SHOTGUN))
         m_weapon = Weapon::SHOTGUN;
-    if (Input.get()->isLaser())
+    if (Input.get()->isAction(Action::A_LASER))
         m_weapon = Weapon::LASER;
 
     m_hud->setWeapon((int)m_weapon);
@@ -213,7 +213,7 @@ void Player::draw()
     vec2 campos = m_pos + m_body->getLinearVelocity() * 0.2f;
     Renderer::get().setView(campos);
 
-    if (m_weapon == Weapon::LASER && Input.get()->isFire())
+    if (m_weapon == Weapon::LASER && Input.get()->isAction(Action::A_FIRE))
     {
         Renderer::get().drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
         Renderer::get().drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);

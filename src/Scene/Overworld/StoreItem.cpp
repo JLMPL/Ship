@@ -1,4 +1,5 @@
 #include "StoreItem.hpp"
+#include "Renderer.hpp"
 
 StoreItem::StoreItem()
 {
@@ -16,6 +17,9 @@ StoreItem::StoreItem()
     m_priceText.setFont(m_font);
     m_priceText.setCharacterSize(25);
     m_priceText.setString(L"$6$ 1500");
+
+    m_rect.setFillColor(sf::Color(0,0,0,0));
+    m_rect.setOutlineColor(sf::Color(0xC0C0C0ff));
 }
 
 void StoreItem::setData(const std::wstring& name, const std::wstring& desc, int price)
@@ -37,6 +41,7 @@ void StoreItem::update()
 
 void StoreItem::draw()
 {
+    Renderer::get().draw(m_rect);
     m_mesh.draw(false);
     m_name.draw();
     m_description.draw();
@@ -46,6 +51,9 @@ void StoreItem::draw()
 void StoreItem::setPosition(const vec2& pos)
 {
     m_pos = pos;
+
+    m_rect.setSize(m_size);
+    m_rect.setPosition(m_pos);
 
     m_mesh.setScale(m_size.y);
     m_mesh.setPosition(m_pos);
@@ -59,4 +67,15 @@ void StoreItem::setSize(const vec2& size)
 {
     m_size = size;
     setPosition(m_pos);
+}
+
+void StoreItem::setSelected(bool value)
+{
+    m_selected = value;
+
+    if (m_selected)
+        m_rect.setOutlineThickness(-2);
+    else
+        m_rect.setOutlineThickness(0);
+
 }

@@ -72,7 +72,7 @@ void Tutorial::show(TutorialType tut)
 
 void Tutorial::update(float dt)
 {
-    if (Input.get()->isConfirm())
+    if (Input.get()->isAction(Action::A_CONFIRM))
     {
         m_scene->setPause(false);
         m_visible = false;

@@ -2,6 +2,7 @@
 #include "Renderer.hpp"
 #include "Core/Config.hpp"
 #include "Audio/Audio.hpp"
+#include "Input/Input.hpp"
 #include <cmath>
 
 Menu::Menu(Scene* scene)
@@ -45,9 +46,9 @@ void Menu::update(float dt)
 
     if (m_timer.getElapsedTime().asMilliseconds() > 250)
     {
-        m_buttons[0] = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-        m_buttons[1] = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-        m_buttons[2] = sf::Keyboard::isKeyPressed(sf::Keyboard::Return);
+        m_buttons[0] = Input.get()->isAction(Action::A_UP);
+        m_buttons[1] = Input.get()->isAction(Action::A_DOWN);
+        m_buttons[2] = Input.get()->isAction(Action::A_CONFIRM);
     }
 
     if (m_buttons[0] && !m_prevButtons[0])

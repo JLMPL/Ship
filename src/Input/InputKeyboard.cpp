@@ -5,6 +5,20 @@
 #include <SFML/Window/Mouse.hpp>
 #include <SDL2/SDL.h>
 
+InputKeyboard::InputKeyboard()
+{
+    m_bindings[A_BASE_WEAPON] = sf::Keyboard::Num1;
+    m_bindings[A_SHOTGUN] = sf::Keyboard::Num2;
+    m_bindings[A_LASER] = sf::Keyboard::Num3;
+    m_bindings[A_MENU] = sf::Keyboard::Escape;
+    m_bindings[A_CONFIRM] = sf::Keyboard::Return;
+    m_bindings[A_STORE] = sf::Keyboard::Tab;
+    m_bindings[A_UP] = sf::Keyboard::Up;
+    m_bindings[A_DOWN] = sf::Keyboard::Down;
+    m_bindings[A_LEFT] = sf::Keyboard::Left;
+    m_bindings[A_RIGHT] = sf::Keyboard::Right;
+}
+
 void InputKeyboard::update()
 {
     vec2 mp = Renderer::get().getLocalMousePosition();
@@ -15,34 +29,12 @@ void InputKeyboard::update()
     Renderer::get().setLocalMousePosition({200,200});
 }
 
-bool InputKeyboard::isBaseWeapon()
+bool InputKeyboard::isAction(Action act)
 {
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Num1);
-}
-
-bool InputKeyboard::isShotgun()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Num2);
-}
-
-bool InputKeyboard::isLaser()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Num3);
-}
-
-bool InputKeyboard::isMenu()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
-}
-
-bool InputKeyboard::isFire()
-{
-    return sf::Mouse::isButtonPressed(sf::Mouse::Left);
-}
-
-bool InputKeyboard::isConfirm()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Return);
+    if (act == Action::A_FIRE)
+        return sf::Mouse::isButtonPressed(sf::Mouse::Left);
+    else
+        return sf::Keyboard::isKeyPressed(m_bindings[act]);
 }
 
 vec2 InputKeyboard::getCursorPosition()
@@ -65,9 +57,4 @@ float InputKeyboard::getAcceleration()
     }
 
     return acceleration;
-}
-
-bool InputKeyboard::isStore()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Tab);
 }

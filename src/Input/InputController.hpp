@@ -27,7 +27,7 @@ public:
         BUTTON_RTRIGGER
     };
 
-    InputController() = default;
+    InputController();
     ~InputController();
 
     void init() override final;
@@ -36,14 +36,7 @@ public:
 
     void rumble(float strength, int duration) override final;
 
-    bool isBaseWeapon() override final;
-    bool isShotgun() override final;
-    bool isLaser() override final;
-
-    bool isMenu() override final;
-    bool isFire() override final;
-    bool isConfirm() override final;
-    bool isStore() override final;
+    bool isAction(Action act) override final;
 
     vec2 getCursorPosition() override final;
     float getAcceleration() override final;
@@ -57,4 +50,6 @@ private:
     int m_controllerSlot = 0;
     SDL_GameController* m_controller = nullptr;
     SDL_Haptic* m_haptic = nullptr;
+
+    Button m_bindings[Action::A_COUNT];
 };

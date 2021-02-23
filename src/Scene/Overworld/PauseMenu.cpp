@@ -25,7 +25,7 @@ void PauseMenu::update(float dt)
 {
     m_timer += sf::seconds(dt);
 
-    if (m_timer > sf::seconds(0.25) && Input.get()->isMenu())
+    if (m_timer > sf::seconds(0.25) && Input.get()->isAction(Action::A_MENU))
     {
         m_isActive = !m_isActive;
         m_scene->setPause(m_isActive);

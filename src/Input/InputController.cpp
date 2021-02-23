@@ -5,6 +5,21 @@
 //hard choices arent' for me
 //mixin' them SFML & SDL
 
+InputController::InputController()
+{
+    m_bindings[A_BASE_WEAPON] = BUTTON_DPAD_DOWN;
+    m_bindings[A_SHOTGUN] = BUTTON_DPAD_RIGHT;
+    m_bindings[A_LASER] = BUTTON_DPAD_UP;
+    m_bindings[A_MENU] = BUTTON_MENU;
+    m_bindings[A_FIRE] = BUTTON_RSHOULDER;
+    m_bindings[A_CONFIRM] = BUTTON_A;
+    m_bindings[A_STORE] = BUTTON_Y;
+    m_bindings[A_UP] = BUTTON_DPAD_UP;
+    m_bindings[A_DOWN] = BUTTON_DPAD_DOWN;
+    m_bindings[A_LEFT] = BUTTON_DPAD_LEFT;
+    m_bindings[A_RIGHT] = BUTTON_DPAD_RIGHT;
+}
+
 InputController::~InputController()
 {
     SDL_HapticClose(m_haptic);
@@ -80,35 +95,9 @@ vec2 InputController::getRightStick()
     };
 }
 
-bool InputController::isBaseWeapon()
+bool InputController::isAction(Action act)
 {
-    return isButton(BUTTON_DPAD_DOWN);
-}
-
-bool InputController::isShotgun()
-{
-    return isButton(BUTTON_DPAD_RIGHT);
-}
-
-bool InputController::isLaser()
-{
-    return isButton(BUTTON_DPAD_UP);
-}
-
-bool InputController::isMenu()
-{
-    //drives me isane
-    return (isButton(BUTTON_MENU) or sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
-}
-
-bool InputController::isFire()
-{
-    return isButton(BUTTON_RSHOULDER);
-}
-
-bool InputController::isConfirm()
-{
-    return isButton(BUTTON_A);
+    return isButton(m_bindings[act]);
 }
 
 vec2 InputController::getCursorPosition()
@@ -119,9 +108,4 @@ vec2 InputController::getCursorPosition()
 float InputController::getAcceleration()
 {
     return (float(SDL_GameControllerGetAxis(m_controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT)) / 32768.f);
-}
-
-bool InputController::isStore()
-{
-    return false;
 }
