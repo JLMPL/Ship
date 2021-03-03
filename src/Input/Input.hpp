@@ -28,5 +28,4 @@ private:
     sf::Text m_text;
 };
 
-//I ain't afraid of livin' on the edge
 extern InputLocator Input;

@@ -2,13 +2,12 @@
 #include "Core/Math.hpp"
 #include <SFML/Graphics.hpp>
 
-class Renderer
+class _Renderer
 {
-private:
-    Renderer() = default;
-    ~Renderer() = default;
-
 public:
+    _Renderer() = default;
+    ~_Renderer() = default;
+
     void init(sf::RenderWindow& window);
 
     void update();
@@ -34,12 +33,6 @@ public:
 
     void setLocalMousePosition(const vec2& pos);
 
-    static Renderer& get()
-    {
-        static Renderer renderer;
-        return renderer;
-    }
-
 private:
     sf::RenderWindow* m_window;
     sf::RenderTexture m_sceneTarget;
@@ -56,3 +49,5 @@ private:
     float m_shakeStrength = 1.f;
     float m_shakeDuration = 0.f;
 };
+
+extern _Renderer Renderer;

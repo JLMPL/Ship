@@ -17,6 +17,7 @@ void Label::setCharacterSize(int size)
 
 void Label::setString(const std::wstring& text)
 {
+    m_str.clear();
     clear();
     m_front << sf::Color::White;
     std::wstring word = L"";
@@ -68,6 +69,7 @@ void Label::setString(const std::wstring& text)
             word += text[i];
             m_front << word;
             m_shadow << word;
+            m_str += word;
         }
         else
             word += text[i];
@@ -83,8 +85,8 @@ void Label::setPosition(const vec2& pos)
 
 void Label::draw()
 {
-    Renderer::get().draw(m_shadow);
-    Renderer::get().draw(m_front);
+    Renderer.draw(m_shadow);
+    Renderer.draw(m_front);
 }
 
 void Label::clear()
@@ -103,4 +105,11 @@ void Label::setOrigin(const vec2& origin)
 vec2 Label::getSize() const
 {
     return {m_front.getLocalBounds().width, m_front.getLocalBounds().height};
+}
+
+void Label::setColor(const sf::Color& color)
+{
+    clear();
+    m_front << color << m_str;
+    m_shadow << m_str;
 }

@@ -37,7 +37,7 @@ void PauseMenu::draw()
 {
     if (m_isActive)
     {
-        Renderer::get().draw(m_overlay);
+        Renderer.draw(m_overlay);
         m_text.draw();
     }
 }

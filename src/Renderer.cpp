@@ -3,10 +3,12 @@
 #define STB_PERLIN_IMPLEMENTATION
 #include "Libs/stb_perlin.h"
 
+_Renderer Renderer;
+
 // static constexpr float ZoomCap = 0.07f;
 static constexpr float ZoomCap = 0.2f;
 
-void Renderer::init(sf::RenderWindow& window)
+void _Renderer::init(sf::RenderWindow& window)
 {
     m_window = &window;
 
@@ -17,7 +19,7 @@ void Renderer::init(sf::RenderWindow& window)
     m_view.zoom(0.05f);
 }
 
-void Renderer::update()
+void _Renderer::update()
 {
     if (m_isShake)
     {
@@ -40,7 +42,7 @@ void Renderer::update()
     m_sceneTarget.setView(m_view);
 }
 
-void Renderer::shake(float strength, float duration)
+void _Renderer::shake(float strength, float duration)
 {
     m_isShake = true;
     m_shakeStrength = strength;
@@ -48,7 +50,7 @@ void Renderer::shake(float strength, float duration)
     m_shaker.restart();
 }
 
-void Renderer::clear()
+void _Renderer::clear()
 {
     m_window->clear();
     // m_sceneTarget.clear(sf::Color(0x222034FF));
@@ -56,7 +58,7 @@ void Renderer::clear()
     m_uiTarget.clear(sf::Color::Transparent);
 }
 
-void Renderer::display()
+void _Renderer::display()
 {
     m_sceneTarget.display();
     m_uiTarget.display();
@@ -71,31 +73,31 @@ void Renderer::display()
     m_window->display();
 }
 
-void Renderer::draw(sf::Drawable& dw)
+void _Renderer::draw(sf::Drawable& dw)
 {
     m_uiTarget.setView(m_uiTarget.getDefaultView());
     m_uiTarget.draw(dw);
 }
 
-void Renderer::draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs)
+void _Renderer::draw(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs)
 {
     m_uiTarget.setView(m_uiTarget.getDefaultView());
     m_uiTarget.draw(verts, num, type, rs);
 }
 
-void Renderer::drawScaled(sf::Drawable& dw)
+void _Renderer::drawScaled(sf::Drawable& dw)
 {
     m_sceneTarget.setView(m_view);
     m_sceneTarget.draw(dw);
 }
 
-void Renderer::drawScaled(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs)
+void _Renderer::drawScaled(sf::Vertex* verts, int num, sf::PrimitiveType type, const sf::RenderStates& rs)
 {
     m_sceneTarget.setView(m_view);
     m_sceneTarget.draw(verts, num, type, rs);
 }
 
-void Renderer::drawLineScaled(const vec2& a, const vec2& b, const sf::Color& color)
+void _Renderer::drawLineScaled(const vec2& a, const vec2& b, const sf::Color& color)
 {
     m_sceneTarget.setView(m_view);
     sf::Vertex line[2];
@@ -108,17 +110,17 @@ void Renderer::drawLineScaled(const vec2& a, const vec2& b, const sf::Color& col
     m_sceneTarget.draw(line, 2, sf::Lines);
 }
 
-void Renderer::setView(const vec2& pos)
+void _Renderer::setView(const vec2& pos)
 {
     m_viewPos = pos;
 }
 
-vec2 Renderer::getViewWorldPosition() const
+vec2 _Renderer::getViewWorldPosition() const
 {
     return m_view.getCenter();
 }
 
-vec2 Renderer::getGlobalMousePosition()
+vec2 _Renderer::getGlobalMousePosition()
 {
     m_sceneTarget.setView(m_view);
     auto mp = sf::Mouse::getPosition(*m_window);
@@ -130,18 +132,18 @@ vec2 Renderer::getGlobalMousePosition()
     return mousePos;
 }
 
-vec2 Renderer::getLocalMousePosition() const
+vec2 _Renderer::getLocalMousePosition() const
 {
     auto mp = sf::Mouse::getPosition(*m_window);
     return {float(mp.x), float(mp.y)};
 }
 
-void Renderer::setLocalMousePosition(const vec2& pos)
+void _Renderer::setLocalMousePosition(const vec2& pos)
 {
     sf::Mouse::setPosition({pos.x, pos.y}, *m_window);
 }
 
-void Renderer::setZoom(float zoom)
+void _Renderer::setZoom(float zoom)
 {
     m_zoom = 0.05f + zoom * 0.001;
 

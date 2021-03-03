@@ -21,12 +21,12 @@ InputKeyboard::InputKeyboard()
 
 void InputKeyboard::update()
 {
-    vec2 mp = Renderer::get().getLocalMousePosition();
+    vec2 mp = Renderer.getLocalMousePosition();
     vec2 diff = mp - vec2(200,200);
 
     m_cursor += diff * 0.01f;
 
-    Renderer::get().setLocalMousePosition({200,200});
+    Renderer.setLocalMousePosition({200,200});
 }
 
 bool InputKeyboard::isAction(Action act)

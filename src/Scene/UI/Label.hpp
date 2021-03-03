@@ -21,10 +21,13 @@ public:
     void setOrigin(const vec2& origin);
     vec2 getSize() const;
 
+    void setColor(const sf::Color& color);
+
     void draw();
     void clear();
 
 private:
     sfe::RichText m_front;
     sfe::RichText m_shadow;
+    std::wstring m_str;
 };

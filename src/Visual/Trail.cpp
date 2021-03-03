@@ -23,7 +23,7 @@ void Trail::update()
 
 void Trail::draw()
 {
-    Renderer::get().drawScaled(m_verts.data(), m_verts.size(), sf::LineStrip);
+    Renderer.drawScaled(m_verts.data(), m_verts.size(), sf::LineStrip);
 }
 
 void Trail::setPosition(const vec2& pos)

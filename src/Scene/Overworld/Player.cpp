@@ -71,7 +71,7 @@ void Player::control()
         // Audio.stopSound(_Audio::EFFECT_ENGINE);
     }
 
-    Renderer::get().setZoom(math::length(m_body->getLinearVelocity()));
+    Renderer.setZoom(math::length(m_body->getLinearVelocity()));
 }
 
 void Player::shoot()
@@ -85,7 +85,7 @@ void Player::shoot()
     if (Input.get()->isAction(Action::A_FIRE))
     {
         vec2 pos = m_body->getPosition();
-        // vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
+        // vec2 dir = math::normalize(Renderer.getGlobalMousePosition() - pos);
         vec2 dir = math::normalize(m_aim);
 
         switch (m_weapon)
@@ -95,7 +95,7 @@ void Player::shoot()
                 if (m_shootTimer < sf::milliseconds(100))
                     return;
 
-                Renderer::get().shake(0.2f, 0.1f);
+                Renderer.shake(0.2f, 0.1f);
                 Input.get()->rumble(0.2f, 100);
 
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), BaseDamage, true);
@@ -110,7 +110,7 @@ void Player::shoot()
                 if (m_shootTimer < sf::seconds(0.5))
                     return;
 
-                Renderer::get().shake(0.5f, 0.1f);
+                Renderer.shake(0.5f, 0.1f);
                 Input.get()->rumble(1.f, 100);
 
                 vec2 side = vec2(dir.y, -dir.x) * 0.25f;
@@ -136,7 +136,7 @@ void Player::shoot()
             case Weapon::LASER:
             {
                 RaycastCallback result;
-                // m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), Renderer::get().getGlobalMousePosition());
+                // m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), Renderer.getGlobalMousePosition());
 
                 vec2 target = m_pos + m_aim;
 
@@ -144,7 +144,7 @@ void Player::shoot()
                 {
                     m_scene->getPhysicsWorld()->castRay(&result, m_body->getPosition(), target);
 
-                    Renderer::get().shake(0.2f, 0.1f);
+                    Renderer.shake(0.2f, 0.1f);
                     Input.get()->rumble(0.2f, 100);
 
                     m_rayhit = {result.point.x, result.point.y};
@@ -211,18 +211,18 @@ void Player::update(float dt)
 void Player::draw()
 {
     vec2 campos = m_pos + m_body->getLinearVelocity() * 0.2f;
-    Renderer::get().setView(campos);
+    Renderer.setView(campos);
 
     if (m_weapon == Weapon::LASER && Input.get()->isAction(Action::A_FIRE))
     {
-        Renderer::get().drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
-        Renderer::get().drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
+        Renderer.drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
+        Renderer.drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
 
-        Renderer::get().drawLineScaled(m_pos, m_pos + (m_aim), sf::Color::Red);
+        Renderer.drawLineScaled(m_pos, m_pos + (m_aim), sf::Color::Red);
     }
 
-    Renderer::get().drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
-    Renderer::get().drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
 
     Spacecraft::draw();
 }

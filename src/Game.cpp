@@ -22,7 +22,7 @@ Game::Game()
     m_window.setMouseCursorGrabbed(true);
     m_window.setMouseCursorVisible(false);
 
-    Renderer::get().init(m_window);
+    Renderer.init(m_window);
     rng::randomizeSeed();
     Input.init();
 
@@ -74,16 +74,16 @@ void Game::update()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         m_window.close();
 
-    Renderer::get().update();
+    Renderer.update();
 }
 
 void Game::draw()
 {
-    Renderer::get().clear();
+    Renderer.clear();
     m_scene->draw();
 
     Input.debugDraw();
-    Renderer::get().display();
+    Renderer.display();
 }
 
 void Game::run()

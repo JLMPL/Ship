@@ -111,8 +111,8 @@ void Mesh::draw(bool scaled)
         scale(m_scale);
 
     if (scaled)
-        Renderer::get().drawScaled(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
+        Renderer.drawScaled(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
     else
-        Renderer::get().draw(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
+        Renderer.draw(m_verts.data(), m_verts.size(), sf::Triangles, sf::RenderStates(m_tr));
 
 }

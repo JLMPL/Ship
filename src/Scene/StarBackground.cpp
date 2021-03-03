@@ -41,8 +41,8 @@ void StarBackground::update(float dt)
 
 void StarBackground::draw()
 {
-    Renderer::get().drawScaled(&m_back2[0], m_back2.size(), sf::Points);
-    Renderer::get().drawScaled(&m_back[0], m_back.size(), sf::Points);
-    Renderer::get().drawScaled(&m_stars[0], m_stars.size(), sf::Points);
+    Renderer.drawScaled(&m_back2[0], m_back2.size(), sf::Points);
+    Renderer.drawScaled(&m_back[0], m_back.size(), sf::Points);
+    Renderer.drawScaled(&m_stars[0], m_stars.size(), sf::Points);
 }
 

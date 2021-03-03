@@ -82,13 +82,13 @@ void Hud::update(float dt)
 void Hud::draw()
 {
     if (m_overheat)
-        Renderer::get().draw(m_overheatText);
+        Renderer.draw(m_overheatText);
 
     m_coords.setString((L"$5") + std::to_wstring(m_playerCoords.x) + (L"$0 ⋅ $5") + std::to_wstring(m_playerCoords.y));
     m_coords.draw();
 
     for (int i = 0; i < 4; i++)
-        Renderer::get().draw(m_weapons[i]);
+        Renderer.draw(m_weapons[i]);
 
     m_money.draw();
 

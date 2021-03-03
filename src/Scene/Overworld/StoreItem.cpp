@@ -41,11 +41,11 @@ void StoreItem::update()
 
 void StoreItem::draw()
 {
-    Renderer::get().draw(m_rect);
     m_mesh.draw(false);
     m_name.draw();
     m_description.draw();
     m_priceText.draw();
+    Renderer.draw(m_rect);
 }
 
 void StoreItem::setPosition(const vec2& pos)
@@ -78,4 +78,9 @@ void StoreItem::setSelected(bool value)
     else
         m_rect.setOutlineThickness(0);
 
+}
+
+void StoreItem::disable()
+{
+    m_rect.setFillColor({0,0,0,192});
 }

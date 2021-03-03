@@ -16,6 +16,7 @@ public:
     void setSize(const vec2& size);
 
     void setSelected(bool value);
+    void disable();
 
 private:
     sf::Font m_font;

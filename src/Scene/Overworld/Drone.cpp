@@ -41,7 +41,7 @@ void Drone::update(float dt)
         if (m_clock > sf::seconds(1))
         {
             vec2 pos = m_body->getPosition();
-            vec2 dir = math::normalize(Renderer::get().getGlobalMousePosition() - pos);
+            vec2 dir = math::normalize(Renderer.getGlobalMousePosition() - pos);
             m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), DroneDamage, false);
 
             Audio.playSound(_Audio::EFFECT_ENEMY_BLASTER);

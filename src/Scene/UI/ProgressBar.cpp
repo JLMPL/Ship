@@ -18,13 +18,13 @@ void ProgressBar::draw()
 
     if (m_isScaled)
     {
-        Renderer::get().drawScaled(m_back);
-        Renderer::get().drawScaled(m_front);
+        Renderer.drawScaled(m_back);
+        Renderer.drawScaled(m_front);
     }
     else
     {
-        Renderer::get().draw(m_back);
-        Renderer::get().draw(m_front);
+        Renderer.draw(m_back);
+        Renderer.draw(m_front);
     }
 }
 

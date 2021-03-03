@@ -72,6 +72,12 @@ void Tutorial::show(TutorialType tut)
 
 void Tutorial::update(float dt)
 {
+    if (!TutorialsEnabled)
+        return;
+
+    if (!m_visible)
+        return;
+
     if (Input.get()->isAction(Action::A_CONFIRM))
     {
         m_scene->setPause(false);
@@ -130,7 +136,7 @@ void Tutorial::draw()
         h11
     };
 
-    Renderer::get().draw(verts, 24, sf::PrimitiveType::Triangles);
+    Renderer.draw(verts, 24, sf::PrimitiveType::Triangles);
     m_text.draw();
     m_continue.draw();
 }
