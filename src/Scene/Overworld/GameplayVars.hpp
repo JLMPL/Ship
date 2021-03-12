@@ -16,4 +16,10 @@ constexpr int DroneXpValue = 75;
 constexpr int DroneDamage = 1;
 
 //tutorials
-extern bool TutorialsEnabled;
+
+namespace gamevars
+{
+	extern bool TutorialsEnabled;
+	extern int PlayerMoney;
+	extern bool WeaponUnlocked[4];
+}

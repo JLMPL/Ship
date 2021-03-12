@@ -15,8 +15,11 @@ public:
     void setPosition(const vec2& pos);
     void setSize(const vec2& size);
 
+	int getPrice() const;
+
     void setSelected(bool value);
     void disable();
+	bool isEnabled() const;
 
 private:
     sf::Font m_font;
@@ -32,4 +35,5 @@ private:
     vec2 m_size = {100,100};
 
     bool m_selected = false;
+	bool m_enabled = true;
 };

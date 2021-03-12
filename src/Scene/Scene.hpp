@@ -20,7 +20,17 @@ public:
     virtual void update(float dt);
     virtual void draw();
 
-    SceneObject* findObject(const std::string& name);
+	template <typename T = SceneObject>
+    T* findObject(const std::string& name)
+	{
+		for (auto& object : m_objects)
+		{
+			if (object->getName() == name)
+				return static_cast<T*>(object.get());
+		}
+
+		return nullptr;
+	}
 
     template <typename T, typename... TArgs>
     T* spawnObject(TArgs... args)

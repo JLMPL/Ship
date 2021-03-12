@@ -2,6 +2,7 @@
 #include "Renderer.hpp"
 #include "Core/Math.hpp"
 #include "Core/Config.hpp"
+#include "../Scene.hpp" // somehow including this is absolutely necessary
 #include <cmath>
 
 static constexpr float HealthBarWidth = 250.f;
@@ -37,18 +38,13 @@ Hud::Hud(Scene* scene)
     m_overheatText.setOutlineColor({64,0,0,255});
     m_overheatText.setString("ENGINE OVERHEATED!");
     m_overheatText.setOrigin({m_overheatText.getLocalBounds().width/2, 0});
-    m_overheatText.setPosition({DisplayWidth/2, (DisplayHeight/2) - 100});
-
-    m_coords.setFont(m_font);
-    m_coords.setCharacterSize(24);
-    // m_coords.setFillColor(sf::Color::White);
-    m_coords.setPosition({32, DisplayHeight - 112});
+    m_overheatText.setPosition({float(DisplayWidth/2), float(DisplayHeight/2) - 100});
 
     //
 
     m_weaponsTex.loadFromFile("data/images/weapons.png");
 
-    vec2 corner = {DisplayWidth - 128, DisplayHeight - 128};
+    vec2 corner = {float(DisplayWidth) - 128, float(DisplayHeight) - 128};
 
     for (int i = 0; i < 4; i++)
     {
@@ -65,6 +61,24 @@ Hud::Hud(Scene* scene)
     m_money.setCharacterSize(24);
     m_money.setString(L"$6$ 0");
     m_money.setPosition({(DisplayWidth/2 - XPBarWidth/2) + 4, 24});
+
+	m_wheel[0].loadFromFile("data/meshes/weapon_wheel_down.obj");
+	m_wheel[1].loadFromFile("data/meshes/weapon_wheel_right.obj");
+	m_wheel[2].loadFromFile("data/meshes/weapon_wheel_up.obj");
+	m_wheel[3].loadFromFile("data/meshes/weapon_wheel_left.obj");
+	m_wheelShadow[0].loadFromFile("data/meshes/weapon_wheel_down.obj");
+	m_wheelShadow[1].loadFromFile("data/meshes/weapon_wheel_right.obj");
+	m_wheelShadow[2].loadFromFile("data/meshes/weapon_wheel_up.obj");
+	m_wheelShadow[3].loadFromFile("data/meshes/weapon_wheel_left.obj");
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_wheel[i].setScale(50.f);
+		m_wheelShadow[i].setScale(50.f);
+
+		m_wheel[i].setPosition(vec2(DisplayWidth - 70.f, DisplayHeight - 70.f));
+		m_wheelShadow[i].setPosition(vec2(DisplayWidth - 69.f, DisplayHeight - 69.f));
+	}
 }
 
 void Hud::update(float dt)
@@ -84,16 +98,19 @@ void Hud::draw()
     if (m_overheat)
         Renderer.draw(m_overheatText);
 
-    m_coords.setString((L"$5") + std::to_wstring(m_playerCoords.x) + (L"$0 ⋅ $5") + std::to_wstring(m_playerCoords.y));
-    m_coords.draw();
-
-    for (int i = 0; i < 4; i++)
-        Renderer.draw(m_weapons[i]);
+    //for (int i = 0; i < 4; i++)
+    //    Renderer.draw(m_weapons[i]);
 
     m_money.draw();
 
     m_hpBar.draw();
     m_heatBar.draw();
+	
+	for (int i = 0; i < 4; i++)
+	{
+		m_wheelShadow[i].draw(false);
+		m_wheel[i].draw(false);
+	}
 }
 
 void Hud::setHeat(float level)
@@ -106,19 +123,19 @@ void Hud::setHealthPercentage(float perc)
     m_healthPercentage = perc;
 }
 
-void Hud::setPlayerCoords(int x, int y)
-{
-    m_playerCoords = {x, y};
-}
-
 void Hud::setWeapon(int weapon)
 {
     for (int i = 0; i < 4; i++)
     {
         m_weapons[i].setTextureRect({i*32, 32, 32,32});
+		m_wheel[i].setColor(sf::Color::Black);
+		m_wheelShadow[i].setColor(sf::Color::White);
     }
 
     m_weapons[weapon].setTextureRect({weapon*32, 0, 32,32});
+
+	m_wheel[weapon].setColor(sf::Color::White);
+	m_wheelShadow[weapon].setColor(sf::Color::Black);
 }
 
 void Hud::setMoney(int value)

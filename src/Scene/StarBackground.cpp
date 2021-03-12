@@ -1,6 +1,7 @@
 #include "StarBackground.hpp"
 #include "Renderer.hpp"
 #include "Random.hpp"
+#include "Scene.hpp"
 #include <cmath>
 
 static constexpr float ExtentsOfSpace = 1000.0f;

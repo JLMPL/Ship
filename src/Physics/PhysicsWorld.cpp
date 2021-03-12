@@ -134,7 +134,7 @@ void PhysicsWorld::update(float dt)
     for (auto i = m_rigidBodies.begin(); i != m_rigidBodies.end();)
     {
         if (i->use_count() == 1)
-            m_rigidBodies.erase(i);
+            i = m_rigidBodies.erase(i);
         else
             i++;
     }
@@ -142,7 +142,7 @@ void PhysicsWorld::update(float dt)
     for (auto i = m_staticBodies.begin(); i != m_staticBodies.end();)
     {
         if (i->use_count() == 1)
-            m_staticBodies.erase(i);
+            i = m_staticBodies.erase(i);
         else
             i++;
     }

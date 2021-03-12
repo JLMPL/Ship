@@ -16,7 +16,7 @@ public:
 
     void onContact(SceneObject* other) override final;
 
-    void damage(int value);
+	void damage(int value) override final;
 
 private:
     SceneObject* m_player = nullptr;
@@ -26,4 +26,5 @@ private:
     ProgressBar m_healthbar;
 
     vec2 m_spawnPoint;
+	vec2 m_target;
 };

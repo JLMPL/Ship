@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Math.hpp"
+#include <string>
 #include <memory>
 
 struct Scene;

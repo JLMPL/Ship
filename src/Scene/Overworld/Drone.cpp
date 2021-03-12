@@ -55,7 +55,7 @@ void Drone::update(float dt)
     float dist = math::distance(m_body->getPosition(), towards);
 
     if (dist > 10)
-        m_body->applyLinearImpulse(m_body->getDirection() * timer::delta * 1.f);
+        thrust(m_body->getDirection() * timer::delta * 1.f);
     else if (dist < 3)
         m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 1.f);
 

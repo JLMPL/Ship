@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "SceneObject.hpp"
 
 Scene::Scene(Game* game)
  : m_game(game)
@@ -54,17 +55,6 @@ void Scene::draw()
         ent->draw();
 
     // m_physicsWorld.draw();
-}
-
-SceneObject* Scene::findObject(const std::string& name)
-{
-    for (auto& object : m_objects)
-    {
-        if (object->getName() == name)
-            return object.get();
-    }
-
-    return nullptr;
 }
 
 PhysicsWorld* Scene::getPhysicsWorld()

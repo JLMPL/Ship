@@ -1,0 +1,10 @@
+# Blender v2.81 (sub 16) OBJ File: ''
+# www.blender.org
+mtllib guide_arrow.mtl
+o Plane_Plane.001
+v -0.800000 0.000000 0.000000
+v 0.800000 0.000000 0.000000
+v 0.000000 0.000000 -2.000000
+usemtl White
+s off
+f 1 2 3

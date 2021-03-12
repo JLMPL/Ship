@@ -7,6 +7,7 @@
 #include "Core/Timer.hpp"
 #include <algorithm>
 #include "GameplayVars.hpp"
+#include "Random.hpp"
 
 Merchant::Merchant(Scene* scene)
     : Spacecraft(scene)
@@ -21,6 +22,7 @@ Merchant::Merchant(Scene* scene)
     m_healthbar.setValue(m_maxHealth);
 
     m_mesh.loadFromFile("data/meshes/merchant.obj");
+	m_target = vec2(rng::inRange(-500.f, 500.f), rng::inRange(-500.f, 500.f));
 }
 
 void Merchant::ready(const vec2& spawnPoint)
@@ -32,15 +34,17 @@ void Merchant::ready(const vec2& spawnPoint)
 
 void Merchant::update(float dt)
 {
-    vec2 dir = math::normalize(m_body->getPosition() - m_player->getPosition());
-    float dist = math::length(m_body->getPosition() - m_player->getPosition());
+	if (math::distance(m_target, m_body->getPosition()) < 25.f)
+	{
+		m_target = vec2(rng::inRange(-500.f, 500.f), rng::inRange(-500.f, 500.f));
+	}
+
+    vec2 dir = math::normalize(m_target - m_body->getPosition());
 
     m_body->rotateTowards(m_body->getPosition() + dir, 100 * dt);
 
-    if (dist < 40)
-        m_body->applyLinearImpulse(dir * timer::delta * 0.8f);
-    else
-        m_body->applyLinearImpulse(-dir * timer::delta * 1.f);
+	if (math::length(m_body->getLinearVelocity()) < 15.f)
+		thrust(dir * timer::delta * 0.8f);
 
     m_pos = m_body->getPosition();
     m_healthbar.setPosition(m_pos);

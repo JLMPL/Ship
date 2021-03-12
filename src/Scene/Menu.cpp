@@ -3,6 +3,7 @@
 #include "Core/Config.hpp"
 #include "Audio/Audio.hpp"
 #include "Input/Input.hpp"
+#include "Scene.hpp"
 #include <cmath>
 
 Menu::Menu(Scene* scene)

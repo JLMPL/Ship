@@ -23,7 +23,7 @@ Tutorial::Tutorial(Scene* scene)
 
 void Tutorial::show(TutorialType tut)
 {
-    if (!TutorialsEnabled)
+    if (!gamevars::TutorialsEnabled)
         return;
 
     if (m_viewedAlready[tut])
@@ -43,15 +43,15 @@ void Tutorial::show(TutorialType tut)
                 L"$5Coordinates: $0Show your position within the system.\n"
                 L"Standard tool for navigation.\n"
             );
-            m_text.setPosition({24, DisplayHeight/2});
+            m_text.setPosition({24, float(DisplayHeight)/2});
 
-            m_highlight = {24, DisplayHeight - 120, 300, 100};
+            m_highlight = {24, float(DisplayHeight) - 120, 300, 100};
             break;
         }
         case TUTORIAL_OBJECTIVE:
         {
             m_text.setString(L"Be a good pirate and follow $3orders$0.\nIf you do what you're told, you can't go wrong.");
-            m_text.setPosition({24, DisplayHeight/2});
+            m_text.setPosition({24, float(DisplayHeight)/2});
 
             m_highlight = {24, 24, 300, 40};
             break;
@@ -59,9 +59,9 @@ void Tutorial::show(TutorialType tut)
         case TUTORIAL_XP:
         {
             m_text.setString(L"As you $2kill$0 people you'll gain the necessary $6experience$0.\nLet's hope it will be worth it.");
-            m_text.setPosition({24, DisplayHeight/2});
+            m_text.setPosition({24, float(DisplayHeight)/2});
 
-            m_highlight = {(DisplayWidth /2) - 180, 24, 180*2, 40};
+            m_highlight = {float(DisplayWidth /2) - 180, 24, 180*2, 40};
             break;
         }
     }
@@ -72,7 +72,7 @@ void Tutorial::show(TutorialType tut)
 
 void Tutorial::update(float dt)
 {
-    if (!TutorialsEnabled)
+    if (!gamevars::TutorialsEnabled)
         return;
 
     if (!m_visible)
@@ -93,9 +93,9 @@ void Tutorial::draw()
     sf::Color black(0,0,0,255);
 
     sf::Vertex v00({0,0}, black);
-    sf::Vertex v10({DisplayWidth, 0}, black);
-    sf::Vertex v01({0, DisplayHeight}, black);
-    sf::Vertex v11({DisplayWidth, DisplayHeight}, black);
+    sf::Vertex v10({float(DisplayWidth), 0}, black);
+    sf::Vertex v01({0, float(DisplayHeight)}, black);
+    sf::Vertex v11({float(DisplayWidth), float(DisplayHeight)}, black);
 
     sf::Vertex h00({m_highlight.left, m_highlight.top}, color);
     sf::Vertex h10({m_highlight.left + m_highlight.width, m_highlight.top}, color);

@@ -3,6 +3,7 @@
 #include "Physics/RigidBody.hpp"
 #include "Visual/Mesh.hpp"
 #include "Visual/Trail.hpp"
+#include "Visual/Thruster.hpp"
 
 class Spacecraft : public SceneObject
 {
@@ -14,6 +15,9 @@ public:
     void draw() override;
 
     void setPosition(const vec2& pos) override final;
+	void thrust(const vec2& dir);
+
+	virtual void damage(int value) {}
 
 protected:
     RigidBody::Ref m_body = nullptr;
@@ -22,4 +26,5 @@ protected:
 
     Mesh m_mesh;
     Trail m_trail;
+	Thruster m_thruster;
 };

@@ -12,6 +12,7 @@ static constexpr int MerchantValue = 400;
 Objective::Objective(Scene* scene)
  : SceneObject(scene)
 {
+	m_name = "objective";
     m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
 
     m_obj.setFont(m_font);
@@ -23,28 +24,25 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    m_current = ObjectiveType::KILL_BANDITS;
+    //m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
     {
         case KILL_BANDITS:
         {
             int numBandits = rng::inRangei(3,5);
-            // int x = rng::inRangei(-500,500);
-            // int y = rng::inRangei(-500,500);
+			//m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
 
-            int x = 40;
-            int y = 0;
+			m_pos = vec2(40, 0);
 
-            std::wstring text = L"$2Kill $0" + std::to_wstring(numBandits) + L" bandits $5(" +
-                std::to_wstring(x) + L", " + std::to_wstring(y) + L")";
+			std::wstring text = L"$2Kill $0" + std::to_wstring(numBandits) + L" bandits";
             m_obj.setString(text);
 
             for (int i = 0; i < numBandits; i++)
             {
-                m_enemies.push_back(m_scene->spawnObject<Drone>(vec2(x,y)));
+                m_enemies.push_back(m_scene->spawnObject<Drone>(m_pos));
                 Drone* dr = (Drone*)m_enemies.back();
-                dr->setPosition({x,y});
+                dr->setPosition(m_pos);
             }
         }
         break;
@@ -55,7 +53,9 @@ void Objective::generateNewObjective()
 
             m_enemies.push_back(m_scene->spawnObject<Merchant>(vec2(40,0)));
             Merchant* mr = (Merchant*)m_enemies.back();
-            mr->setPosition({40,0});
+
+			m_pos = vec2(40, 0);
+            mr->setPosition(m_pos);
         }
         break;
     }
@@ -112,14 +112,14 @@ void Objective::update(float dt)
         generateNewObjective();
     }
 
-    if (m_current == ROB_MERCHANT && !m_complete)
-    {
-        Merchant* mr = (Merchant*)m_enemies.back();
-        vec2 pos = mr->getPosition();
-        std::wstring text = L"$4Rob $0Merchant $5(" +
-            std::to_wstring(int(pos.x)) + L", " + std::to_wstring(int(pos.y)) + L")";
-        m_obj.setString(text);
-    }
+    //if (m_current == ROB_MERCHANT && !m_complete)
+    //{
+    //    Merchant* mr = (Merchant*)m_enemies.back();
+    //    vec2 pos = mr->getPosition();
+    //    std::wstring text = L"$4Rob $0Merchant $5(" +
+    //        std::to_wstring(int(pos.x)) + L", " + std::to_wstring(int(pos.y)) + L")";
+    //    m_obj.setString(text);
+    //}
 
     if (!m_enemies.empty())
     for (auto i = m_enemies.begin(); i != m_enemies.end();)
@@ -134,4 +134,11 @@ void Objective::update(float dt)
 void Objective::draw()
 {
     m_obj.draw();
+}
+
+const vec2& Objective::getPosition() const
+{
+	if (m_current == ROB_MERCHANT && !m_enemies.empty())
+		return m_enemies.back()->getPosition();
+	return m_pos;
 }

@@ -3,14 +3,8 @@
 #include "Core/Config.hpp"
 #include "Input/Input.hpp"
 #include "Scene/Scene.hpp"
-
-/*
-To buy
-Shotgun
-Laser
-Rockets
-Brake
-*/
+#include "Hud.hpp"
+#include "GameplayVars.hpp"
 
 static constexpr float ScreenFract = 0.6;
 static constexpr float PositionFract = (1.f - ScreenFract) / 2.f;
@@ -30,11 +24,11 @@ Store::Store(Scene* scene)
     m_items[2].setData(L"Homing Rockets", L"Rockets automatically homing towards closest\nenemies. Effective against groups.", 5560);
     m_items[3].setData(L"Ultra Brakes", L"Stops any and all momentum on the ship.\nHuge power cost.", 2310);
 
-    int itemHeight = (DisplayHeight * ScreenFract) / NumItems;
+    float itemHeight = (DisplayHeight * ScreenFract) / ITEM_COUNT;
     for (int i = 0; i < 4; i++)
     {
-        m_items[i].setSize({DisplayWidth * ScreenFract, itemHeight});
-        m_items[i].setPosition({DisplayWidth * PositionFract, (DisplayHeight * PositionFract) + (itemHeight * i)});
+        m_items[i].setSize({float(DisplayWidth) * ScreenFract, itemHeight});
+        m_items[i].setPosition({float(DisplayWidth) * PositionFract, (float(DisplayHeight) * PositionFract) + (itemHeight * i)});
     }
 }
 
@@ -57,17 +51,37 @@ void Store::update(float dt)
         }
         if (Input.get()->isAction(Action::A_DOWN))
         {
-            m_selected = std::min(NumItems - 1, ++m_selected);
+            m_selected = std::min(ITEM_COUNT - 1, ++m_selected);
             m_timer = sf::seconds(0);
         }
-        if (Input.get()->isAction(Action::A_CONFIRM))
+        if (Input.get()->isAction(Action::A_CONFIRM) && m_items[m_selected].isEnabled())
         {
-            m_items[m_selected].disable();
+			if (gamevars::PlayerMoney >= m_items[m_selected].getPrice())
+			{
+				m_items[m_selected].disable();
+				gamevars::PlayerMoney -= m_items[m_selected].getPrice();
+				m_scene->findObject<Hud>("hud")->setMoney(gamevars::PlayerMoney);
+
+				switch (m_selected)
+				{
+					case ITEM_SHOTGUN:
+						gamevars::WeaponUnlocked[ITEM_SHOTGUN + 1] = true;
+						break;
+					case ITEM_LASER:
+						gamevars::WeaponUnlocked[ITEM_LASER + 1] = true;
+						break;
+					case ITEM_ROCKETS:
+						gamevars::WeaponUnlocked[ITEM_ROCKETS + 1] = true;
+						break;
+					case ITEM_BRAKES:
+						break;
+				}
+			}
             m_timer = sf::seconds(0);
         }
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < ITEM_COUNT; i++)
     {
         m_items[i].setSelected(i == m_selected);
     }

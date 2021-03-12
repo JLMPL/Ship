@@ -1,3 +1,9 @@
 #include "GameplayVars.hpp"
 
-bool TutorialsEnabled = true;
+namespace gamevars
+{
+	bool TutorialsEnabled = true;
+	int PlayerMoney = 0;
+
+	bool WeaponUnlocked[4] = { true, true, true, true };
+}

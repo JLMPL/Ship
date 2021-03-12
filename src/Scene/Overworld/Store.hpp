@@ -7,7 +7,14 @@
 class Store : public SceneObject
 {
 public:
-    static constexpr int NumItems = 4;
+	enum
+	{
+		ITEM_SHOTGUN = 0,
+		ITEM_LASER,
+		ITEM_ROCKETS,
+		ITEM_BRAKES,
+		ITEM_COUNT
+	};
 
     Store(Scene* scene);
     ~Store() = default;
@@ -22,7 +29,7 @@ private:
 
     sf::Time m_timer;
 
-    StoreItem m_items[NumItems];
+    StoreItem m_items[ITEM_COUNT];
     int m_selected = 0;
 
     bool m_isActive = false;

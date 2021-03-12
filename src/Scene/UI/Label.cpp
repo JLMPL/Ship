@@ -24,7 +24,7 @@ void Label::setString(const std::wstring& text)
 
     for (int i = 0; i < text.size(); i++)
     {
-        if (text[i] == '$' && std::iswdigit(text[i+1]))
+        if (text[i] == '$' && iswdigit(text[i+1]))
         {
             m_front << word;
             m_shadow << word;

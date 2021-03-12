@@ -1,4 +1,5 @@
 #include "Random.hpp"
+#include <ctime>
 
 namespace rng
 {

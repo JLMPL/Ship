@@ -9,25 +9,30 @@
 #include "GameplayVars.hpp"
 #include "Scene/Tutorial.hpp"
 #include "Audio/Audio.hpp"
+#include "Objective.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
 {
     m_name = "player_ship";
     m_mesh.loadFromFile("data/meshes/player.obj");
+	m_arrow.loadFromFile("data/meshes/guide_arrow.obj");
+
+	m_arrow.setOffset(vec2(0, -2));
+	m_arrow.setScale(0.25);
 }
 
 void Player::ready()
 {
     Spacecraft::ready(true);
 
-    m_hud = m_scene->findObject("hud")->as<Hud>();
+	m_hud = m_scene->findObject<Hud>("hud");
     m_hud->setMoney(0);
 
     Audio.playSound(_Audio::EFFECT_ENGINE);
     Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
 
-    auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+	auto tut = m_scene->findObject<Tutorial>("tutorial");
     tut->show(TUTORIAL_OBJECTIVE);
 }
 
@@ -47,6 +52,7 @@ void Player::control()
     {
         Audio.setVolume(_Audio::EFFECT_ENGINE, 0.2);
         // Audio.stopSound(_Audio::EFFECT_ENGINE);
+		m_thruster.setVisible(false);
         return;
     }
 
@@ -62,7 +68,7 @@ void Player::control()
 
     if (speed > 0)
     {
-        m_body->applyLinearImpulse(m_body->getDirection() * timer::delta * speed);
+		thrust(m_body->getDirection() * timer::delta * speed);
         exertHeat(speed * 2 * timer::delta);
     }
     else
@@ -152,10 +158,11 @@ void Player::shoot()
                     if (m_shootTimer > sf::milliseconds(25) && result.hasHit)
                     {
                         if (result.object)
-                        if (result.object->getName() == "drone")
+                        if (result.object->getName() == "drone" ||
+							result.object->getName() == "merchant")
                         {
-                            auto drone = result.object->as<Drone>();
-                            drone->damage(LaserDamage);
+                            auto ship = result.object->as<Spacecraft>();
+							ship->damage(LaserDamage);
                         }
 
                         m_shootTimer = sf::seconds(0);
@@ -184,9 +191,9 @@ void Player::update(float dt)
 
     if (Input.get()->isAction(Action::A_BASE_WEAPON))
         m_weapon = Weapon::BASIC;
-    if (Input.get()->isAction(Action::A_SHOTGUN))
+    if (Input.get()->isAction(Action::A_SHOTGUN) && gamevars::WeaponUnlocked[int(Weapon::SHOTGUN)])
         m_weapon = Weapon::SHOTGUN;
-    if (Input.get()->isAction(Action::A_LASER))
+    if (Input.get()->isAction(Action::A_LASER) && gamevars::WeaponUnlocked[int(Weapon::LASER)])
         m_weapon = Weapon::LASER;
 
     m_hud->setWeapon((int)m_weapon);
@@ -199,11 +206,16 @@ void Player::update(float dt)
             m_overheat = false;
     }
 
-    m_hud->setPlayerCoords(m_pos.x, m_pos.y);
     m_hud->setHeat(m_heat);
     m_hud->setHealthPercentage(float(m_health) / float(m_maxHealth));
 
     m_pos = m_body->getPosition();
+
+	vec2 towards = m_scene->findObject<Objective>("objective")->getPosition() - m_pos;
+	towards = math::normalize(towards);
+
+	m_arrow.setRotation(atan2(towards.x, -towards.y));
+	m_arrow.setPosition(m_pos);
 
     Spacecraft::update(dt);
 }
@@ -224,7 +236,11 @@ void Player::draw()
     Renderer.drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
     Renderer.drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
 
+	//Renderer.drawLineScaled(m_pos, m_scene->findObject<Objective>("objective")->getPosition(), sf::Color::Green);
+
     Spacecraft::draw();
+
+	m_arrow.draw();
 }
 
 void Player::onContact(SceneObject* other)
@@ -236,18 +252,19 @@ void Player::onContact(SceneObject* other)
         int dmg = other->as<Bullet>()->getDamage();
         m_health = std::max(0, m_health - dmg);
 
-        auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+		auto tut = m_scene->findObject<Tutorial>("tutorial");
         tut->show(TUTORIAL_HEALTH);
     }
 }
 
 void Player::addMoney(int value)
 {
-    m_money += value;
+	gamevars::PlayerMoney += value;
+    //m_money += value;
 
-    m_hud->setMoney(m_money);
+    m_hud->setMoney(gamevars::PlayerMoney);
     m_health = std::min(m_maxHealth, m_health + 1);
 
-    auto tut = m_scene->findObject("tutorial")->as<Tutorial>();
+	auto tut = m_scene->findObject<Tutorial>("tutorial");
     tut->show(TUTORIAL_XP);
 }

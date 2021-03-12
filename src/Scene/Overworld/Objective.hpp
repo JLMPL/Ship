@@ -24,6 +24,8 @@ public:
     void update(float dt) override final;
     void draw() override final;
 
+	const vec2& getPosition() const;
+
 private:
     void generateNewObjective();
     void checkCompletion();
@@ -40,4 +42,6 @@ private:
     SceneObject* m_player = nullptr;
 
     sf::Time m_timer;
+
+	vec2 m_pos;
 };

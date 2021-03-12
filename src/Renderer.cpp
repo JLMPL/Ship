@@ -12,8 +12,14 @@ void _Renderer::init(sf::RenderWindow& window)
 {
     m_window = &window;
 
+    // really need to update sfml on linux
+	// sf::ContextSettings settings;
+	// settings.antialiasingLevel = 8;
+    // m_sceneTarget.create(DisplayWidth, DisplayHeight, settings);
+    // m_uiTarget.create(DisplayWidth, DisplayHeight, settings);
+
     m_sceneTarget.create(DisplayWidth, DisplayHeight);
-    m_uiTarget.create(DisplayWidth, DisplayHeight, false);
+    m_uiTarget.create(DisplayWidth, DisplayHeight);
 
     setView({0,0});
     m_view.zoom(0.05f);
@@ -37,7 +43,7 @@ void _Renderer::update()
         m_viewPos += vec2(x,y);
     }
 
-    m_view = sf::View(m_viewPos, {DisplayWidth, DisplayHeight});
+    m_view = sf::View(m_viewPos, {float(DisplayWidth), float(DisplayHeight)});
     m_view.zoom(m_zoom);
     m_sceneTarget.setView(m_view);
 }
@@ -140,7 +146,7 @@ vec2 _Renderer::getLocalMousePosition() const
 
 void _Renderer::setLocalMousePosition(const vec2& pos)
 {
-    sf::Mouse::setPosition({pos.x, pos.y}, *m_window);
+    sf::Mouse::setPosition({int(pos.x), int(pos.y)}, *m_window);
 }
 
 void _Renderer::setZoom(float zoom)

@@ -2,13 +2,14 @@
 #include "Scene/SceneObject.hpp"
 #include "Scene/UI/ProgressBar.hpp"
 #include "Scene/UI/Label.hpp"
+#include "Visual/Mesh.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
 class Hud : public SceneObject
 {
 public:
-    Hud(Scene* scene);
+	Hud(Scene* scene);
     ~Hud() = default;
 
     void update(float dt) override final;
@@ -16,7 +17,6 @@ public:
 
     void setHeat(float level);
     void setHealthPercentage(float perc);
-    void setPlayerCoords(int x, int y);
     void setWeapon(int weapon);
     void setMoney(int value);
 
@@ -31,13 +31,11 @@ private:
 
     float m_heat = 0.f;
     float m_healthPercentage = 1.f;
-    vec2i m_playerCoords = {0,0};
-
-    // sf::Text m_coords;
-    Label m_coords;
 
     sf::Texture m_weaponsTex;
     sf::Sprite m_weapons[4];
 
     Label m_money;
+	Mesh m_wheel[4];
+	Mesh m_wheelShadow[4];
 };

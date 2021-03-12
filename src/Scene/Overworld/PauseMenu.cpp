@@ -14,10 +14,10 @@ PauseMenu::PauseMenu(Scene* scene)
     m_text.setFont(m_font);
     m_text.setCharacterSize(32);
     m_text.setString(L"Pause");
-    m_text.setPosition({DisplayWidth/2, DisplayHeight/2});
+    m_text.setPosition({float(DisplayWidth/2), float(DisplayHeight/2)});
     m_text.setOrigin(m_text.getSize() / 2.f);
 
-    m_overlay.setSize({DisplayWidth, DisplayHeight});
+    m_overlay.setSize({float(DisplayWidth), float(DisplayHeight)});
     m_overlay.setFillColor({0,0,0,128});
 }
 

@@ -3,6 +3,10 @@
 #include <fstream>
 #include <cmath>
 
+#if __linux__
+#define sscanf_s sscanf
+#endif
+
 std::map<std::string, sf::Color> lookup = {
     {"White",     sf::Color(0xffffffff)},
     {"LightGray", sf::Color(0xC0C0C0ff)},
@@ -42,7 +46,7 @@ void Mesh::loadFromFile(const std::string& path)
         {
             vec2 pos;
             float junk;
-            sscanf(line.c_str(), "v %f %f %f", &pos.x, &junk, &pos.y);
+            sscanf_s(line.c_str(), "v %f %f %f", &pos.x, &junk, &pos.y);
             positions.push_back(pos);
         }
 
@@ -60,7 +64,7 @@ void Mesh::loadFromFile(const std::string& path)
         {
             Triangle tri;
             tri.color = currentColor;
-            sscanf(line.c_str(), "f %d %d %d", &tri.index[0], &tri.index[1], &tri.index[2]);
+            sscanf_s(line.c_str(), "f %d %d %d", &tri.index[0], &tri.index[1], &tri.index[2]);
             tri.index[0]--; tri.index[1]--; tri.index[2]--;
             tris.push_back(tri);
         }
@@ -100,6 +104,12 @@ void Mesh::setScale(float scale)
 void Mesh::setScale(const vec2& scale)
 {
     m_scale = scale;
+}
+
+void Mesh::setColor(const sf::Color& color)
+{
+	for (auto& vert : m_verts)
+		vert.color = color;
 }
 
 void Mesh::draw(bool scaled)

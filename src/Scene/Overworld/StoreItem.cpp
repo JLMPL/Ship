@@ -31,6 +31,8 @@ void StoreItem::setData(const std::wstring& name, const std::wstring& desc, int 
     m_priceText.setString(L"$6$ " + std::to_wstring(price));
     m_priceText.setOrigin({0, m_priceText.getSize().y/2});
 
+	m_price = price;
+
     setPosition(m_pos);
 }
 
@@ -59,8 +61,8 @@ void StoreItem::setPosition(const vec2& pos)
     m_mesh.setPosition(m_pos);
 
     m_name.setPosition({m_pos.x + m_size.y, m_pos.y + (m_size.y/4)});
-    m_description.setPosition({m_pos.x + m_size.y, m_pos.y + (m_size.y/1.5)});
-    m_priceText.setPosition({m_pos.x + m_size.x - m_priceText.getSize().x - (m_size.y*0.5), m_pos.y + (m_size.y/2)});
+    m_description.setPosition({m_pos.x + m_size.y, m_pos.y + (m_size.y/1.5f)});
+    m_priceText.setPosition({m_pos.x + m_size.x - m_priceText.getSize().x - (m_size.y*0.5f), m_pos.y + (m_size.y/2)});
 }
 
 void StoreItem::setSize(const vec2& size)
@@ -83,4 +85,15 @@ void StoreItem::setSelected(bool value)
 void StoreItem::disable()
 {
     m_rect.setFillColor({0,0,0,192});
+	m_enabled = false;
+}
+
+int StoreItem::getPrice() const
+{
+	return m_price;
+}
+
+bool StoreItem::isEnabled() const
+{
+	return m_enabled;
 }

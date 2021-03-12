@@ -2,6 +2,7 @@
 #include "Spacecraft.hpp"
 #include "Core/Timer.hpp"
 #include <SFML/System/Time.hpp>
+#include "Visual/Thruster.hpp"
 
 class Hud;
 
@@ -10,6 +11,7 @@ enum class Weapon
     BASIC,
     SHOTGUN,
     LASER,
+	ROCKETS,
     COUNT
 };
 
@@ -38,14 +40,12 @@ private:
     sf::Time m_shootTimer;
 
     bool m_overheat = false;
-
     Weapon m_weapon = Weapon::BASIC;
 
     Hud* m_hud = nullptr;
 
-    int m_money = 0;
-
     vec2 m_rayhit;
-
     vec2 m_aim;
+
+	Mesh m_arrow;
 };

@@ -40,7 +40,7 @@ void InputController::findDevice()
     {
         if (SDL_IsGameController(i))
         {
-            printf("GameController found at slot %i.\n", i);
+            //printf("GameController found at slot %i.\n", i);
             m_controllerSlot = i;
             break;
         }

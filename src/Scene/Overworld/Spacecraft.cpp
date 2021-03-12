@@ -4,7 +4,7 @@
 Spacecraft::Spacecraft(Scene* scene)
  : SceneObject(scene)
 {
-
+	m_thruster.setVisible(true);
 }
 
 void Spacecraft::ready(bool player)
@@ -17,6 +17,9 @@ void Spacecraft::update(float dt)
 {
     m_trail.setPosition(m_pos);
     m_trail.update();
+	m_thruster.update();
+
+	m_thruster.setTransform(m_pos, m_body->getAngle() + M_PI / 2, 0.8f);
 }
 
 void Spacecraft::draw()
@@ -27,10 +30,19 @@ void Spacecraft::draw()
     m_mesh.setScale(0.7f);
 
     m_trail.draw();
+	m_thruster.draw();
     m_mesh.draw();
+	m_thruster.setVisible(false);
 }
 
 void Spacecraft::setPosition(const vec2& pos)
 {
     m_body->setPosition(pos);
+}
+
+void Spacecraft::thrust(const vec2& dir)
+{
+	m_thruster.setVisible(true);
+	m_body->applyLinearImpulse(dir);
+	m_thruster.setLength(math::length(dir) * 20);
 }

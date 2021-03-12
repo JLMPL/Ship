@@ -19,7 +19,7 @@ MainMenu::MainMenu(Game* game)
     });
     menu->addItem(L"Tutorials: ON", [&]()
     {
-        TutorialsEnabled = !TutorialsEnabled;
+        gamevars::TutorialsEnabled = !gamevars::TutorialsEnabled;
     });
     menu->addItem(L"Quit", [&]()
     {
@@ -35,7 +35,7 @@ void MainMenu::update(float dt)
 {
     auto menu = (Menu*)m_objects.back().get();
 
-    if (TutorialsEnabled)
+    if (gamevars::TutorialsEnabled)
         menu->setCaption(1, L"Tutorials: ON");
     else
         menu->setCaption(1, L"Tutorials: $7OFF");

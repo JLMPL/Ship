@@ -2,6 +2,7 @@
 #include "Scene/Scene.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Explosion.hpp"
 
 Bullet::Bullet(Scene* scene)
     : SceneObject(scene)
@@ -54,6 +55,7 @@ void Bullet::onContact(SceneObject* other)
 {
     if (other)
     {
+		m_scene->spawnObject<Explosion>(m_body->getPosition(), sf::Color::White);
         m_enabled = false;
     }
 }

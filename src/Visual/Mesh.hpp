@@ -19,6 +19,8 @@ public:
     void setScale(float scale);
     void setScale(const vec2& scale);
 
+	void setColor(const sf::Color& color);
+
     void draw(bool scaled = true);
 
 private:
