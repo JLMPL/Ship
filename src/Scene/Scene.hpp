@@ -4,6 +4,7 @@
 #include <memory>
 #include <array>
 #include <map>
+#include <limits>
 
 class Game;
 
@@ -31,6 +32,30 @@ public:
 
 		return nullptr;
 	}
+
+    std::vector<SceneObject*> findObjectsInRange(const vec2& pos, float range);
+
+    template <typename T = SceneObject>
+    T* findClosestObjectByName(const vec2& pos, const std::string& name)
+    {
+        SceneObject* closest = nullptr;
+        float closestDistance = 1000.f;
+
+        for (auto& object : m_objects)
+        {
+            float dist = math::distance(object->getPosition(), pos);
+
+            if (object->getName() == name && dist < closestDistance)
+            {
+                closest = object.get();
+                closestDistance = dist;
+            }
+        }
+
+        return closest;
+    }
+
+    int countObjectsByName(const std::string& name);
 
     template <typename T, typename... TArgs>
     T* spawnObject(TArgs... args)

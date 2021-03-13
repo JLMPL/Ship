@@ -1,15 +1,16 @@
 #include "Player.hpp"
 #include "Scene/Scene.hpp"
-#include "Bullet.hpp"
-#include "Renderer.hpp"
+#include "Audio/Audio.hpp"
 #include "Physics/PhysicsWorld.hpp"
+#include "Scene/Tutorial.hpp"
 #include "Input/Input.hpp"
+#include "Renderer.hpp"
+#include "GameplayVars.hpp"
+#include "Bullet.hpp"
 #include "Drone.hpp"
 #include "Hud.hpp"
-#include "GameplayVars.hpp"
-#include "Scene/Tutorial.hpp"
-#include "Audio/Audio.hpp"
 #include "Objective.hpp"
+#include "Rocket.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
@@ -173,6 +174,22 @@ void Player::shoot()
                 }
             }
             break;
+            case Weapon::ROCKETS:
+            {
+                if (m_shootTimer < sf::seconds(0.5))
+                    return;
+
+                vec2 side = vec2(dir.y, -dir.x);
+
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side));
+
+                exertHeat(75);
+                m_shootTimer = sf::seconds(0);
+            }
+            break;
         }
     }
     else
@@ -195,6 +212,8 @@ void Player::update(float dt)
         m_weapon = Weapon::SHOTGUN;
     if (Input.get()->isAction(Action::A_LASER) && gamevars::WeaponUnlocked[int(Weapon::LASER)])
         m_weapon = Weapon::LASER;
+    if (Input.get()->isAction(Action::A_ROCKETS) && gamevars::WeaponUnlocked[int(Weapon::ROCKETS)])
+        m_weapon = Weapon::ROCKETS;
 
     m_hud->setWeapon((int)m_weapon);
 

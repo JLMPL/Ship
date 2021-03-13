@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Audio.hpp>
 
+#define DISABLE_AUDIO
+
 class _Audio
 {
 public:

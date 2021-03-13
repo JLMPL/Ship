@@ -24,7 +24,8 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    //m_current = ObjectiveType::ROB_MERCHANT;
+    m_current = ObjectiveType::KILL_BANDITS;
+    // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
     {
@@ -121,14 +122,26 @@ void Objective::update(float dt)
     //    m_obj.setString(text);
     //}
 
-    if (!m_enemies.empty())
-    for (auto i = m_enemies.begin(); i != m_enemies.end();)
+    printf("num_drones    %d\n", m_scene->countObjectsByName("drone"));
+    printf("num_merchants %d\n", m_scene->countObjectsByName("merchant"));
+
+    if (m_scene->countObjectsByName("drone") == 0 &&
+        m_scene->countObjectsByName("merchant") == 0)
     {
-        if ((*i)->isDestroyed())
-            i = m_enemies.erase(i);
-        else
-            i++;
+        m_enemies.clear();
     }
+
+    // if (!m_enemies.empty())
+    // for (auto i = m_enemies.begin(); i != m_enemies.end();)
+    // {
+    //     if ((*i)->isDestroyed())
+    //     {
+    //         printf("Enemy died indeed!\n");
+    //         i = m_enemies.erase(i);
+    //     }
+    //     else
+    //         i++;
+    // }
 }
 
 void Objective::draw()
@@ -140,5 +153,9 @@ const vec2& Objective::getPosition() const
 {
 	if (m_current == ROB_MERCHANT && !m_enemies.empty())
 		return m_enemies.back()->getPosition();
+
+    if (m_current == KILL_BANDITS && m_enemies.size() == 1)
+        return m_enemies.back()->getPosition();
+
 	return m_pos;
 }

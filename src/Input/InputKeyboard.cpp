@@ -10,6 +10,7 @@ InputKeyboard::InputKeyboard()
     m_bindings[A_BASE_WEAPON] = sf::Keyboard::Num1;
     m_bindings[A_SHOTGUN] = sf::Keyboard::Num2;
     m_bindings[A_LASER] = sf::Keyboard::Num3;
+    m_bindings[A_ROCKETS] = sf::Keyboard::Num4;
     m_bindings[A_MENU] = sf::Keyboard::Escape;
     m_bindings[A_CONFIRM] = sf::Keyboard::Return;
     m_bindings[A_STORE] = sf::Keyboard::Tab;

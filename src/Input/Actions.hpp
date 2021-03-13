@@ -5,6 +5,7 @@ enum Action
     A_BASE_WEAPON = 0,
     A_SHOTGUN,
     A_LASER,
+    A_ROCKETS,
     A_MENU,
     A_FIRE,
     A_CONFIRM,

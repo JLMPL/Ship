@@ -26,7 +26,10 @@ void _Audio::playSound(int effect)
     if (m_sounds[effect].getLoop() && m_sounds[effect].getStatus() == sf::Sound::Playing)
         return;
 
+
+#ifndef DISABLE_AUDIO
     m_sounds[effect].play();
+#endif
 }
 
 void _Audio::stopSound(int effect)

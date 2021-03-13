@@ -57,6 +57,34 @@ void Scene::draw()
     // m_physicsWorld.draw();
 }
 
+std::vector<SceneObject*> Scene::findObjectsInRange(const vec2& pos, float range)
+{
+    std::vector<SceneObject*> found;
+
+    for (auto& object : m_objects)
+    {
+        if (math::distance(object->getPosition(), pos) <= range)
+        {
+            found.push_back(object.get());
+        }
+    }
+
+    return found;
+}
+
+int Scene::countObjectsByName(const std::string& name)
+{
+    int count = 0;
+
+    for (auto& object : m_objects)
+    {
+        if (object->getName() == name)
+            count++;
+    }
+
+    return count;
+}
+
 PhysicsWorld* Scene::getPhysicsWorld()
 {
     return &m_physicsWorld;

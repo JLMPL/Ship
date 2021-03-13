@@ -1,5 +1,8 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
+#include <SFML/System/Time.hpp>
+
+class Spacecraft;
 
 class Rocket : public SceneObject
 {
@@ -12,5 +15,10 @@ public:
 	void draw() override final;
 
 private:
-	
+    vec2 m_dir;
+    float m_acceleration = 50.f;
+    bool m_attacking = false;
+
+    SceneObject* m_target = nullptr;
+    sf::Time m_timer;
 };
