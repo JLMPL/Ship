@@ -10,6 +10,7 @@ public:
     {
         EFFECT_BLASTER = 0,
         EFFECT_LASER,
+        EFFECT_ROCKET,
         EFFECT_EXPLOSION,
         EFFECT_MENU_SWITCH,
         EFFECT_MENU_SELECT,

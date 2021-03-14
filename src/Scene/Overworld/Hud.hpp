@@ -32,9 +32,6 @@ private:
     float m_heat = 0.f;
     float m_healthPercentage = 1.f;
 
-    sf::Texture m_weaponsTex;
-    sf::Sprite m_weapons[4];
-
     Label m_money;
 	Mesh m_wheel[4];
 	Mesh m_wheelShadow[4];

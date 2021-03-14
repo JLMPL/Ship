@@ -3,11 +3,11 @@
 
 ProgressBar::ProgressBar()
 {
-    m_back.setSize({4,0.3});
+    m_back.setSize({2,0.15});
     m_back.setFillColor(sf::Color::Black);
 
-    m_front.setSize({4,0.3});
-    m_front.setFillColor(sf::Color::Red);
+    m_front.setSize({2,0.15});
+    m_front.setFillColor({192,192,192});
 }
 
 void ProgressBar::draw()
@@ -61,6 +61,11 @@ void ProgressBar::setSize(const vec2& size)
 {
     m_back.setSize({size.x,size.y});
     m_front.setSize({size.x,size.y});
+}
+
+vec2 ProgressBar::getSize() const
+{
+    return {m_back.getLocalBounds().width, m_back.getLocalBounds().height};
 }
 
 void ProgressBar::setScaled(bool value)

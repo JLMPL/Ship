@@ -3,8 +3,6 @@
 #include <SFML/System/Time.hpp>
 #include "Visual/Trail.hpp"
 
-class Spacecraft;
-
 class Rocket : public SceneObject
 {
 public:

@@ -6,6 +6,7 @@ enum Action
     A_SHOTGUN,
     A_LASER,
     A_ROCKETS,
+    A_BRAKE,
     A_MENU,
     A_FIRE,
     A_CONFIRM,

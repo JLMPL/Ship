@@ -2,7 +2,7 @@
 #include "Renderer.hpp"
 #include "Core/Math.hpp"
 #include "Core/Config.hpp"
-#include "../Scene.hpp" // somehow including this is absolutely necessary
+#include "../Scene.hpp" // somehow including this is absolutely necessary in MSVC
 #include <cmath>
 
 static constexpr float HealthBarWidth = 250.f;
@@ -41,21 +41,6 @@ Hud::Hud(Scene* scene)
     m_overheatText.setPosition({float(DisplayWidth/2), float(DisplayHeight/2) - 100});
 
     //
-
-    m_weaponsTex.loadFromFile("data/images/weapons.png");
-
-    vec2 corner = {float(DisplayWidth) - 128, float(DisplayHeight) - 128};
-
-    for (int i = 0; i < 4; i++)
-    {
-        m_weapons[i].setTexture(m_weaponsTex);
-        m_weapons[i].setTextureRect({i*32,0,32,32});
-    }
-
-    m_weapons[0].setPosition(corner + vec2(32,64));
-    m_weapons[1].setPosition(corner + vec2(64,32));
-    m_weapons[2].setPosition(corner + vec2(32,0));
-    m_weapons[3].setPosition(corner + vec2(0,32));
 
     m_money.setFont(m_font);
     m_money.setCharacterSize(24);
@@ -105,7 +90,7 @@ void Hud::draw()
 
     m_hpBar.draw();
     m_heatBar.draw();
-	
+
 	for (int i = 0; i < 4; i++)
 	{
 		m_wheelShadow[i].draw(false);
@@ -127,12 +112,9 @@ void Hud::setWeapon(int weapon)
 {
     for (int i = 0; i < 4; i++)
     {
-        m_weapons[i].setTextureRect({i*32, 32, 32,32});
 		m_wheel[i].setColor(sf::Color::Black);
 		m_wheelShadow[i].setColor(sf::Color::White);
     }
-
-    m_weapons[weapon].setTextureRect({weapon*32, 0, 32,32});
 
 	m_wheel[weapon].setColor(sf::Color::White);
 	m_wheelShadow[weapon].setColor(sf::Color::Black);

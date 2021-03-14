@@ -62,7 +62,7 @@ void Drone::update(float dt)
     m_body->rotateTowards(towards, 100 * dt);
 
     m_pos = m_body->getPosition();
-    m_healthbar.setPosition(m_pos);
+    m_healthbar.setPosition(m_pos - m_healthbar.getSize() /2.f);
 
     Spacecraft::update(dt);
 }

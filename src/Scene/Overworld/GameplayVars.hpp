@@ -6,6 +6,7 @@ static constexpr float MoveHeatCost = 8.f;
 static constexpr float ShootHeatCost = 2.f;
 static constexpr float ShotgunHeatCost = 10.f;
 static constexpr float LaserHeatCost = 50.f; //per second
+static constexpr float RocketsCost = 75.f;
 
 static constexpr int BaseDamage = 20;
 static constexpr int ShotgunDamage = 10;
@@ -22,4 +23,5 @@ namespace gamevars
 	extern bool TutorialsEnabled;
 	extern int PlayerMoney;
 	extern bool WeaponUnlocked[4];
+    extern bool BrakeUnlocked;
 }

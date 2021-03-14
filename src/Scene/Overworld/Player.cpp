@@ -11,6 +11,7 @@
 #include "Hud.hpp"
 #include "Objective.hpp"
 #include "Rocket.hpp"
+#include "Pulse.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
@@ -186,7 +187,8 @@ void Player::shoot()
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side));
 
-                exertHeat(75);
+                exertHeat(RocketsCost);
+                Audio.playSound(_Audio::EFFECT_ROCKET);
                 m_shootTimer = sf::seconds(0);
             }
             break;
@@ -214,6 +216,15 @@ void Player::update(float dt)
         m_weapon = Weapon::LASER;
     if (Input.get()->isAction(Action::A_ROCKETS) && gamevars::WeaponUnlocked[int(Weapon::ROCKETS)])
         m_weapon = Weapon::ROCKETS;
+
+    if (Input.get()->isAction(Action::A_BRAKE) && gamevars::BrakeUnlocked && m_shootTimer > sf::seconds(0.5))
+    {
+        m_body->fullStop();
+
+        m_scene->spawnObject<Pulse>(m_pos);
+
+        m_shootTimer = sf::seconds(0);
+    }
 
     m_hud->setWeapon((int)m_weapon);
 

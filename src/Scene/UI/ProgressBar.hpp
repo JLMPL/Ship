@@ -19,6 +19,7 @@ public:
     void setOffset(const vec2& offset);
 
     void setSize(const vec2& size);
+    vec2 getSize() const;
 
     void setScaled(bool value);
 

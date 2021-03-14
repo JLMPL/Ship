@@ -49,6 +49,9 @@ void Rocket::update(float dt)
 
         m_target = m_scene->findClosestObjectByName(m_pos, "drone");
 
+        if (!m_target)
+            m_target = m_scene->findClosestObjectByName(m_pos, "merchant");
+
         if (m_target)
         {
             m_dir += math::normalize(m_target->getPosition() - m_pos) * (m_acceleration / 20.f);

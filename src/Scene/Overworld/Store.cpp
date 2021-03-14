@@ -74,6 +74,7 @@ void Store::update(float dt)
 						gamevars::WeaponUnlocked[ITEM_ROCKETS + 1] = true;
 						break;
 					case ITEM_BRAKES:
+                        gamevars::BrakeUnlocked = true;
 						break;
 				}
 			}

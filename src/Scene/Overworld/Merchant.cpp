@@ -47,7 +47,7 @@ void Merchant::update(float dt)
 		thrust(dir * timer::delta * 0.8f);
 
     m_pos = m_body->getPosition();
-    m_healthbar.setPosition(m_pos);
+    m_healthbar.setPosition(m_pos - m_healthbar.getSize()/2.f);
 
     Spacecraft::update(dt);
 }
