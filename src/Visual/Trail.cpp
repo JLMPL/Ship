@@ -12,7 +12,7 @@ void Trail::update()
         m_timer = sf::seconds(0);
     }
 
-    if (m_verts.size() > 100)
+    if (m_verts.size() > m_length)
         m_verts.erase(m_verts.begin());
 
     for (int i = 0; i < m_verts.size(); i++)
@@ -32,6 +32,11 @@ void Trail::setPosition(const vec2& pos)
 
     if (!m_verts.empty())
         m_verts.back().position = m_pos;
+}
+
+void Trail::setLength(int length)
+{
+    m_length = length;
 }
 
 void Trail::setColor(const sf::Color& color)

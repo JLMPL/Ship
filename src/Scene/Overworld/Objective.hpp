@@ -40,6 +40,7 @@ private:
     std::vector<SceneObject*> m_enemies;
 
     SceneObject* m_player = nullptr;
+    SceneObject* m_merchant = nullptr;
 
     sf::Time m_timer;
 

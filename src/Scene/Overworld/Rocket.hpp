@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
 #include <SFML/System/Time.hpp>
+#include "Visual/Trail.hpp"
 
 class Spacecraft;
 
@@ -21,4 +22,6 @@ private:
 
     SceneObject* m_target = nullptr;
     sf::Time m_timer;
+
+    Trail m_trail;
 };

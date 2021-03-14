@@ -29,6 +29,7 @@ void Bullet::ready(const vec2& pos, const vec2& dir, int damage, bool player)
     }
 
     m_trail.setInterval(0.01);
+    m_trail.setLength(25);
 }
 
 void Bullet::update(float dt)

@@ -41,8 +41,7 @@ void Objective::generateNewObjective()
 
             for (int i = 0; i < numBandits; i++)
             {
-                m_enemies.push_back(m_scene->spawnObject<Drone>(m_pos));
-                Drone* dr = (Drone*)m_enemies.back();
+                auto dr = m_scene->spawnObject<Drone>(m_pos);
                 dr->setPosition(m_pos);
             }
         }
@@ -52,11 +51,10 @@ void Objective::generateNewObjective()
             std::wstring text = L"$4Rob $0Merchant";
             m_obj.setString(text);
 
-            m_enemies.push_back(m_scene->spawnObject<Merchant>(vec2(40,0)));
-            Merchant* mr = (Merchant*)m_enemies.back();
+            m_merchant = m_scene->spawnObject<Merchant>(vec2(40,0));
+            m_merchant->setPosition(m_pos);
 
 			m_pos = vec2(40, 0);
-            mr->setPosition(m_pos);
         }
         break;
     }
@@ -70,7 +68,7 @@ void Objective::checkCompletion()
     {
         case KILL_BANDITS:
         {
-            if (m_enemies.size() == 0)
+            if (m_scene->countObjectsByName("drone") == 0)
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(BanditsValue);
@@ -79,10 +77,11 @@ void Objective::checkCompletion()
         break;
         case ROB_MERCHANT:
         {
-            if (m_enemies.size() == 0)
+            if (m_scene->countObjectsByName("merchant") == 0)
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(MerchantValue);
+                m_merchant = nullptr;
             }
         }
         break;
@@ -122,14 +121,14 @@ void Objective::update(float dt)
     //    m_obj.setString(text);
     //}
 
-    printf("num_drones    %d\n", m_scene->countObjectsByName("drone"));
-    printf("num_merchants %d\n", m_scene->countObjectsByName("merchant"));
+    // printf("num_drones    %d\n", m_scene->countObjectsByName("drone"));
+    // printf("num_merchants %d\n", m_scene->countObjectsByName("merchant"));
 
-    if (m_scene->countObjectsByName("drone") == 0 &&
-        m_scene->countObjectsByName("merchant") == 0)
-    {
-        m_enemies.clear();
-    }
+    // if (m_scene->countObjectsByName("drone") == 0 &&
+    //     m_scene->countObjectsByName("merchant") == 0)
+    // {
+    //     m_enemies.clear();
+    // }
 
     // if (!m_enemies.empty())
     // for (auto i = m_enemies.begin(); i != m_enemies.end();)
@@ -151,11 +150,8 @@ void Objective::draw()
 
 const vec2& Objective::getPosition() const
 {
-	if (m_current == ROB_MERCHANT && !m_enemies.empty())
-		return m_enemies.back()->getPosition();
-
-    if (m_current == KILL_BANDITS && m_enemies.size() == 1)
-        return m_enemies.back()->getPosition();
+	if (m_current == ROB_MERCHANT && m_merchant)
+		return m_merchant->getPosition();
 
 	return m_pos;
 }

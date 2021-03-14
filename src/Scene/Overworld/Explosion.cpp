@@ -3,7 +3,7 @@
 #include "Random.hpp"
 #include "Renderer.hpp"
 
-Explosion::Explosion(Scene* scene) 
+Explosion::Explosion(Scene* scene)
 	: SceneObject(scene)
 {
 	m_name = "explosion";
@@ -26,10 +26,10 @@ void Explosion::update(float dt)
 {
 	for (auto& particle : m_particles)
 	{
-		particle.pos += particle.dir * dt * 5.f;
+		particle.pos += particle.dir * dt * 15.f;
 	}
 
-	m_color.a = std::max(0, int(m_color.a - dt * 100.f));
+	m_color.a = std::max(0, int(m_color.a - dt * 800.f));
 
 	if (m_color.a == 0)
 		destroy();

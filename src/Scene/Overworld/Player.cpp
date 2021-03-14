@@ -181,10 +181,10 @@ void Player::shoot()
 
                 vec2 side = vec2(dir.y, -dir.x);
 
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side * 0.25f));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side * 0.25f));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side));
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side));
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side));
 
                 exertHeat(75);
                 m_shootTimer = sf::seconds(0);
