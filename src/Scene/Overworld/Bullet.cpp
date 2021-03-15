@@ -65,3 +65,8 @@ int Bullet::getDamage() const
 {
     return m_damage;
 }
+
+void Bullet::setColor(const sf::Color& color)
+{
+    m_trail.setColor(color);
+}

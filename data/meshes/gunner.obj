@@ -1,0 +1,21 @@
+# Blender v2.80 (sub 75) OBJ File: 'gunner.blend'
+# www.blender.org
+mtllib gunner.mtl
+o Circle
+v -0.000000 0.000000 -1.958255
+v -0.730885 0.000000 -1.250467
+v -1.323577 0.000000 1.041745
+v 0.000000 0.000000 2.041744
+v 1.323577 0.000000 1.041744
+v 0.730885 0.000000 -1.250467
+v -0.000000 0.000000 0.041745
+usemtl LightPurple
+s off
+f 5 6 7
+usemtl Purple
+f 1 7 6
+f 2 3 7
+f 4 5 7
+usemtl DarkPurple
+f 2 7 1
+f 3 4 7

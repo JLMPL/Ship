@@ -1,4 +1,5 @@
 #include "Pulse.hpp"
+#include "Scene/Scene.hpp"
 #include "Renderer.hpp"
 
 Pulse::Pulse(Scene* scene)

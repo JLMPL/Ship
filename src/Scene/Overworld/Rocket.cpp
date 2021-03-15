@@ -47,7 +47,10 @@ void Rocket::update(float dt)
     {
         m_acceleration = std::min(40.f, m_acceleration + dt * 20.f);
 
-        m_target = m_scene->findClosestObjectByName(m_pos, "drone");
+        m_target = m_scene->findClosestObjectByName(m_pos, "gunner");
+
+        if (!m_target)
+            m_target = m_scene->findClosestObjectByName(m_pos, "drone");
 
         if (!m_target)
             m_target = m_scene->findClosestObjectByName(m_pos, "merchant");

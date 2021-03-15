@@ -5,6 +5,7 @@
 #include "Drone.hpp"
 #include "Merchant.hpp"
 #include "Player.hpp"
+#include "Gunner.hpp"
 
 static constexpr int BanditsValue = 200;
 static constexpr int MerchantValue = 400;
@@ -24,8 +25,8 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    // m_current = ObjectiveType::KILL_BANDITS;
-    m_current = ObjectiveType::ROB_MERCHANT;
+    m_current = ObjectiveType::KILL_BANDITS;
+    // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
     {
@@ -42,6 +43,12 @@ void Objective::generateNewObjective()
             for (int i = 0; i < numBandits; i++)
             {
                 auto dr = m_scene->spawnObject<Drone>(m_pos);
+                dr->setPosition(m_pos);
+            }
+
+            // for (int i = 0; i < numBandits; i++)
+            {
+                auto dr = m_scene->spawnObject<Gunner>(m_pos);
                 dr->setPosition(m_pos);
             }
         }

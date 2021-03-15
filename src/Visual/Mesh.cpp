@@ -8,15 +8,18 @@
 #endif
 
 std::map<std::string, sf::Color> lookup = {
-    {"White",     sf::Color(0xffffffff)},
-    {"LightGray", sf::Color(0xC0C0C0ff)},
-    {"Gray",      sf::Color(0x808080ff)},
-    {"DarkGray",  sf::Color(0x404040ff)},
-    {"Blue",      sf::Color(0x0000ffff)},
-    {"DarkBlue",  sf::Color(0x000080ff)},
-    {"Red",       sf::Color(0xff0000ff)},
-    {"DarkRed",   sf::Color(0x800000ff)},
-    {"Error",     sf::Color(0xff00ffff)}
+    {"White",       sf::Color(0xffffffff)},
+    {"LightGray",   sf::Color(0xC0C0C0ff)},
+    {"Gray",        sf::Color(0x808080ff)},
+    {"DarkGray",    sf::Color(0x404040ff)},
+    {"Blue",        sf::Color(0x0000ffff)},
+    {"DarkBlue",    sf::Color(0x000080ff)},
+    {"Red",         sf::Color(0xff0000ff)},
+    {"DarkRed",     sf::Color(0x800000ff)},
+    {"LightPurple", sf::Color(0xFF00FFFF)},
+    {"Purple",      sf::Color(0x800080FF)},
+    {"DarkPurple",  sf::Color(0x400040ff)},
+    {"Error",       sf::Color(0xff00ffff)}
 };
 
 struct Triangle

@@ -17,6 +17,7 @@ public:
     void onContact(SceneObject* other) override final;
 
     int getDamage() const;
+    void setColor(const sf::Color& color);
 
 private:
     RigidBody::Ref m_body = nullptr;

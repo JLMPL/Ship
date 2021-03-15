@@ -223,6 +223,7 @@ void Player::update(float dt)
 
         m_scene->spawnObject<Pulse>(m_pos);
 
+        exertHeat(33);
         m_shootTimer = sf::seconds(0);
     }
 
