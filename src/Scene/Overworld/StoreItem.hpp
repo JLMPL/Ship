@@ -18,6 +18,7 @@ public:
 	int getPrice() const;
 
     void setSelected(bool value);
+    void enable();
     void disable();
 	bool isEnabled() const;
 

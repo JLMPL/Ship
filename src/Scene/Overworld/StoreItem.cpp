@@ -88,6 +88,12 @@ void StoreItem::disable()
 	m_enabled = false;
 }
 
+void StoreItem::enable()
+{
+    m_rect.setFillColor({0,0,0,0});
+    m_enabled = true;
+}
+
 int StoreItem::getPrice() const
 {
 	return m_price;

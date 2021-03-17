@@ -10,7 +10,7 @@
 #include "Audio/Audio.hpp"
 
 Gunner::Gunner(Scene* scene)
-    : Spacecraft(scene)
+    : Enemy(scene)
 {
     m_name = "gunner";
 
@@ -21,6 +21,8 @@ Gunner::Gunner(Scene* scene)
     m_healthbar.setValue(m_maxHealth);
 
     m_mesh.loadFromFile("data/meshes/gunner.obj");
+
+    m_moneyValue = 150;
 }
 
 void Gunner::ready(const vec2& spawnPoint)
@@ -53,7 +55,7 @@ void Gunner::update(float dt)
         m_body->applyLinearImpulse(direction * timer::delta * 1.f);
     }
 
-    m_body->rotateTowards(m_player->getPosition(), 100 * dt);
+    m_body->rotateTowards(m_player->getPosition(), 200 * dt);
 
     if (m_stateTimer > sf::seconds(5))
     {
@@ -61,70 +63,11 @@ void Gunner::update(float dt)
         m_stateTimer = sf::seconds(0);
     }
 
-    if (m_isShooting)
+    if (m_isShooting && math::distance(m_pos, m_player->getPosition()) < 100.f)
         shoot();
-
-/*    vec2 towards = m_player->getPosition();
-    if (math::distance(m_body->getPosition(), m_player->getPosition()) < 25.f)
-    {
-        if (m_clock > sf::seconds(1))
-        {
-            vec2 pos = m_body->getPosition();
-            vec2 dir = math::normalize(Renderer.getGlobalMousePosition() - pos);
-            m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), DroneDamage, false);
-
-            Audio.playSound(_Audio::EFFECT_ENEMY_BLASTER);
-
-            m_clock = sf::seconds(0);
-        }
-    }
-    else
-        towards = m_spawnPoint;
-
-    float dist = math::distance(m_body->getPosition(), towards);
-
-    if (dist > 10)
-        thrust(m_body->getDirection() * timer::delta * 1.f);
-    else if (dist < 3)
-        m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 1.f);*/
-
-    // m_body->rotateTowards(towards, 100 * dt);
 
     m_pos = m_body->getPosition();
     m_healthbar.setPosition(m_pos - m_healthbar.getSize() /2.f);
 
     Spacecraft::update(dt);
-}
-
-void Gunner::draw()
-{
-    Spacecraft::draw();
-    m_healthbar.draw();
-}
-
-void Gunner::onContact(SceneObject* other)
-{
-    if (!other) return;
-
-    if (other->getName() == "player_bullet")
-    {
-        damage(other->as<Bullet>()->getDamage());
-    }
-}
-
-void Gunner::damage(int value)
-{
-    m_health = std::max(0, m_health - value);
-
-    if (m_health == 0)
-    {
-        if (!m_isDead)
-        {
-            m_player->as<Player>()->addMoney(DroneXpValue);
-            m_isDead = false;
-        }
-        destroy();
-    }
-
-    m_healthbar.setValue(m_health);
 }

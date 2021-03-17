@@ -161,7 +161,8 @@ void Player::shoot()
                     {
                         if (result.object)
                         if (result.object->getName() == "drone" ||
-							result.object->getName() == "merchant")
+							result.object->getName() == "merchant" ||
+                            result.object->getName() == "gunner")
                         {
                             auto ship = result.object->as<Spacecraft>();
 							ship->damage(LaserDamage);
@@ -186,6 +187,11 @@ void Player::shoot()
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side * 0.25f));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side));
+
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side * 0.25f));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side * 0.25f));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side));
+                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side));
 
                 exertHeat(RocketsCost);
                 Audio.playSound(_Audio::EFFECT_ROCKET);
@@ -217,7 +223,10 @@ void Player::update(float dt)
     if (Input.get()->isAction(Action::A_ROCKETS) && gamevars::WeaponUnlocked[int(Weapon::ROCKETS)])
         m_weapon = Weapon::ROCKETS;
 
-    if (Input.get()->isAction(Action::A_BRAKE) && gamevars::BrakeUnlocked && m_shootTimer > sf::seconds(0.5))
+    if (Input.get()->isAction(Action::A_BRAKE) &&
+        gamevars::BrakeUnlocked &&
+        m_shootTimer > sf::seconds(0.5) &&
+        !m_overheat)
     {
         m_body->fullStop();
 
@@ -272,6 +281,11 @@ void Player::draw()
     Spacecraft::draw();
 
 	m_arrow.draw();
+}
+
+void Player::heal()
+{
+    m_health = m_maxHealth;
 }
 
 void Player::onContact(SceneObject* other)

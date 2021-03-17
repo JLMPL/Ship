@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene/SceneObject.hpp"
-// #include "Scene/UI/Label.hpp"
 #include "StoreItem.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -13,6 +12,7 @@ public:
 		ITEM_LASER,
 		ITEM_ROCKETS,
 		ITEM_BRAKES,
+        ITEM_HEAL,
 		ITEM_COUNT
 	};
 

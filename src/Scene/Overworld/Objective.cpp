@@ -33,9 +33,9 @@ void Objective::generateNewObjective()
         case KILL_BANDITS:
         {
             int numBandits = rng::inRangei(3,5);
-			//m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
+			m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
 
-			m_pos = vec2(40, 0);
+			// m_pos = vec2(40, 0);
 
 			std::wstring text = L"$2Kill $0" + std::to_wstring(numBandits) + L" bandits";
             m_obj.setString(text);
@@ -61,7 +61,8 @@ void Objective::generateNewObjective()
             m_merchant = m_scene->spawnObject<Merchant>(vec2(40,0));
             m_merchant->setPosition(m_pos);
 
-			m_pos = vec2(40, 0);
+			// m_pos = vec2(40, 0);
+            m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
         }
         break;
     }
@@ -75,7 +76,8 @@ void Objective::checkCompletion()
     {
         case KILL_BANDITS:
         {
-            if (m_scene->countObjectsByName("drone") == 0)
+            if (m_scene->countObjectsByName("drone") == 0 &&
+                m_scene->countObjectsByName("gunner") == 0)
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(BanditsValue);

@@ -11,7 +11,7 @@
 #include "Random.hpp"
 
 Drone::Drone(Scene* scene)
-    : Spacecraft(scene)
+    : Enemy(scene)
 {
     m_name = "drone";
 
@@ -22,6 +22,8 @@ Drone::Drone(Scene* scene)
     m_healthbar.setValue(m_maxHealth);
 
     m_mesh.loadFromFile("data/meshes/drone.obj");
+
+    m_moneyValue = 75;
 }
 
 void Drone::ready(const vec2& spawnPoint)
@@ -66,37 +68,4 @@ void Drone::update(float dt)
     m_healthbar.setPosition(m_pos - m_healthbar.getSize() /2.f);
 
     Spacecraft::update(dt);
-}
-
-void Drone::draw()
-{
-    Spacecraft::draw();
-    m_healthbar.draw();
-}
-
-void Drone::onContact(SceneObject* other)
-{
-    if (!other) return;
-
-    if (other->getName() == "player_bullet")
-    {
-        damage(other->as<Bullet>()->getDamage());
-    }
-}
-
-void Drone::damage(int value)
-{
-    m_health = std::max(0, m_health - value);
-
-    if (m_health == 0)
-    {
-        if (!m_isDead)
-        {
-            m_player->as<Player>()->addMoney(DroneXpValue);
-            m_isDead = false;
-        }
-        destroy();
-    }
-
-    m_healthbar.setValue(m_health);
 }

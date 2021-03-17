@@ -30,6 +30,7 @@ public:
 				return static_cast<T*>(object.get());
 		}
 
+        printf("%s - not found in scene!\n", name.c_str());
 		return nullptr;
 	}
 

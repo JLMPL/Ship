@@ -5,6 +5,7 @@
 #include "Scene/Scene.hpp"
 #include "Hud.hpp"
 #include "GameplayVars.hpp"
+#include "Player.hpp"
 
 static constexpr float ScreenFract = 0.6;
 static constexpr float PositionFract = (1.f - ScreenFract) / 2.f;
@@ -23,9 +24,10 @@ Store::Store(Scene* scene)
     m_items[1].setData(L"Laser", L"Deals continous damage in a straight line.\nEffective at a long distance.", 3210);
     m_items[2].setData(L"Homing Rockets", L"Rockets automatically homing towards closest\nenemies. Effective against groups.", 5560);
     m_items[3].setData(L"Ultra Brakes", L"Stops any and all momentum on the ship.\nHuge power cost.", 2310);
+    m_items[4].setData(L"Heal", L"Fully restores health.", 500);
 
     float itemHeight = (DisplayHeight * ScreenFract) / ITEM_COUNT;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < ITEM_COUNT; i++)
     {
         m_items[i].setSize({float(DisplayWidth) * ScreenFract, itemHeight});
         m_items[i].setPosition({float(DisplayWidth) * PositionFract, (float(DisplayHeight) * PositionFract) + (itemHeight * i)});
@@ -42,6 +44,9 @@ void Store::update(float dt)
         {
             m_isActive = !m_isActive;
             m_scene->setPause(m_isActive);
+
+            m_items[ITEM_HEAL].disable();
+
             m_timer = sf::seconds(0);
         }
         if (Input.get()->isAction(Action::A_UP))
@@ -59,6 +64,7 @@ void Store::update(float dt)
 			if (gamevars::PlayerMoney >= m_items[m_selected].getPrice())
 			{
 				m_items[m_selected].disable();
+
 				gamevars::PlayerMoney -= m_items[m_selected].getPrice();
 				m_scene->findObject<Hud>("hud")->setMoney(gamevars::PlayerMoney);
 
@@ -76,6 +82,9 @@ void Store::update(float dt)
 					case ITEM_BRAKES:
                         gamevars::BrakeUnlocked = true;
 						break;
+                    case ITEM_HEAL:
+                        m_scene->findObject<Player>("player_ship")->heal();
+                        break;
 				}
 			}
             m_timer = sf::seconds(0);
@@ -94,7 +103,7 @@ void Store::draw()
     {
         Renderer.draw(m_overlay);
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < ITEM_COUNT; i++)
             m_items[i].draw();
     }
 }

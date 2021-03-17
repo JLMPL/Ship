@@ -30,6 +30,7 @@ public:
     void exertHeat(float hdiff);
     void shoot();
 
+    void heal();
     void addMoney(int value);
 
     void onContact(SceneObject* other) override final;
