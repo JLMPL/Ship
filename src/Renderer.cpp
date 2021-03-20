@@ -2,6 +2,7 @@
 #include "Core/Config.hpp"
 #define STB_PERLIN_IMPLEMENTATION
 #include "Libs/stb_perlin.h"
+#include "Core/Timer.hpp"
 
 _Renderer Renderer;
 
@@ -151,7 +152,15 @@ void _Renderer::setLocalMousePosition(const vec2& pos)
 
 void _Renderer::setZoom(float zoom)
 {
-    m_zoom = 0.05f + zoom * 0.001;
+    // m_zoom = 0.05f + zoom * 0.001;
 
-    if (m_zoom > ZoomCap) m_zoom = ZoomCap;
+    float factor = 0.25f;
+    float desired = 0.05f + zoom * 0.001f;
+
+    m_zoom = (m_zoom * factor) + (desired * (1-factor));
+
+    // m_zoom = std::min(ZoomCap, 0.05f + zoom * 0.001f);
+    m_zoom = std::min(ZoomCap, m_zoom);
+
+    // if (m_zoom > ZoomCap) m_zoom = ZoomCap;
 }

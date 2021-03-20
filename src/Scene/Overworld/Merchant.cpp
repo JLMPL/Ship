@@ -10,9 +10,16 @@
 #include "Random.hpp"
 
 Merchant::Merchant(Scene* scene)
-    : Spacecraft(scene)
+    : Enemy(scene)
 {
     m_name = "merchant";
+
+    std::vector<vec2> points(3);
+    points[0] = vec2(-1.f, 0.6) * 1.429f;
+    points[1] = vec2(1., 0) * 1.429f;
+    points[2] = vec2(-1.f, -0.6) * 1.429f;
+
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false, points);
 
     m_player = m_scene->findObject("player_ship");
 
@@ -22,65 +29,43 @@ Merchant::Merchant(Scene* scene)
     m_healthbar.setValue(m_maxHealth);
 
     m_mesh.loadFromFile("data/meshes/merchant.obj");
-	m_target = vec2(rng::inRange(-500.f, 500.f), rng::inRange(-500.f, 500.f));
+	m_target = vec2(rng::inRange(-250.f, 250.f), rng::inRange(-250.f, 250.f));
+
+    m_moneyValue = 250;
+    m_color = sf::Color(128,128,0);
 }
 
 void Merchant::ready(const vec2& spawnPoint)
 {
-    Spacecraft::ready(false);
+    Enemy::ready(false);
     m_trail.setColor(sf::Color::Yellow);
     m_spawnPoint = spawnPoint;
 }
 
 void Merchant::update(float dt)
 {
-	if (math::distance(m_target, m_body->getPosition()) < 25.f)
-	{
-		m_target = vec2(rng::inRange(-500.f, 500.f), rng::inRange(-500.f, 500.f));
-	}
+    if (m_pos.x > 700.f || m_pos.x < -700.f || m_pos.y < -700.f || m_pos.y > 700.f)
+    {
+        m_body->rotateTowards(vec2(0,0), 200 * timer::delta);
+        thrust(m_body->getDirection() * timer::delta * 10.f);
+    }
+    else
+    {
+    	if (math::distance(m_target, m_body->getPosition()) < 25.f)
+    	{
+    		m_target = vec2(rng::inRange(-250.f, 250.f), rng::inRange(-250.f, 250.f));
+    	}
 
-    vec2 dir = math::normalize(m_target - m_body->getPosition());
+        vec2 dir = math::normalize(m_target - m_body->getPosition());
 
-    m_body->rotateTowards(m_body->getPosition() + dir, 100 * dt);
+        m_body->rotateTowards(m_body->getPosition() + dir, 100 * dt);
 
-	if (math::length(m_body->getLinearVelocity()) < 15.f)
-		thrust(dir * timer::delta * 0.8f);
+    	if (math::length(m_body->getLinearVelocity()) < 25.f)
+    		thrust(dir * timer::delta * 5.f);
+    }
 
     m_pos = m_body->getPosition();
     m_healthbar.setPosition(m_pos - m_healthbar.getSize()/2.f);
 
-    Spacecraft::update(dt);
-}
-
-void Merchant::draw()
-{
-    Spacecraft::draw();
-    m_healthbar.draw();
-}
-
-void Merchant::onContact(SceneObject* other)
-{
-    if (!other) return;
-
-    if (other->getName() == "player_bullet")
-    {
-        damage(other->as<Bullet>()->getDamage());
-    }
-}
-
-void Merchant::damage(int value)
-{
-    m_health = std::max(0, m_health - value);
-
-    if (m_health == 0)
-    {
-        if (!m_isDead)
-        {
-            m_player->as<Player>()->addMoney(DroneXpValue);
-            m_isDead = false;
-        }
-        destroy();
-    }
-
-    m_healthbar.setValue(m_health);
+    Enemy::update(dt);
 }

@@ -301,10 +301,10 @@ void Player::draw()
         Renderer.drawLineScaled(m_pos, m_pos + (m_aim), sf::Color::Red);
     }
 
-    Renderer.drawLineScaled(m_pos + m_aim + vec2(1,0), m_pos + m_aim + vec2(-1,0), sf::Color::Blue);
-    Renderer.drawLineScaled(m_pos + m_aim + vec2(0,1), m_pos + m_aim + vec2(0,-1), sf::Color::Blue);
-
-	//Renderer.drawLineScaled(m_pos, m_scene->findObject<Objective>("objective")->getPosition(), sf::Color::Green);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(0.2,0), m_pos + m_aim + vec2(1,0), sf::Color::White);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(-0.2,0), m_pos + m_aim + vec2(-1,0), sf::Color::White);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(0,0.2), m_pos + m_aim + vec2(0,1), sf::Color::White);
+    Renderer.drawLineScaled(m_pos + m_aim + vec2(0,-0.2), m_pos + m_aim + vec2(0,-1), sf::Color::White);
 
     Spacecraft::draw();
 
