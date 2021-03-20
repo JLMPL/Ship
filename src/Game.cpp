@@ -14,11 +14,11 @@ Game::Game()
     DisplayWidth = sf::VideoMode::getDesktopMode().width;
     DisplayHeight = sf::VideoMode::getDesktopMode().height;
 
-     DisplayWidth = 1280;
-     DisplayHeight = 720;
+     // DisplayWidth = 1280;
+     // DisplayHeight = 720;
 
-    //m_window.create(sf::VideoMode::getDesktopMode(), "Starry Stealers", sf::Style::Fullscreen);
-    m_window.create(sf::VideoMode(DisplayWidth, DisplayHeight), "Starry Stealers", sf::Style::Close);
+    m_window.create(sf::VideoMode::getDesktopMode(), "Starry Stealers", sf::Style::Fullscreen);
+    // m_window.create(sf::VideoMode(DisplayWidth, DisplayHeight), "Starry Stealers", sf::Style::Close);
     m_window.setMouseCursorGrabbed(true);
     m_window.setMouseCursorVisible(false);
 

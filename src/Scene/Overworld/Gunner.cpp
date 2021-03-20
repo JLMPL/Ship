@@ -14,6 +14,16 @@ Gunner::Gunner(Scene* scene)
 {
     m_name = "gunner";
 
+    std::vector<vec2> points;
+    points.push_back(vec2(1.25047,  0.730885));
+    points.push_back(vec2(1.95826,  0       ));
+    points.push_back(vec2(1.25047, -0.730885));
+    points.push_back(vec2(-1.04174, -1.32358));
+    points.push_back(vec2(-2.04174,        0));
+    points.push_back(vec2(-1.04174,  1.32358));
+
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false, points);
+
     m_maxHealth = 250;
     m_health = m_maxHealth;
 
@@ -23,6 +33,7 @@ Gunner::Gunner(Scene* scene)
     m_mesh.loadFromFile("data/meshes/gunner.obj");
 
     m_moneyValue = 150;
+    m_color = sf::Color(128,0,128);
 }
 
 void Gunner::ready(const vec2& spawnPoint)
@@ -32,6 +43,8 @@ void Gunner::ready(const vec2& spawnPoint)
     m_spawnPoint = spawnPoint + vec2(1,1);
     Audio.setVolume(_Audio::EFFECT_ENEMY_BLASTER, 0.5);
     m_player = m_scene->findObject("player_ship");
+
+    m_mesh.setScale(1.f);
 }
 
 void Gunner::shoot()

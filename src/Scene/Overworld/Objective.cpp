@@ -9,6 +9,7 @@
 
 static constexpr int BanditsValue = 200;
 static constexpr int MerchantValue = 400;
+static constexpr float ObjectiveExtents = 250.f;
 
 Objective::Objective(Scene* scene)
  : SceneObject(scene)
@@ -33,7 +34,7 @@ void Objective::generateNewObjective()
         case KILL_BANDITS:
         {
             int numBandits = rng::inRangei(3,5);
-			m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
+			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
 
 			// m_pos = vec2(40, 0);
 
@@ -62,7 +63,7 @@ void Objective::generateNewObjective()
             m_merchant->setPosition(m_pos);
 
 			// m_pos = vec2(40, 0);
-            m_pos = vec2(rng::inRangei(-500, 500), rng::inRangei(-500, 500));
+            m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
         }
         break;
     }

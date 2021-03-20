@@ -15,6 +15,13 @@ Drone::Drone(Scene* scene)
 {
     m_name = "drone";
 
+    std::vector<vec2> points(3);
+    points[0] = {-1.f, 0.6};
+    points[1] = {1., 0};
+    points[2] = {-1.f, -0.6};
+
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, false, points);
+
     m_player = m_scene->findObject("player_ship");
     m_clock = sf::seconds(rng::inRange(0.f,1.f));
 
@@ -24,6 +31,7 @@ Drone::Drone(Scene* scene)
     m_mesh.loadFromFile("data/meshes/drone.obj");
 
     m_moneyValue = 75;
+    m_color = sf::Color(128,0,0);
 }
 
 void Drone::ready(const vec2& spawnPoint)
@@ -32,6 +40,8 @@ void Drone::ready(const vec2& spawnPoint)
     m_trail.setColor(sf::Color::Red);
     m_spawnPoint = spawnPoint;
     Audio.setVolume(_Audio::EFFECT_ENEMY_BLASTER, 0.5);
+
+    m_mesh.setScale(0.7f);
 }
 
 void Drone::update(float dt)

@@ -2,6 +2,7 @@
 #include "Scene/Scene.hpp"
 #include "Bullet.hpp"
 #include "Player.hpp"
+#include "Debris.hpp"
 
 Enemy::Enemy(Scene* scene)
  : Spacecraft(scene)
@@ -33,6 +34,10 @@ void Enemy::damage(int value)
         if (!m_isDead)
         {
             m_player->as<Player>()->addMoney(m_moneyValue);
+
+            for (int i = 0; i < 5; i++)
+                m_scene->spawnObject<Debris>(m_pos, m_color);
+
             m_isDead = false;
         }
         destroy();

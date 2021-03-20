@@ -64,6 +64,12 @@ Hud::Hud(Scene* scene)
 		m_wheel[i].setPosition(vec2(DisplayWidth - 70.f, DisplayHeight - 70.f));
 		m_wheelShadow[i].setPosition(vec2(DisplayWidth - 69.f, DisplayHeight - 69.f));
 	}
+
+    m_outOfBounds.setFont(m_font);
+    m_outOfBounds.setCharacterSize(20);
+    m_outOfBounds.setString(L"That's quite far enough Captain! Let's turn around.");
+    m_outOfBounds.setOrigin(m_outOfBounds.getSize() / 2.f);
+    m_outOfBounds.setPosition({DisplayWidth/2, DisplayHeight * 0.75f});
 }
 
 void Hud::update(float dt)
@@ -96,6 +102,11 @@ void Hud::draw()
 		m_wheelShadow[i].draw(false);
 		m_wheel[i].draw(false);
 	}
+
+    if (m_isOutOfBounds)
+    {
+        m_outOfBounds.draw();
+    }
 }
 
 void Hud::setHeat(float level)
@@ -124,4 +135,9 @@ void Hud::setMoney(int value)
 {
     m_money.setString(L"$6$ " + std::to_wstring(value));
     m_money.setPosition({(DisplayWidth / 2) - (m_money.getSize().x / 2), 24});
+}
+
+void Hud::setShowOutOfBounds(bool value)
+{
+    m_isOutOfBounds = value;
 }

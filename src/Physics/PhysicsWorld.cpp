@@ -19,7 +19,7 @@ PhysicsWorld::PhysicsWorld()
     m_pWorld.SetContactListener(&m_contactListener);
 }
 
-RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
+RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player, const std::vector<vec2>& points)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -27,14 +27,25 @@ RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player)
 
     b2Body* body = m_pWorld.CreateBody(&bodyDef);
 
-    b2Vec2 verts[3];
+    std::vector<b2Vec2> verts(points.size());
 
-    verts[0] = {-1.f, 0.6};
-    verts[1] = {1., 0};
-    verts[2] = {-1.f, -0.6};
+    for (int i = 0; i < verts.size(); i++)
+    {
+        verts[i].x = points[i].x;
+        verts[i].y = points[i].y;
+    }
+
+    // b2Vec2 verts[3];
+
+    // verts[0] = {-1.f, 0.6};
+    // verts[1] = {1., 0};
+    // verts[2] = {-1.f, -0.6};
+
+    // b2PolygonShape shape;
+    // shape.Set(verts, 3);
 
     b2PolygonShape shape;
-    shape.Set(verts, 3);
+    shape.Set(verts.data(), verts.size());
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;

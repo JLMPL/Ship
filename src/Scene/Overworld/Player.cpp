@@ -17,6 +17,14 @@ Player::Player(Scene* scene)
     : Spacecraft(scene)
 {
     m_name = "player_ship";
+
+    std::vector<vec2> points(3);
+    points[0] = {-1.f, 0.6};
+    points[1] = {1., 0};
+    points[2] = {-1.f, -0.6};
+
+    m_body = m_scene->getPhysicsWorld()->addRigidBody({0,0}, true, points);
+
     m_mesh.loadFromFile("data/meshes/player.obj");
 	m_arrow.loadFromFile("data/meshes/guide_arrow.obj");
 
@@ -36,6 +44,8 @@ void Player::ready()
 
 	auto tut = m_scene->findObject<Tutorial>("tutorial");
     tut->show(TUTORIAL_OBJECTIVE);
+
+    m_mesh.setScale(0.7f);
 }
 
 void Player::exertHeat(float hdiff)
@@ -123,18 +133,21 @@ void Player::shoot()
 
                 vec2 side = vec2(dir.y, -dir.x) * 0.25f;
 
+                const float spread = 0.08f;
+
                 m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), ShotgunDamage, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + side, ShotgunDamage, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - side, ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.25f), ShotgunDamage, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.25f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * spread), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * spread), ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.5f), ShotgunDamage, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.5f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * spread * 2.f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * spread * 2.f), ShotgunDamage, true);
 
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * 0.75f), ShotgunDamage, true);
-                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * 0.75f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * spread * 3.f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * spread * 3.f), ShotgunDamage, true);
+
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() + (side * spread * 4.f), ShotgunDamage, true);
+                m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection() - (side * spread * 4.f), ShotgunDamage, true);
 
                 exertHeat(ShotgunHeatCost);
                 Audio.playSound(_Audio::EFFECT_BLASTER);
@@ -206,14 +219,8 @@ void Player::shoot()
     }
 }
 
-void Player::update(float dt)
+void Player::switchWeapons()
 {
-    m_heatTimer += sf::seconds(dt);
-    m_shootTimer += sf::seconds(dt);
-
-    control();
-    shoot();
-
     if (Input.get()->isAction(Action::A_BASE_WEAPON))
         m_weapon = Weapon::BASIC;
     if (Input.get()->isAction(Action::A_SHOTGUN) && gamevars::WeaponUnlocked[int(Weapon::SHOTGUN)])
@@ -237,6 +244,27 @@ void Player::update(float dt)
     }
 
     m_hud->setWeapon((int)m_weapon);
+}
+
+void Player::update(float dt)
+{
+    m_heatTimer += sf::seconds(dt);
+    m_shootTimer += sf::seconds(dt);
+
+    if (m_pos.x > 700.f || m_pos.x < -700.f || m_pos.y < -700.f || m_pos.y > 700.f)
+    {
+        m_body->rotateTowards(vec2(0,0), 200 * timer::delta);
+        thrust(m_body->getDirection() * timer::delta * 10.f);
+        m_hud->setShowOutOfBounds(true);
+    }
+    else
+    {
+        control();
+        shoot();
+        switchWeapons();
+
+        m_hud->setShowOutOfBounds(false);
+    }
 
     if (m_heatTimer > sf::seconds(0.5))
     {

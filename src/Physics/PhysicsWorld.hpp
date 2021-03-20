@@ -16,7 +16,7 @@ public:
     void update(float dt);
     void draw();
 
-    RigidBody::Ref addRigidBody(const vec2& pos, bool player);
+    RigidBody::Ref addRigidBody(const vec2& pos, bool player, const std::vector<vec2>& points);
     RigidBody::Ref spawnBullet(const vec2& origin, const vec2& dir, bool player);
     StaticBody::Ref addStaticBody(const vec2& pos, float radius);
     void castRay(b2RayCastCallback* callback, const sf::Vector2f& from, const sf::Vector2f& to);

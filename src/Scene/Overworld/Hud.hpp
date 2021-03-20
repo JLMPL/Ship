@@ -19,6 +19,7 @@ public:
     void setHealthPercentage(float perc);
     void setWeapon(int weapon);
     void setMoney(int value);
+    void setShowOutOfBounds(bool value);
 
 private:
     ProgressBar m_heatBar;
@@ -35,4 +36,7 @@ private:
     Label m_money;
 	Mesh m_wheel[4];
 	Mesh m_wheelShadow[4];
+
+    Label m_outOfBounds;
+    bool m_isOutOfBounds = false;
 };

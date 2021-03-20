@@ -7,10 +7,10 @@ namespace rng
 
     void randomizeSeed();
 
-    template <typename T = float>
-    static T inRange(T min, T max)
+    // template <typename T = float>
+    static float inRange(float min, float max)
     {
-        std::uniform_real_distribution<T> range(min, max);
+        std::uniform_real_distribution<float> range(min, max);
         return range(randomEngine);
     }
 

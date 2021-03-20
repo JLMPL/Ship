@@ -20,4 +20,5 @@ protected:
     ProgressBar m_healthbar;
 
     int m_moneyValue = 1;
+    sf::Color m_color = sf::Color::Red;
 };

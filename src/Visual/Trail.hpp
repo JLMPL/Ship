@@ -18,10 +18,14 @@ public:
     void setLength(int length);
 
 private:
+    vec2 m_pos;
+
+    std::vector<vec2> m_points;
     std::vector<sf::Vertex> m_verts;
+
     sf::Time m_timer = sf::seconds(1);
     sf::Color m_color = {255,255,255,255};
+
     float m_interval = 0.1;
-    vec2 m_pos;
     int m_length = 100;
 };

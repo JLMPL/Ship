@@ -29,6 +29,7 @@ public:
     void control();
     void exertHeat(float hdiff);
     void shoot();
+    void switchWeapons();
 
     void heal();
     void addMoney(int value);

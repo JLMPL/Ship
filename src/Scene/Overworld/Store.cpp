@@ -45,7 +45,7 @@ void Store::update(float dt)
             m_isActive = !m_isActive;
             m_scene->setPause(m_isActive);
 
-            m_items[ITEM_HEAL].disable();
+            m_items[ITEM_HEAL].enable();
 
             m_timer = sf::seconds(0);
         }
