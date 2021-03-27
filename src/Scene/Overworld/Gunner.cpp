@@ -68,7 +68,7 @@ void Gunner::update(float dt)
         m_body->applyLinearImpulse(direction * timer::delta * 1.f);
     }
 
-    m_body->rotateTowards(m_player->getPosition(), 200 * dt);
+    m_body->rotateTowards(m_player->getPosition(), 300 * dt);
 
     if (m_stateTimer > sf::seconds(5))
     {

@@ -26,28 +26,29 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    // m_current = ObjectiveType::KILL_BANDITS;
-    m_current = ObjectiveType::ROB_MERCHANT;
+    m_current = ObjectiveType::KILL_BANDITS;
+    // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
     {
         case KILL_BANDITS:
         {
-            int numBandits = rng::inRangei(3,5);
+            int numDrones = rng::inRangei(3,10);
+            int numGunners = rng::inRangei(1,3);
 			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
 
 			// m_pos = vec2(40, 0);
 
-			std::wstring text = L"$2Kill $0" + std::to_wstring(numBandits) + L" bandits";
+			std::wstring text = L"$2Kill $0" + std::to_wstring(numDrones + numGunners) + L" bandits";
             m_obj.setString(text);
 
-            for (int i = 0; i < numBandits; i++)
+            for (int i = 0; i < numDrones; i++)
             {
                 auto dr = m_scene->spawnObject<Drone>(m_pos);
                 dr->setPosition(m_pos);
             }
 
-            // for (int i = 0; i < numBandits; i++)
+            for (int i = 0; i < numGunners; i++)
             {
                 auto dr = m_scene->spawnObject<Gunner>(m_pos);
                 dr->setPosition(m_pos);

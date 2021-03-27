@@ -3,6 +3,7 @@
 #include "Input/Input.hpp"
 #include "Scene/Scene.hpp"
 #include "Core/Config.hpp"
+#include "Player.hpp"
 
 PauseMenu::PauseMenu(Scene* scene)
     : SceneObject(scene)
@@ -25,7 +26,9 @@ void PauseMenu::update(float dt)
 {
     m_timer += sf::seconds(dt);
 
-    if (m_timer > sf::seconds(0.25) && Input.get()->isAction(Action::A_MENU))
+    if (m_timer > sf::seconds(0.25) &&
+        Input.get()->isAction(Action::A_MENU) &&
+        !m_scene->findObject<Player>("player_ship")->isDead())
     {
         m_isActive = !m_isActive;
         m_scene->setPause(m_isActive);

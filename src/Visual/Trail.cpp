@@ -40,8 +40,8 @@ void Trail::draw()
             vs[0].color = m_color;
             vs[1].color = m_color;
 
-            vs[0].color.a = i * (255.f / (m_points.size()-1));
-            vs[1].color.a = i * (255.f / (m_points.size()-1));
+            vs[0].color.a = i * (192.f / (m_points.size()-1));
+            vs[1].color.a = i * (192.f / (m_points.size()-1));
 
             m_verts.push_back(vs[0]);
             m_verts.push_back(vs[1]);

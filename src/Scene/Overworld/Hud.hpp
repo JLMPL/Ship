@@ -30,6 +30,8 @@ private:
     sf::Text m_overheatText;
     bool m_overheat = false;
 
+    Label m_weaponName;
+
     float m_heat = 0.f;
     float m_healthPercentage = 1.f;
 

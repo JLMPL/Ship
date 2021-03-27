@@ -111,5 +111,8 @@ void Label::setColor(const sf::Color& color)
 {
     clear();
     m_front << color << m_str;
-    m_shadow << m_str;
+
+    sf::Color sholor = sf::Color::Black;
+    sholor.a = color.a;
+    m_shadow << sholor << m_str;
 }

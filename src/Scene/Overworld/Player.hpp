@@ -36,6 +36,8 @@ public:
 
     void onContact(SceneObject* other) override final;
 
+    bool isDead() const;
+
 private:
     float m_heat = 0.f;
     sf::Time m_heatTimer;

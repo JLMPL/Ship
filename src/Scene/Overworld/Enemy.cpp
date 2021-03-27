@@ -35,7 +35,7 @@ void Enemy::damage(int value)
         {
             m_player->as<Player>()->addMoney(m_moneyValue);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
                 m_scene->spawnObject<Debris>(m_pos, m_color);
 
             m_isDead = false;

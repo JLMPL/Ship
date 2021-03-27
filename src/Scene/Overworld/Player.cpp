@@ -12,6 +12,7 @@
 #include "Objective.hpp"
 #include "Rocket.hpp"
 #include "Pulse.hpp"
+#include "GameOver.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
@@ -30,6 +31,8 @@ Player::Player(Scene* scene)
 
 	m_arrow.setOffset(vec2(0, -2));
 	m_arrow.setScale(0.25);
+
+    // m_health = 1;
 }
 
 void Player::ready()
@@ -60,7 +63,7 @@ void Player::exertHeat(float hdiff)
 
 void Player::control()
 {
-    if (m_overheat)
+    if (m_overheat || isDead())
     {
         Audio.setVolume(_Audio::EFFECT_ENGINE, 0.2);
         // Audio.stopSound(_Audio::EFFECT_ENGINE);
@@ -94,7 +97,7 @@ void Player::control()
 
 void Player::shoot()
 {
-    if (m_overheat)
+    if (m_overheat || isDead())
     {
         Audio.stopSound(_Audio::EFFECT_LASER);
         return;
@@ -325,6 +328,9 @@ void Player::onContact(SceneObject* other)
         int dmg = other->as<Bullet>()->getDamage();
         m_health = std::max(0, m_health - dmg);
 
+        if (m_health == 0)
+            m_scene->findObject<GameOver>("game_over")->show();
+
 		auto tut = m_scene->findObject<Tutorial>("tutorial");
         tut->show(TUTORIAL_HEALTH);
     }
@@ -340,4 +346,9 @@ void Player::addMoney(int value)
 
 	auto tut = m_scene->findObject<Tutorial>("tutorial");
     tut->show(TUTORIAL_XP);
+}
+
+bool Player::isDead() const
+{
+    return m_health == 0;
 }

@@ -70,6 +70,10 @@ Hud::Hud(Scene* scene)
     m_outOfBounds.setString(L"That's quite far enough Captain! Let's turn around.");
     m_outOfBounds.setOrigin(m_outOfBounds.getSize() / 2.f);
     m_outOfBounds.setPosition({DisplayWidth/2, DisplayHeight * 0.75f});
+
+    m_weaponName.setFont(m_font);
+    m_weaponName.setCharacterSize(20);
+    m_weaponName.setString(L"Blaster");
 }
 
 void Hud::update(float dt)
@@ -103,6 +107,8 @@ void Hud::draw()
 		m_wheel[i].draw(false);
 	}
 
+    m_weaponName.draw();
+
     if (m_isOutOfBounds)
     {
         m_outOfBounds.draw();
@@ -129,6 +135,25 @@ void Hud::setWeapon(int weapon)
 
 	m_wheel[weapon].setColor(sf::Color::White);
 	m_wheelShadow[weapon].setColor(sf::Color::Black);
+
+    switch (weapon)
+    {
+        case 0:
+            m_weaponName.setString(L"Blaster");
+            break;
+        case 1:
+            m_weaponName.setString(L"Shotgun like blaster");
+            break;
+        case 2:
+            m_weaponName.setString(L"Laser");
+            break;
+        case 3:
+            m_weaponName.setString(L"Rockets");
+            break;
+    }
+
+    m_weaponName.setOrigin(m_weaponName.getSize());
+    m_weaponName.setPosition({DisplayWidth - 130, DisplayHeight - 24});
 }
 
 void Hud::setMoney(int value)
