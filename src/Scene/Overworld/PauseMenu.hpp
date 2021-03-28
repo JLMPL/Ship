@@ -13,6 +13,8 @@ public:
     void update(float dt) override final;
     void draw() override final;
 
+    void enable();
+
 private:
     sf::RectangleShape m_overlay;
     sf::Font m_font;
@@ -21,4 +23,6 @@ private:
     sf::Time m_timer = sf::seconds(0);
 
     bool m_isActive = false;
+
+    bool m_enabled = false;
 };

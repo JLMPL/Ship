@@ -8,6 +8,9 @@ Rocket::Rocket(Scene* scene)
 	: SceneObject(scene)
 {
     m_name = "rocket";
+
+    m_mesh.loadFromFile("data/meshes/rocket.obj");
+    m_mesh.setScale(0.5f);
 }
 
 void Rocket::ready(const vec2& pos, const vec2& dir)
@@ -16,7 +19,7 @@ void Rocket::ready(const vec2& pos, const vec2& dir)
     m_dir = dir;
     m_timer = sf::seconds(0.f);
     m_trail.setInterval(0.005f);
-    m_trail.setLength(10);
+    m_trail.setLength(20);
 }
 
 void Rocket::update(float dt)
@@ -71,9 +74,13 @@ void Rocket::update(float dt)
 
     m_trail.setPosition(m_pos);
     m_trail.update();
+
+    m_mesh.setRotation(-atan2(m_dir.x, m_dir.y) + M_PI);
+    m_mesh.setPosition(m_pos);
 }
 
 void Rocket::draw()
 {
     m_trail.draw();
+    m_mesh.draw();
 }

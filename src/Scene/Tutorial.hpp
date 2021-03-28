@@ -2,6 +2,7 @@
 #include "SceneObject.hpp"
 #include "UI/Label.hpp"
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Time.hpp>
 
 enum TutorialType
 {
@@ -32,4 +33,6 @@ private:
 
     bool m_viewedAlready[TUTORIAL_COUNT] = {false};
     bool m_visible = false;
+
+    sf::Time m_timer = sf::seconds(0);
 };

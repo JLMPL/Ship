@@ -2,6 +2,7 @@
 #include "Scene/SceneObject.hpp"
 #include <SFML/System/Time.hpp>
 #include "Visual/Trail.hpp"
+#include "Visual/Mesh.hpp"
 
 class Rocket : public SceneObject
 {
@@ -22,4 +23,5 @@ private:
     sf::Time m_timer;
 
     Trail m_trail;
+    Mesh m_mesh;
 };

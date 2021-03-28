@@ -15,7 +15,7 @@ Objective::Objective(Scene* scene)
  : SceneObject(scene)
 {
 	m_name = "objective";
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
 
     m_obj.setFont(m_font);
     m_obj.setCharacterSize(20);

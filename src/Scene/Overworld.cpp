@@ -9,6 +9,7 @@
 #include "Overworld/Planet.hpp"
 #include "Overworld/Store.hpp"
 #include "Overworld/GameOver.hpp"
+#include "Overworld/Cutscene.hpp"
 #include "StarBackground.hpp"
 #include "Tutorial.hpp"
 
@@ -32,6 +33,8 @@ Overworld::Overworld(Game* game)
 
     m_objects.emplace_back(new Tutorial(this));
     m_objects.emplace_back(new GameOver(this));
+
+    m_objects.emplace_back(new Cutscene(this));
 
     ready();
 

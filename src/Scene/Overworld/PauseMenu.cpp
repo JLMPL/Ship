@@ -24,6 +24,8 @@ PauseMenu::PauseMenu(Scene* scene)
 
 void PauseMenu::update(float dt)
 {
+    if (!m_enabled) return;
+
     m_timer += sf::seconds(dt);
 
     if (m_timer > sf::seconds(0.25) &&
@@ -43,4 +45,9 @@ void PauseMenu::draw()
         Renderer.draw(m_overlay);
         m_text.draw();
     }
+}
+
+void PauseMenu::enable()
+{
+    m_enabled = true;
 }

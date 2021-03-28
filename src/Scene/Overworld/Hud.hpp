@@ -27,7 +27,7 @@ private:
 
     sf::Font m_font;
 
-    sf::Text m_overheatText;
+    Label m_overheatText;
     bool m_overheat = false;
 
     Label m_weaponName;

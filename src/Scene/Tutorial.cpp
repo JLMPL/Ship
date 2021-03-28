@@ -10,14 +10,14 @@ Tutorial::Tutorial(Scene* scene)
 {
     m_name = "tutorial";
     m_pausable = false;
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
 
     m_text.setFont(m_font);
     m_text.setCharacterSize(20);
 
     m_continue.setFont(m_font);
     m_continue.setCharacterSize(20);
-    m_continue.setString(L"Press $3A$0 to continue");
+    m_continue.setString(L"Press $3[Enter]$0 to continue");
     m_continue.setPosition({DisplayWidth /2 - m_continue.getSize().x/2, DisplayHeight - (m_continue.getSize().y + 24)});
 }
 
@@ -40,8 +40,6 @@ void Tutorial::show(TutorialType tut)
                 L"Beware though. If you fail... it's over - no second chances.\n\n"
                 L"Engine Cooling: Make sure your engine is in a good state.\n"
                 L"If it overheats, you will lose control unitl it becomes stable again.\n\n"
-                L"$5Coordinates: $0Show your position within the system.\n"
-                L"Standard tool for navigation.\n"
             );
             m_text.setPosition({24, float(DisplayHeight)/2});
 
@@ -58,7 +56,7 @@ void Tutorial::show(TutorialType tut)
         }
         case TUTORIAL_XP:
         {
-            m_text.setString(L"As you $2kill$0 people you'll gain the necessary $6experience$0.\nLet's hope it will be worth it.");
+            m_text.setString(L"As you $2kill$0 people you'll gain the necessary $6money$0.\nLet's hope it will be worth it.");
             m_text.setPosition({24, float(DisplayHeight)/2});
 
             m_highlight = {float(DisplayWidth /2) - 180, 24, 180*2, 40};
@@ -68,6 +66,7 @@ void Tutorial::show(TutorialType tut)
 
     m_scene->setPause(true);
     m_visible = true;
+    m_timer = sf::seconds(0.f);
 }
 
 void Tutorial::update(float dt)
@@ -78,7 +77,9 @@ void Tutorial::update(float dt)
     if (!m_visible)
         return;
 
-    if (Input.get()->isAction(Action::A_CONFIRM))
+    m_timer += sf::seconds(dt);
+
+    if (Input.get()->isAction(Action::A_CONFIRM) && m_timer > sf::seconds(0.5))
     {
         m_scene->setPause(false);
         m_visible = false;
@@ -89,7 +90,7 @@ void Tutorial::draw()
 {
     if (!m_visible) return;
 
-    sf::Color color(0,0,0,192);
+    sf::Color color(0,0,0,255);
     sf::Color black(0,0,0,255);
 
     sf::Vertex v00({0,0}, black);

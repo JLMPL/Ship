@@ -13,6 +13,7 @@
 #include "Rocket.hpp"
 #include "Pulse.hpp"
 #include "GameOver.hpp"
+#include "Explosion.hpp"
 
 Player::Player(Scene* scene)
     : Spacecraft(scene)
@@ -44,9 +45,6 @@ void Player::ready()
 
     Audio.playSound(_Audio::EFFECT_ENGINE);
     Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
-
-	auto tut = m_scene->findObject<Tutorial>("tutorial");
-    tut->show(TUTORIAL_OBJECTIVE);
 
     m_mesh.setScale(0.7f);
 }
@@ -185,6 +183,7 @@ void Player::shoot()
                         }
 
                         m_shootTimer = sf::seconds(0);
+                        m_scene->spawnObject<Explosion>(m_rayhit, sf::Color::Yellow);
                     }
 
                     exertHeat(timer::delta * LaserHeatCost);
@@ -298,8 +297,8 @@ void Player::draw()
 
     if (m_weapon == Weapon::LASER && Input.get()->isAction(Action::A_FIRE))
     {
-        Renderer.drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
-        Renderer.drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
+        // Renderer.drawLineScaled(m_rayhit + vec2(1,0), m_rayhit + vec2(-1,0), sf::Color::Blue);
+        // Renderer.drawLineScaled(m_rayhit + vec2(0,1), m_rayhit + vec2(0,-1), sf::Color::Blue);
 
         Renderer.drawLineScaled(m_pos, m_pos + (m_aim), sf::Color::Red);
     }

@@ -29,15 +29,13 @@ Hud::Hud(Scene* scene)
     m_heatBar.setMaxValue(1000);
     m_heatBar.setValue(1000);
 
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
 
     m_overheatText.setFont(m_font);
     m_overheatText.setCharacterSize(32);
-    m_overheatText.setFillColor(sf::Color::Red);
-    m_overheatText.setOutlineThickness(2);
-    m_overheatText.setOutlineColor({64,0,0,255});
-    m_overheatText.setString("ENGINE OVERHEATED!");
-    m_overheatText.setOrigin({m_overheatText.getLocalBounds().width/2, 0});
+    m_overheatText.setString(L"ENGINE OVERHEATED!");
+    m_overheatText.setColor(sf::Color::Red);
+    m_overheatText.setOrigin({m_overheatText.getSize().x/2, 0});
     m_overheatText.setPosition({float(DisplayWidth/2), float(DisplayHeight/2) - 100});
 
     //
@@ -74,6 +72,7 @@ Hud::Hud(Scene* scene)
     m_weaponName.setFont(m_font);
     m_weaponName.setCharacterSize(20);
     m_weaponName.setString(L"Blaster");
+    m_weaponName.setPosition({DisplayWidth - 130, DisplayHeight - 24});
 }
 
 void Hud::update(float dt)
@@ -91,7 +90,8 @@ void Hud::update(float dt)
 void Hud::draw()
 {
     if (m_overheat)
-        Renderer.draw(m_overheatText);
+        m_overheatText.draw();
+        // Renderer.draw(m_overheatText);
 
     //for (int i = 0; i < 4; i++)
     //    Renderer.draw(m_weapons[i]);

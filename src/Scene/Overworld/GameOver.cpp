@@ -1,4 +1,5 @@
 #include "GameOver.hpp"
+#include "../Scene.hpp" // somehow including this is absolutely necessary in MSVC
 #include "Core/Config.hpp"
 #include "Renderer.hpp"
 

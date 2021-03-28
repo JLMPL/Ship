@@ -4,7 +4,7 @@
 StoreItem::StoreItem()
 {
     m_mesh.loadFromFile("data/meshes/shotgun_item.obj");
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
 
     m_name.setFont(m_font);
     m_name.setCharacterSize(25);
