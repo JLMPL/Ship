@@ -26,7 +26,7 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    m_current = ObjectiveType::KILL_BANDITS;
+    // m_current = ObjectiveType::KILL_BANDITS;
     // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
