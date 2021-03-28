@@ -9,7 +9,7 @@
 Menu::Menu(Scene* scene)
  : SceneObject(scene)
 {
-    m_font.loadFromFile("data/fonts/NotoSans-Regular.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
     m_timer.restart();
     m_mesh.loadFromFile("data/meshes/select_arrow.obj");
     m_mesh.setScale(10.f);

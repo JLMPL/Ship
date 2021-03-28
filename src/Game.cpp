@@ -26,8 +26,8 @@ Game::Game()
     rng::randomizeSeed();
     Input.init();
 
-    //changeScene(new MainMenu(this));
-	changeScene(new Overworld(this));
+    changeScene(new MainMenu(this));
+	// changeScene(new Overworld(this));
 
 }
 

@@ -33,11 +33,14 @@ void Objective::generateNewObjective()
     {
         case KILL_BANDITS:
         {
-            int numDrones = rng::inRangei(3,10);
-            int numGunners = rng::inRangei(1,3);
-			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
+            int numDrones = rng::inRangei(m_droneNumber, m_droneNumber + 2);
+            int numGunners = rng::inRangei(m_gunnerNumber, m_gunnerNumber + 1);
 
-			// m_pos = vec2(40, 0);
+            if (m_gunnerNumber <= 0)
+                numGunners = 0;
+
+			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
+            // m_pos = vec2(50, 0);
 
 			std::wstring text = L"$2Kill $0" + std::to_wstring(numDrones + numGunners) + L" bandits";
             m_obj.setString(text);
@@ -83,6 +86,11 @@ void Objective::checkCompletion()
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(BanditsValue);
+
+                m_droneNumber++;
+
+                if (m_droneNumber % 2 == 0)
+                    m_gunnerNumber++;
             }
         }
         break;

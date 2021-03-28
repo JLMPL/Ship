@@ -52,7 +52,7 @@ void InputLocator::debugDraw()
         24.f
     });
 
-    Renderer.draw(m_text);
+    // Renderer.draw(m_text);
 }
 
 InputService* InputLocator::get()

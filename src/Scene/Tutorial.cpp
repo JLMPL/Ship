@@ -48,7 +48,16 @@ void Tutorial::show(TutorialType tut)
         }
         case TUTORIAL_OBJECTIVE:
         {
-            m_text.setString(L"Be a good pirate and follow $3orders$0.\nIf you do what you're told, you can't go wrong.");
+            m_text.setString(
+                L"Controls:\n"
+                L"1,2,3,4 - Switch weapons\n"
+                L"Left Mouse Button - Shoot\n\n"
+                L"Right Mouse Button - Thrust\n"
+                L"Left Shift - Increases the strength of thrust\n"
+                L"Tab - Open storefront\n\n"
+                L"Now be a good pirate and follow $3orders$0.\n"
+                L"If you do what you're told, you can't go wrong."
+            );
             m_text.setPosition({24, float(DisplayHeight)/2});
 
             m_highlight = {24, 24, 300, 40};
