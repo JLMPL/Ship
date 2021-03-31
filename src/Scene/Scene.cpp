@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 #include "SceneObject.hpp"
+#include "Game.hpp"
 
 Scene::Scene(Game* game)
  : m_game(game)

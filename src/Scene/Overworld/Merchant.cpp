@@ -60,7 +60,7 @@ void Merchant::update(float dt)
 
         m_body->rotateTowards(m_body->getPosition() + dir, 100 * dt);
 
-    	if (math::length(m_body->getLinearVelocity()) < 25.f)
+    	if (math::length(m_body->getLinearVelocity()) < 18.f)
     		thrust(dir * timer::delta * 5.f);
     }
 

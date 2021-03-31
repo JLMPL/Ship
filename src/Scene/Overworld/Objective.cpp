@@ -6,6 +6,7 @@
 #include "Merchant.hpp"
 #include "Player.hpp"
 #include "Gunner.hpp"
+#include "Kamikaze.hpp"
 
 static constexpr int BanditsValue = 200;
 static constexpr int MerchantValue = 400;
@@ -26,7 +27,7 @@ void Objective::generateNewObjective()
 {
     m_complete = false;
     m_current = (ObjectiveType)rng::inRangei(0, 1);
-    // m_current = ObjectiveType::KILL_BANDITS;
+    m_current = ObjectiveType::KILL_BANDITS;
     // m_current = ObjectiveType::ROB_MERCHANT;
 
     switch (m_current)
@@ -35,14 +36,18 @@ void Objective::generateNewObjective()
         {
             int numDrones = rng::inRangei(m_droneNumber, m_droneNumber + 2);
             int numGunners = rng::inRangei(m_gunnerNumber, m_gunnerNumber + 1);
+            int numSwarm = rng::inRangei(m_swarmNumber, m_swarmNumber + 6);
 
             if (m_gunnerNumber <= 0)
                 numGunners = 0;
 
-			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
-            // m_pos = vec2(50, 0);
+            if (m_swarmNumber <= 0)
+                numSwarm = 0;
 
-			std::wstring text = L"$2Kill $0" + std::to_wstring(numDrones + numGunners) + L" bandits";
+			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
+            m_pos = vec2(50, 0);
+
+			std::wstring text = L"$2Kill $0" + std::to_wstring(numDrones + numGunners + numSwarm) + L" bandits";
             m_obj.setString(text);
 
             for (int i = 0; i < numDrones; i++)
@@ -54,6 +59,12 @@ void Objective::generateNewObjective()
             for (int i = 0; i < numGunners; i++)
             {
                 auto dr = m_scene->spawnObject<Gunner>(m_pos);
+                dr->setPosition(m_pos);
+            }
+
+            for (int i = 0; i < numSwarm; i++)
+            {
+                auto dr = m_scene->spawnObject<Kamikaze>(m_pos);
                 dr->setPosition(m_pos);
             }
         }
@@ -88,9 +99,8 @@ void Objective::checkCompletion()
                 m_player->as<Player>()->addMoney(BanditsValue);
 
                 m_droneNumber++;
-
-                if (m_droneNumber % 2 == 0)
-                    m_gunnerNumber++;
+                m_gunnerNumber++;
+                m_swarmNumber++;
             }
         }
         break;

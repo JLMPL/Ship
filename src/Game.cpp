@@ -14,8 +14,8 @@ Game::Game()
     DisplayWidth = sf::VideoMode::getDesktopMode().width;
     DisplayHeight = sf::VideoMode::getDesktopMode().height;
 
-     DisplayWidth = 1280;
-     DisplayHeight = 720;
+    DisplayWidth = 1280;
+    DisplayHeight = 720;
 
     // m_window.create(sf::VideoMode::getDesktopMode(), "Starry Stealers", sf::Style::Fullscreen);
     m_window.create(sf::VideoMode(DisplayWidth, DisplayHeight), "Starry Stealers", sf::Style::Close);
@@ -82,7 +82,9 @@ void Game::update()
 void Game::draw()
 {
     Renderer.clear();
-    m_scene->draw();
+
+    if (m_scene)
+        m_scene->draw();
 
     Input.debugDraw();
     Renderer.display();

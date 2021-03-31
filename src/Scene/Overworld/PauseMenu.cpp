@@ -11,11 +11,11 @@ PauseMenu::PauseMenu(Scene* scene)
     m_name = "pause_menu";
     m_pausable = false;
 
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
     m_text.setFont(m_font);
-    m_text.setCharacterSize(32);
+    m_text.setCharacterSize(48);
     m_text.setString(L"Pause");
-    m_text.setPosition({float(DisplayWidth/2), float(DisplayHeight/2)});
+    m_text.setPosition({float(DisplayWidth/2), float(DisplayHeight/2) - 100.f});
     m_text.setOrigin(m_text.getSize() / 2.f);
 
     m_overlay.setSize({float(DisplayWidth), float(DisplayHeight)});

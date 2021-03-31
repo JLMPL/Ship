@@ -33,7 +33,7 @@ Player::Player(Scene* scene)
 	m_arrow.setOffset(vec2(0, -2));
 	m_arrow.setScale(0.25);
 
-    // m_health = 1;
+    m_health = 1;
 }
 
 void Player::ready()
@@ -331,6 +331,17 @@ void Player::onContact(SceneObject* other)
             m_scene->findObject<GameOver>("game_over")->show();
 
 		auto tut = m_scene->findObject<Tutorial>("tutorial");
+        tut->show(TUTORIAL_HEALTH);
+    }
+
+    if (other->getName() == "kamikaze")
+    {
+        m_health = std::max(0, m_health - 2);
+
+        if (m_health == 0)
+            m_scene->findObject<GameOver>("game_over")->show();
+
+        auto tut = m_scene->findObject<Tutorial>("tutorial");
         tut->show(TUTORIAL_HEALTH);
     }
 }

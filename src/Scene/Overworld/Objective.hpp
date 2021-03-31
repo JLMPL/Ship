@@ -46,6 +46,7 @@ private:
 
     int m_droneNumber = 2;
     int m_gunnerNumber = -1;
+    int m_swarmNumber = -2;
 
 	vec2 m_pos;
 };

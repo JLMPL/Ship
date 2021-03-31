@@ -15,7 +15,7 @@ MainMenu::MainMenu(Game* game)
 
     menu->addItem(L"Start Game", [&]()
     {
-        m_game->changeScene(new Overworld(game));
+        m_game->changeScene(new Overworld(m_game));
     });
     menu->addItem(L"Tutorials: ON", [&]()
     {

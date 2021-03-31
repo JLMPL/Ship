@@ -13,6 +13,9 @@
 #include "StarBackground.hpp"
 #include "Tutorial.hpp"
 
+#include "MainMenu.hpp"
+#include "Game.hpp"
+
 Overworld::Overworld(Game* game)
  : Scene(game)
 {
@@ -39,4 +42,9 @@ Overworld::Overworld(Game* game)
     ready();
 
     // findObject<GameOver>("game_over")->show();
+}
+
+void Overworld::goToMainMenu()
+{
+    m_game->changeScene(new MainMenu(m_game));
 }

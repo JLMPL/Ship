@@ -4,6 +4,7 @@
 #include "Renderer.hpp"
 #include "Input/Input.hpp"
 #include "../Tutorial.hpp"
+#include "PauseMenu.hpp"
 #include <array>
 
 static const std::array<std::wstring, 11> text = {
@@ -70,6 +71,8 @@ void Cutscene::update(float dt)
     if (Input.get()->isAction(Action::A_CONFIRM))
     {
         m_scene->setPause(false);
+
+        m_scene->findObject<PauseMenu>("pause_menu")->enable();
 
         auto tut = m_scene->findObject<Tutorial>("tutorial");
         tut->show(TUTORIAL_OBJECTIVE);

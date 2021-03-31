@@ -2,13 +2,14 @@
 #include "../Scene.hpp" // somehow including this is absolutely necessary in MSVC
 #include "Core/Config.hpp"
 #include "Renderer.hpp"
+#include "../Overworld.hpp"
 
 GameOver::GameOver(Scene* scene)
  : SceneObject(scene)
 {
     m_name = "game_over";
 
-    m_font.loadFromFile("data/fonts/DejaVuSans.ttf");
+    m_font.loadFromFile("data/fonts/nasalization.ttf");
 
     m_text.setFont(m_font);
     m_text.setCharacterSize(64);
@@ -34,6 +35,11 @@ void GameOver::update(float dt)
 
     m_alpha = std::min(255.f, m_alpha + dt * 40);
     m_textAlpha = std::min(255.f, m_alpha + dt * 500);
+
+    if (m_alpha == 255.f)
+    {
+        static_cast<Overworld*>(m_scene)->goToMainMenu();
+    }
 
     m_overlay.setFillColor(sf::Color(0,0,0, m_alpha));
     m_text.setColor(sf::Color(255,255,255, m_textAlpha));
