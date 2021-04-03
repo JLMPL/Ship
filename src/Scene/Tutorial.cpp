@@ -50,15 +50,17 @@ void Tutorial::show(TutorialType tut)
         {
             m_text.setString(
                 L"Controls:\n"
-                L"1,2,3,4 - Switch weapons\n"
-                L"Left Mouse Button - Shoot\n\n"
-                L"Right Mouse Button - Thrust\n"
-                L"Left Shift - Increases the strength of thrust\n"
-                L"Tab - Open storefront\n\n"
+                L"$21,2,3,4 $0- Switch weapons\n"
+                L"$2Left Mouse Button $0- Shoot\n\n"
+                L"$2Right Mouse Button $0- Thrust\n"
+                L"$2Left Shift $0- Increases the strength of thrust\n"
+                L"$2Space $0- Ultra Brakes $7(when unlocked)$0\n\n"
+                L"$2Tab $0- Open storefront\n\n"
+                L"The little arrow next to the ship shows where the $4objective$0 is.\n"
                 L"Now be a good pirate and follow $3orders$0.\n"
                 L"If you do what you're told, you can't go wrong."
             );
-            m_text.setPosition({24, float(DisplayHeight)/2});
+            m_text.setPosition({24, float(DisplayHeight)/2 - 100});
 
             m_highlight = {24, 24, 300, 40};
             break;

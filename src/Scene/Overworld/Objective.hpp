@@ -45,8 +45,8 @@ private:
     sf::Time m_timer;
 
     int m_droneNumber = 2;
-    int m_gunnerNumber = -1;
-    int m_swarmNumber = -2;
+    int m_gunnerNumber = -2;
+    int m_swarmNumber = -4;
 
 	vec2 m_pos;
 };

@@ -6,6 +6,7 @@
 #include "Input/Input.hpp"
 #include "Scene/Overworld.hpp"
 #include "Scene/MainMenu.hpp"
+#include "Audio/Audio.hpp"
 
 static constexpr float FrameDuration = 1.f/60.f;
 
@@ -76,6 +77,7 @@ void Game::update()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         m_window.close();
 
+    Audio.updateVolumes();
     Renderer.update();
 }
 

@@ -19,6 +19,7 @@ private:
     sf::Font m_font;
     Label m_text;
     Label m_smol;
+    Label m_skip;
 
     sf::Time m_timer = sf::seconds(0);
 

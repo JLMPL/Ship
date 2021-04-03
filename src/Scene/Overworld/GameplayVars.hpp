@@ -24,4 +24,6 @@ namespace gamevars
 	extern int PlayerMoney;
 	extern bool WeaponUnlocked[4];
     extern bool BrakeUnlocked;
+
+    extern int SfxVolume;
 }

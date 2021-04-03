@@ -33,7 +33,7 @@ Player::Player(Scene* scene)
 	m_arrow.setOffset(vec2(0, -2));
 	m_arrow.setScale(0.25);
 
-    m_health = 1;
+    // m_health = 1;
 }
 
 void Player::ready()
@@ -43,7 +43,7 @@ void Player::ready()
 	m_hud = m_scene->findObject<Hud>("hud");
     m_hud->setMoney(0);
 
-    Audio.playSound(_Audio::EFFECT_ENGINE);
+    // Audio.playSound(_Audio::EFFECT_ENGINE);
     Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
 
     m_mesh.setScale(0.7f);
@@ -63,8 +63,8 @@ void Player::control()
 {
     if (m_overheat || isDead())
     {
-        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.2);
-        // Audio.stopSound(_Audio::EFFECT_ENGINE);
+        // Audio.setVolume(_Audio::EFFECT_ENGINE, 0.2);
+        Audio.stopSound(_Audio::EFFECT_ENGINE);
 		m_thruster.setVisible(false);
         return;
     }
@@ -83,11 +83,12 @@ void Player::control()
     {
 		thrust(m_body->getDirection() * timer::delta * speed);
         exertHeat(speed * 2 * timer::delta);
+        Audio.playSound(_Audio::EFFECT_ENGINE);
     }
     else
     {
-        Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
-        // Audio.stopSound(_Audio::EFFECT_ENGINE);
+        // Audio.setVolume(_Audio::EFFECT_ENGINE, 0.1);
+        Audio.stopSound(_Audio::EFFECT_ENGINE);
     }
 
     Renderer.setZoom(math::length(m_body->getLinearVelocity()));

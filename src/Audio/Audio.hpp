@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Audio.hpp>
 
-#define DISABLE_AUDIO
+// #define DISABLE_AUDIO
 
 class _Audio
 {
@@ -12,6 +12,7 @@ public:
         EFFECT_LASER,
         EFFECT_ROCKET,
         EFFECT_EXPLOSION,
+        EFFECT_BIG_EXPLOSION,
         EFFECT_MENU_SWITCH,
         EFFECT_MENU_SELECT,
         EFFECT_ENGINE,
@@ -22,6 +23,8 @@ public:
 
     _Audio();
     ~_Audio() = default;
+
+    void updateVolumes();
 
     void playSound(int effect);
     void stopSound(int effect);

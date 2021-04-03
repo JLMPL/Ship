@@ -4,6 +4,7 @@
 #include "Scene/Scene.hpp"
 #include "Core/Config.hpp"
 #include "Player.hpp"
+#include "GameplayVars.hpp"
 
 PauseMenu::PauseMenu(Scene* scene)
     : SceneObject(scene)
@@ -19,7 +20,19 @@ PauseMenu::PauseMenu(Scene* scene)
     m_text.setOrigin(m_text.getSize() / 2.f);
 
     m_overlay.setSize({float(DisplayWidth), float(DisplayHeight)});
-    m_overlay.setFillColor({0,0,0,128});
+    m_overlay.setFillColor({0,0,0,192});
+
+    m_volumeBar.setSize({256,32});
+    m_volumeBar.setMaxValue(100);
+    m_volumeBar.setValue(50);
+    m_volumeBar.setPosition({DisplayWidth/2 - 128, DisplayHeight/2 + 100});
+    m_volumeBar.setScaled(false);
+
+    m_volumeText.setFont(m_font);
+    m_volumeText.setCharacterSize(20);
+    m_volumeText.setString(L"SFX Volume");
+    m_volumeText.setPosition({float(DisplayWidth/2), float(DisplayHeight/2) + 80.f});
+    m_volumeText.setOrigin(m_volumeText.getSize() / 2.f);
 }
 
 void PauseMenu::update(float dt)
@@ -36,6 +49,23 @@ void PauseMenu::update(float dt)
         m_scene->setPause(m_isActive);
         m_timer = sf::seconds(0);
     }
+
+    if (m_timer > sf::seconds(0.02))
+    {
+        if (Input.get()->isAction(Action::A_LEFT))
+        {
+            gamevars::SfxVolume = std::max(0, gamevars::SfxVolume - 1);
+            m_timer = sf::seconds(0);
+        }
+
+        if (Input.get()->isAction(Action::A_RIGHT))
+        {
+            gamevars::SfxVolume = std::min(100, gamevars::SfxVolume + 1);
+            m_timer = sf::seconds(0);
+        }
+
+        m_volumeBar.setValue(gamevars::SfxVolume);
+    }
 }
 
 void PauseMenu::draw()
@@ -44,6 +74,9 @@ void PauseMenu::draw()
     {
         Renderer.draw(m_overlay);
         m_text.draw();
+
+        m_volumeBar.draw();
+        m_volumeText.draw();
     }
 }
 

@@ -3,6 +3,7 @@
 #include "Bullet.hpp"
 #include "Player.hpp"
 #include "Debris.hpp"
+#include "Audio/Audio.hpp"
 
 Enemy::Enemy(Scene* scene)
  : Spacecraft(scene)
@@ -39,6 +40,7 @@ void Enemy::damage(int value)
                 m_scene->spawnObject<Debris>(m_pos, m_color);
 
             m_isDead = false;
+            Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
         }
         destroy();
     }

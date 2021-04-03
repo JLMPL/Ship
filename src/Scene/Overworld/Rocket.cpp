@@ -3,6 +3,7 @@
 #include "Renderer.hpp"
 #include "Spacecraft.hpp"
 #include "Explosion.hpp"
+#include "Audio/Audio.hpp"
 
 Rocket::Rocket(Scene* scene)
 	: SceneObject(scene)
@@ -33,6 +34,7 @@ void Rocket::update(float dt)
         if (m_timer > sf::seconds(1.f))
         {
             m_scene->spawnObject<Explosion>(m_pos, sf::Color::White);
+            Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
             destroy();
         }
     }
@@ -50,10 +52,13 @@ void Rocket::update(float dt)
     {
         m_acceleration = std::min(40.f, m_acceleration + dt * 20.f);
 
-        m_target = m_scene->findClosestObjectByName(m_pos, "gunner");
+        m_target = m_scene->findClosestObjectByName(m_pos, "kamikaze");
 
         if (!m_target)
             m_target = m_scene->findClosestObjectByName(m_pos, "drone");
+
+        if (!m_target)
+            m_target = m_scene->findClosestObjectByName(m_pos, "gunner");
 
         if (!m_target)
             m_target = m_scene->findClosestObjectByName(m_pos, "merchant");
@@ -67,6 +72,7 @@ void Rocket::update(float dt)
             {
                 m_target->as<Spacecraft>()->damage(50);
                 m_scene->spawnObject<Explosion>(m_pos, sf::Color::White);
+                Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
                 destroy();
             }
         }

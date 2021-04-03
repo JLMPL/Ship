@@ -26,9 +26,12 @@ Objective::Objective(Scene* scene)
 void Objective::generateNewObjective()
 {
     m_complete = false;
-    m_current = (ObjectiveType)rng::inRangei(0, 1);
-    m_current = ObjectiveType::KILL_BANDITS;
-    // m_current = ObjectiveType::ROB_MERCHANT;
+    m_current = (ObjectiveType)rng::inRangei(0, 3);
+
+    if (m_current == 0)
+        m_current = ObjectiveType::ROB_MERCHANT;
+    else
+        m_current = ObjectiveType::KILL_BANDITS;
 
     switch (m_current)
     {
@@ -36,7 +39,7 @@ void Objective::generateNewObjective()
         {
             int numDrones = rng::inRangei(m_droneNumber, m_droneNumber + 2);
             int numGunners = rng::inRangei(m_gunnerNumber, m_gunnerNumber + 1);
-            int numSwarm = rng::inRangei(m_swarmNumber, m_swarmNumber + 6);
+            int numSwarm = rng::inRangei(m_swarmNumber, m_swarmNumber + 3);
 
             if (m_gunnerNumber <= 0)
                 numGunners = 0;
@@ -45,7 +48,7 @@ void Objective::generateNewObjective()
                 numSwarm = 0;
 
 			m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
-            m_pos = vec2(50, 0);
+            // m_pos = vec2(50, 0);
 
 			std::wstring text = L"$2Kill $0" + std::to_wstring(numDrones + numGunners + numSwarm) + L" bandits";
             m_obj.setString(text);
