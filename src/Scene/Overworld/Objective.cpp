@@ -8,6 +8,7 @@
 #include "Gunner.hpp"
 #include "Kamikaze.hpp"
 #include "Mothership.hpp"
+#include "Attacker.hpp"
 
 static constexpr int BanditsValue = 200;
 static constexpr int MerchantValue = 400;
@@ -27,13 +28,18 @@ Objective::Objective(Scene* scene)
 void Objective::generateNewObjective()
 {
     m_complete = false;
-    m_current = (ObjectiveType)rng::inRangei(0, 2);
+
+    ObjectiveType previous = m_current;
+    while (previous == m_current)
+    {
+        m_current = (ObjectiveType)rng::inRangei(0, 2);
+    }
 
     // if (m_current == 0)
         // m_current = ObjectiveType::ROB_MERCHANT;
     // else
         // m_current = ObjectiveType::KILL_BANDITS;
-        m_current = ObjectiveType::SURVIVE_TIME;
+        // m_current = ObjectiveType::SURVIVE_TIME;
 
     switch (m_current)
     {
@@ -92,7 +98,13 @@ void Objective::generateNewObjective()
             m_obj.setString(text);
 
             // m_surviveTimer = sf::seconds(rng::inRange(60, 90));
-            m_surviveTimer = sf::seconds(rng::inRange(5, 10));
+            m_surviveTimer = sf::seconds(rng::inRange(30, 40));
+
+            // for (int i = 0; i < 2; i++)
+            // {
+            //     auto dr = m_scene->spawnObject<Attacker>(m_pos);
+            //     dr->setPosition(m_pos);
+            // }
         }
         break;
     }
@@ -136,6 +148,15 @@ void Objective::checkCompletion()
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(200);
+
+                auto remains = m_scene->findObjectsByName<Enemy>("attacker");
+
+                for (auto& attacker : remains)
+                {
+                    attacker->kill();
+                }
+
+                m_surviveIntensity = std::max(1.f, m_surviveIntensity - 0.5f);
             }
         }
         break;
@@ -169,6 +190,7 @@ void Objective::update(float dt)
     if (m_current == SURVIVE_TIME && !m_complete)
     {
         m_surviveTimer -= sf::seconds(dt);
+        m_surviveSpawner += sf::seconds(dt);
 
         int timer = int(m_surviveTimer.asSeconds());
 
@@ -179,37 +201,14 @@ void Objective::update(float dt)
 
         std::wstring text = L"$3Survive $0the attack - " + std::to_wstring(minutes) + L":" + secondsStr;
         m_obj.setString(text);
+
+        if (m_surviveSpawner > sf::seconds(m_surviveIntensity))
+        {
+            auto dr = m_scene->spawnObject<Attacker>(m_pos);
+            dr->setPosition(m_player->getPosition() + vec2(rng::inRange(-100, 100), rng::inRange(-100, 100)));
+            m_surviveSpawner = sf::seconds(0);
+        }
     }
-
-    //if (m_current == ROB_MERCHANT && !m_complete)
-    //{
-    //    Merchant* mr = (Merchant*)m_enemies.back();
-    //    vec2 pos = mr->getPosition();
-    //    std::wstring text = L"$4Rob $0Merchant $5(" +
-    //        std::to_wstring(int(pos.x)) + L", " + std::to_wstring(int(pos.y)) + L")";
-    //    m_obj.setString(text);
-    //}
-
-    // printf("num_drones    %d\n", m_scene->countObjectsByName("drone"));
-    // printf("num_merchants %d\n", m_scene->countObjectsByName("merchant"));
-
-    // if (m_scene->countObjectsByName("drone") == 0 &&
-    //     m_scene->countObjectsByName("merchant") == 0)
-    // {
-    //     m_enemies.clear();
-    // }
-
-    // if (!m_enemies.empty())
-    // for (auto i = m_enemies.begin(); i != m_enemies.end();)
-    // {
-    //     if ((*i)->isDestroyed())
-    //     {
-    //         printf("Enemy died indeed!\n");
-    //         i = m_enemies.erase(i);
-    //     }
-    //     else
-    //         i++;
-    // }
 }
 
 void Objective::draw()

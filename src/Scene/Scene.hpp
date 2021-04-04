@@ -37,6 +37,18 @@ public:
     std::vector<SceneObject*> findObjectsInRange(const vec2& pos, float range);
 
     template <typename T = SceneObject>
+    std::vector<T*> findObjectsByName(const std::string& name)
+    {
+        std::vector<T*> founds;
+
+        for (auto& object : m_objects)
+            if (object->getName() == name)
+                founds.push_back(object->as<T>());
+
+        return founds;
+    }
+
+    template <typename T = SceneObject>
     T* findClosestObjectByName(const vec2& pos, const std::string& name = "[ignore]")
     {
         SceneObject* closest = nullptr;

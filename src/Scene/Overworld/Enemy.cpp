@@ -36,17 +36,21 @@ void Enemy::damage(int value)
         if (!m_isDead)
         {
             m_player->as<Player>()->addMoney(m_moneyValue);
-
-            for (int i = 0; i < 10; i++)
-                m_scene->spawnObject<Debris>(m_pos, m_color);
-
-            m_isDead = false;
-            Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
-            Renderer.shake(0.5f, 0.1f);
+            kill();
         }
-        destroy();
     }
 
     m_healthbar.setValue(m_health);
 }
 
+void Enemy::kill()
+{
+    for (int i = 0; i < 10; i++)
+        m_scene->spawnObject<Debris>(m_pos, m_color);
+
+    Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
+    Renderer.shake(0.5f, 0.1f);
+    destroy();
+
+    m_isDead = true;
+}

@@ -13,6 +13,8 @@ public:
 
     virtual void draw() override;
 
+    void kill();
+
 protected:
     SceneObject* m_player = nullptr;
     bool m_isDead = false;

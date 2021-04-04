@@ -1,4 +1,4 @@
-#include "Drone.hpp"
+#include "Attacker.hpp"
 #include "Scene/Scene.hpp"
 #include "Renderer.hpp"
 #include "Physics/PhysicsWorld.hpp"
@@ -10,10 +10,10 @@
 #include "Audio/Audio.hpp"
 #include "Random.hpp"
 
-Drone::Drone(Scene* scene)
+Attacker::Attacker(Scene* scene)
     : Enemy(scene)
 {
-    m_name = "drone";
+    m_name = "attacker";
 
     std::vector<vec2> points(3);
     points[0] = {-1.f, 0.6};
@@ -28,23 +28,23 @@ Drone::Drone(Scene* scene)
     m_healthbar.setMaxValue(m_maxHealth);
     m_healthbar.setValue(m_maxHealth);
 
-    m_mesh.loadFromFile("data/meshes/drone.obj");
+    m_mesh.loadFromFile("data/meshes/attacker.obj");
 
-    m_moneyValue = 75;
-    m_color = sf::Color(128,0,0);
+    m_moneyValue = 100;
+    m_color = sf::Color(0,128,0);
 }
 
-void Drone::ready(const vec2& spawnPoint)
+void Attacker::ready(const vec2& spawnPoint)
 {
     Spacecraft::ready(false);
-    m_trail.setColor(sf::Color::Red);
+    m_trail.setColor(sf::Color::Green);
     m_spawnPoint = spawnPoint;
     Audio.setVolume(_Audio::EFFECT_ENEMY_BLASTER, 0.5);
 
     m_mesh.setScale(0.7f);
 }
 
-void Drone::update(float dt)
+void Attacker::update(float dt)
 {
     m_clock += sf::seconds(dt);
 
@@ -55,22 +55,20 @@ void Drone::update(float dt)
         {
             vec2 pos = m_body->getPosition();
             vec2 dir = math::normalize(Renderer.getGlobalMousePosition() - pos);
-            m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), DroneDamage, false);
+            m_scene->spawnObject<Bullet>(m_pos, m_body->getDirection(), 1, false);
 
             Audio.playSound(_Audio::EFFECT_ENEMY_BLASTER);
 
             m_clock = sf::seconds(0);
         }
     }
-    else
-        towards = m_spawnPoint;
 
     float dist = math::distance(m_body->getPosition(), towards);
 
-    if (dist > 10)
+    if (dist > 20)
         thrust(m_body->getDirection() * timer::delta * 1.f);
     else if (dist < 3)
-        m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 2.f);
+        m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 40.f);
 
     m_body->rotateTowards(towards, 100 * dt);
 

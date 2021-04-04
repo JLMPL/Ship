@@ -46,10 +46,12 @@ private:
     sf::Time m_timer;
 
     int m_droneNumber = 2;
-    int m_gunnerNumber = -2;
-    int m_mothershipNumber = -6;
+    int m_gunnerNumber = -1;
+    int m_mothershipNumber = -2;
 
     sf::Time m_surviveTimer;
+    sf::Time m_surviveSpawner;
+    float m_surviveIntensity = 3.f;
 
 	vec2 m_pos;
 };
