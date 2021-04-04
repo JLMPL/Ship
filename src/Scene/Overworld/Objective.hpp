@@ -10,6 +10,7 @@ enum ObjectiveType
 {
     KILL_BANDITS = 0,
     ROB_MERCHANT,
+    SURVIVE_TIME,
     PROTECT_CLIENT,
     OBJECTIVE_COUNT
 };
@@ -46,7 +47,9 @@ private:
 
     int m_droneNumber = 2;
     int m_gunnerNumber = -2;
-    int m_swarmNumber = -4;
+    int m_mothershipNumber = -6;
+
+    sf::Time m_surviveTimer;
 
 	vec2 m_pos;
 };

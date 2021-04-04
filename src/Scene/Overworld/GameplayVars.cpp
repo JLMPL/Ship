@@ -5,8 +5,8 @@ namespace gamevars
 	bool TutorialsEnabled = true;
 	int PlayerMoney = 0;
 
-	bool WeaponUnlocked[4] = { true, false, false, false };
-    bool BrakeUnlocked = false;
+	bool WeaponUnlocked[4] = { true, true, true, true };
+    bool BrakeUnlocked = true;
 
     int SfxVolume = 20;
 }

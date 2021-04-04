@@ -197,6 +197,9 @@ void Player::shoot()
                 if (m_shootTimer < sf::seconds(0.5))
                     return;
 
+                Renderer.shake(0.5f, 0.1f);
+                Input.get()->rumble(1.f, 100);
+
                 vec2 side = vec2(dir.y, -dir.x);
 
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side * 0.25f));
@@ -204,10 +207,10 @@ void Player::shoot()
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() + side));
                 m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(m_body->getDirection() - side));
 
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side * 0.25f));
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side * 0.25f));
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side));
-                m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side));
+                // m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side * 0.25f));
+                // m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side * 0.25f));
+                // m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() + side));
+                // m_scene->spawnObject<Rocket>(m_body->getPosition(), math::normalize(-m_body->getDirection() - side));
 
                 exertHeat(RocketsCost);
                 Audio.playSound(_Audio::EFFECT_ROCKET);

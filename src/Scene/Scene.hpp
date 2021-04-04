@@ -37,7 +37,7 @@ public:
     std::vector<SceneObject*> findObjectsInRange(const vec2& pos, float range);
 
     template <typename T = SceneObject>
-    T* findClosestObjectByName(const vec2& pos, const std::string& name)
+    T* findClosestObjectByName(const vec2& pos, const std::string& name = "[ignore]")
     {
         SceneObject* closest = nullptr;
         float closestDistance = 1000.f;
@@ -46,7 +46,43 @@ public:
         {
             float dist = math::distance(object->getPosition(), pos);
 
-            if (object->getName() == name && dist < closestDistance)
+            bool nameMatch = object->getName() == name;
+
+            if (name == "[ignore]")
+                nameMatch = true;
+
+            if (nameMatch && dist < closestDistance)
+            {
+                closest = object.get();
+                closestDistance = dist;
+            }
+        }
+
+        return closest;
+    }
+
+    template <typename T = SceneObject>
+    T* findClosestObjectByNames(const vec2& pos, const std::vector<std::string>& names)
+    {
+        SceneObject* closest = nullptr;
+        float closestDistance = 1000.f;
+
+        for (auto& object : m_objects)
+        {
+            float dist = math::distance(object->getPosition(), pos);
+
+            bool nameMatch = false;
+
+            for (auto& name : names)
+            {
+                if (name == object->getName())
+                {
+                    nameMatch = true;
+                    break;
+                }
+            }
+
+            if (nameMatch && dist < closestDistance)
             {
                 closest = object.get();
                 closestDistance = dist;

@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Debris.hpp"
 #include "Audio/Audio.hpp"
+#include "Renderer.hpp"
 
 Enemy::Enemy(Scene* scene)
  : Spacecraft(scene)
@@ -41,6 +42,7 @@ void Enemy::damage(int value)
 
             m_isDead = false;
             Audio.playSound(_Audio::EFFECT_BIG_EXPLOSION);
+            Renderer.shake(0.5f, 0.1f);
         }
         destroy();
     }
