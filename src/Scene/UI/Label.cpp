@@ -59,6 +59,9 @@ void Label::setString(const std::wstring& text)
                 case '7':
                     m_front << sf::Color(128,128,128);
                     break;
+                case '8':
+                    m_front << sf::Color(255,128,0);
+                    break;
                 default: break;
             }
 

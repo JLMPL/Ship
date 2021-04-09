@@ -42,6 +42,7 @@ private:
 
     SceneObject* m_player = nullptr;
     SceneObject* m_merchant = nullptr;
+    SceneObject* m_client = nullptr;
 
     sf::Time m_timer;
 
@@ -52,6 +53,9 @@ private:
     sf::Time m_surviveTimer;
     sf::Time m_surviveSpawner;
     float m_surviveIntensity = 3.f;
+
+    int m_maxBullies = 1;
+    int m_currentBullies = 0;
 
 	vec2 m_pos;
 };

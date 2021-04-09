@@ -9,6 +9,8 @@
 #include "Kamikaze.hpp"
 #include "Mothership.hpp"
 #include "Attacker.hpp"
+#include "Client.hpp"
+#include "Bully.hpp"
 
 static constexpr int BanditsValue = 200;
 static constexpr int MerchantValue = 400;
@@ -36,7 +38,7 @@ void Objective::generateNewObjective()
     }
 
     // if (m_current == 0)
-        // m_current = ObjectiveType::ROB_MERCHANT;
+        m_current = ObjectiveType::PROTECT_CLIENT;
     // else
         // m_current = ObjectiveType::KILL_BANDITS;
         // m_current = ObjectiveType::SURVIVE_TIME;
@@ -107,6 +109,28 @@ void Objective::generateNewObjective()
             // }
         }
         break;
+        case PROTECT_CLIENT:
+        {
+            int bullies = rng::inRangei(m_maxBullies, m_maxBullies + 2);
+
+            m_pos = vec2(rng::inRange(-ObjectiveExtents, ObjectiveExtents), rng::inRange(-ObjectiveExtents, ObjectiveExtents));
+
+            m_currentBullies = bullies;
+
+            std::wstring text = L"$8Protect $0your client from the suckers\n  " +
+                std::to_wstring(m_currentBullies) + L" suckers remaining";
+            m_obj.setString(text);
+
+            m_client = m_scene->spawnObject<Client>(m_pos);
+            m_client->setPosition(m_pos);
+
+            for (int i = 0; i < bullies; i++)
+            {
+                auto dr = m_scene->spawnObject<Bully>(m_pos);
+                dr->setPosition(m_pos);
+            }
+        }
+        break;
     }
 }
 
@@ -160,6 +184,16 @@ void Objective::checkCompletion()
             }
         }
         break;
+        case PROTECT_CLIENT:
+        {
+            if (m_currentBullies == 0)
+            {
+                m_complete = true;
+                m_player->as<Player>()->addMoney(230);
+                m_maxBullies++;
+            }
+        }
+        break;
     }
 
     if (m_complete)
@@ -208,6 +242,25 @@ void Objective::update(float dt)
             dr->setPosition(m_player->getPosition() + vec2(rng::inRange(-100, 100), rng::inRange(-100, 100)));
             m_surviveSpawner = sf::seconds(0);
         }
+    }
+    else if (m_current == PROTECT_CLIENT && !m_complete)
+    {
+        m_surviveSpawner += sf::seconds(dt);
+
+        std::wstring text = L"$8Protect $0your client from the suckers\n  " +
+            std::to_wstring(m_currentBullies) + L" suckers remaining";
+        m_obj.setString(text);
+
+        m_currentBullies = m_scene->countObjectsByName("bully");
+
+        if (m_surviveSpawner > sf::seconds(m_surviveIntensity))
+        {
+            auto dr = m_scene->spawnObject<Bully>(m_pos);
+            dr->setPosition(m_player->getPosition() + vec2(rng::inRange(-100, 100), rng::inRange(-100, 100)));
+            m_surviveSpawner = sf::seconds(0);
+        }
+
+        m_pos = m_client->getPosition();
     }
 }
 

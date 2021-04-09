@@ -10,6 +10,7 @@
 #define LB_YELLOW (L"$5")
 #define LB_PURPLE (L"$6")
 #define LB_GRAY   (L"$7")
+#define LB_ORANGE (L"$8")
 
 class Label
 {

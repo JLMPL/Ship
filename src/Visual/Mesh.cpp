@@ -13,15 +13,19 @@ std::map<std::string, sf::Color> lookup = {
     {"Gray",        sf::Color(0x808080ff)},
     {"DarkGray",    sf::Color(0x404040ff)},
     {"Black",       sf::Color(0x000000ff)},
-    {"Blue",        sf::Color(0x0000ffff)},
-    {"DarkBlue",    sf::Color(0x000080ff)},
     {"Red",         sf::Color(0xff0000ff)},
     {"DarkRed",     sf::Color(0x800000ff)},
+    {"Green",       sf::Color(0x00ff00ff)},
+    {"DarkGreen",   sf::Color(0x008000ff)},
+    {"Blue",        sf::Color(0x0000ffff)},
+    {"DarkBlue",    sf::Color(0x000080ff)},
+    {"Yellow",      sf::Color(0xffff00ff)},
+    {"DarkYellow",  sf::Color(0x808000ff)},
+    {"Orange",      sf::Color(0xff8000ff)},
+    {"DarkOrange",  sf::Color(0x804000ff)},
     {"LightPurple", sf::Color(0xff00ffff)},
     {"Purple",      sf::Color(0x800080ff)},
     {"DarkPurple",  sf::Color(0x400040ff)},
-    {"Green",       sf::Color(0x00ff00ff)},
-    {"DarkGreen",   sf::Color(0x008000ff)},
     {"Error",       sf::Color(0xff00ffff)}
 };
 

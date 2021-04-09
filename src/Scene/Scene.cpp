@@ -55,7 +55,7 @@ void Scene::draw()
     for (auto& ent : m_objects)
         ent->draw();
 
-    m_physicsWorld.draw();
+    // m_physicsWorld.draw();
 }
 
 std::vector<SceneObject*> Scene::findObjectsInRange(const vec2& pos, float range)
