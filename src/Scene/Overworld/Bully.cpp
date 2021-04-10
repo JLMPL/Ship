@@ -49,11 +49,10 @@ void Bully::update(float dt)
 {
     m_clock += sf::seconds(dt);
 
-    if (!m_client)
-        m_client = m_scene->findObject("client");
+    m_client = m_scene->findObject("client");
 
     vec2 towards = m_client->getPosition();
-    if (math::distance(m_body->getPosition(), towards) < 25.f)
+    if (math::distance(m_body->getPosition(), towards) < 100.f)
     {
         if (m_clock > sf::seconds(1))
         {
@@ -69,10 +68,10 @@ void Bully::update(float dt)
 
     float dist = math::distance(m_body->getPosition(), towards);
 
-    if (dist > 20)
-        thrust(m_body->getDirection() * timer::delta * 1.f);
-    else if (dist < 3)
-        m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 40.f);
+    // if (dist > 20)
+    //     thrust(m_body->getDirection() * timer::delta * 1.f);
+    // else if (dist < 3)
+    //     m_body->applyLinearImpulse(-m_body->getDirection() * timer::delta * 40.f);
 
     m_body->rotateTowards(towards, 100 * dt);
 

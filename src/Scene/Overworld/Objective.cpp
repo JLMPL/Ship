@@ -126,12 +126,15 @@ void Objective::generateNewObjective()
 
             for (int i = 0; i < bullies; i++)
             {
-                auto dr = m_scene->spawnObject<Bully>(m_pos);
-                dr->setPosition(m_pos);
+                vec2 offset = m_pos + vec2(rng::inRange(-20.f, 20.f), rng::inRange(-20.f, 20.f));
+                auto dr = m_scene->spawnObject<Bully>(offset);
+                dr->setPosition(offset);
             }
         }
         break;
     }
+
+    m_timer = sf::seconds(0);
 }
 
 void Objective::checkCompletion()
@@ -191,6 +194,8 @@ void Objective::checkCompletion()
                 m_complete = true;
                 m_player->as<Player>()->addMoney(230);
                 m_maxBullies++;
+
+                m_scene->findObject<Client>("client")->goAway();
             }
         }
         break;
@@ -214,7 +219,8 @@ void Objective::update(float dt)
 {
     m_timer += sf::seconds(dt);
 
-    checkCompletion();
+    if (m_timer > sf::seconds(0.5))
+        checkCompletion();
 
     if (m_complete && m_timer > sf::seconds(3))
     {
@@ -243,22 +249,20 @@ void Objective::update(float dt)
             m_surviveSpawner = sf::seconds(0);
         }
     }
-    else if (m_current == PROTECT_CLIENT && !m_complete)
+    if (m_current == PROTECT_CLIENT && !m_complete)
     {
-        m_surviveSpawner += sf::seconds(dt);
-
         std::wstring text = L"$8Protect $0your client from the suckers\n  " +
             std::to_wstring(m_currentBullies) + L" suckers remaining";
         m_obj.setString(text);
 
         m_currentBullies = m_scene->countObjectsByName("bully");
 
-        if (m_surviveSpawner > sf::seconds(m_surviveIntensity))
-        {
-            auto dr = m_scene->spawnObject<Bully>(m_pos);
-            dr->setPosition(m_player->getPosition() + vec2(rng::inRange(-100, 100), rng::inRange(-100, 100)));
-            m_surviveSpawner = sf::seconds(0);
-        }
+        // if (m_surviveSpawner > sf::seconds(m_surviveIntensity))
+        // {
+        //     auto dr = m_scene->spawnObject<Bully>(m_pos);
+        //     dr->setPosition(m_player->getPosition() + vec2(rng::inRange(-100, 100), rng::inRange(-100, 100)));
+        //     m_surviveSpawner = sf::seconds(0);
+        // }
 
         m_pos = m_client->getPosition();
     }

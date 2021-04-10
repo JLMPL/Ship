@@ -19,7 +19,7 @@ PhysicsWorld::PhysicsWorld()
     m_pWorld.SetContactListener(&m_contactListener);
 }
 
-RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player, const std::vector<vec2>& points)
+RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player, const std::vector<vec2>& points, bool superSpecialDamping)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -65,6 +65,11 @@ RigidBody::Ref PhysicsWorld::addRigidBody(const sf::Vector2f& pos, bool player, 
 
     body->CreateFixture(&fixtureDef);
     body->SetAngularDamping(5.f);
+
+    if (superSpecialDamping)
+    {
+        body->SetLinearDamping(5.f);
+    }
 
     m_rigidBodies.emplace_back(new RigidBody(body, &m_pWorld, player ? RigidBody::PlayerShip : RigidBody::EnemyShip));
 

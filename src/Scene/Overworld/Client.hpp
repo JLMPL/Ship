@@ -12,6 +12,10 @@ public:
 
     void update(float dt) override final;
 
+    void onContact(SceneObject* object) override final;
+
+    void goAway();
 private:
     vec2 m_spawnPoint;
+    bool m_goAway = false;
 };
