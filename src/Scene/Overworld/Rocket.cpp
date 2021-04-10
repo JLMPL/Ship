@@ -53,7 +53,7 @@ void Rocket::update(float dt)
         m_acceleration = std::min(40.f, m_acceleration + dt * 20.f);
 
         m_target = m_scene->findClosestObjectByNames(m_pos,
-            {"drone", "kamikaze", "gunner", "merchant", "mothership", "attacker"});
+            {"drone", "kamikaze", "gunner", "merchant", "mothership", "attacker", "bully"});
 
         if (m_target)
         {

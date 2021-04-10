@@ -34,11 +34,11 @@ void Objective::generateNewObjective()
     ObjectiveType previous = m_current;
     while (previous == m_current)
     {
-        m_current = (ObjectiveType)rng::inRangei(0, 2);
+        m_current = (ObjectiveType)rng::inRangei(0, 3);
     }
 
     // if (m_current == 0)
-        m_current = ObjectiveType::PROTECT_CLIENT;
+        // m_current = ObjectiveType::PROTECT_CLIENT;
     // else
         // m_current = ObjectiveType::KILL_BANDITS;
         // m_current = ObjectiveType::SURVIVE_TIME;
@@ -147,11 +147,18 @@ void Objective::checkCompletion()
         {
             if (m_scene->countObjectsByName("drone") == 0 &&
                 m_scene->countObjectsByName("gunner") == 0 &&
-                m_scene->countObjectsByName("mothership") == 0 &&
-                m_scene->countObjectsByName("kamikaze") == 0)
+                m_scene->countObjectsByName("mothership") == 0)
+                // m_scene->countObjectsByName("kamikaze") == 0)
             {
                 m_complete = true;
                 m_player->as<Player>()->addMoney(BanditsValue);
+
+                auto remains = m_scene->findObjectsByName<Kamikaze>("kamikaze");
+
+                for (auto& kami : remains)
+                {
+                    kami->kill();
+                }
 
                 m_droneNumber++;
                 m_gunnerNumber++;

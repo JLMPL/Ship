@@ -177,7 +177,11 @@ void Player::shoot()
                         if (result.object)
                         if (result.object->getName() == "drone" ||
 							result.object->getName() == "merchant" ||
-                            result.object->getName() == "gunner")
+                            result.object->getName() == "gunner" ||
+                            result.object->getName() == "mothership" ||
+                            result.object->getName() == "attacker" ||
+                            result.object->getName() == "bully" ||
+                            result.object->getName() == "kamikaze")
                         {
                             auto ship = result.object->as<Spacecraft>();
 							ship->damage(LaserDamage);
